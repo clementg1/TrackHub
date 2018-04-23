@@ -39,6 +39,24 @@
         li a:hover {
             background-color: rgba(105, 105, 105, 0.75);
         }
+
+        div.gallery {
+            margin: 5px;
+            border: 1px solid #ccc;
+            background-color: rgba(105, 105, 105, 0.35);
+            float: left;
+            width: 180px;
+        }
+
+        div.gallery img {
+            width: 100%;
+            height: auto;
+        }
+
+        div.desc {
+            padding: 15px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -59,22 +77,31 @@
 
 <h4 style=" color: darkslategray; font-family:tahoma; font-size: 22px;">The Project:</h4>
 <p style="color: white; font-family:tahoma;">TrackHub is an interactive music player that allows users to create an account, stream music, rate songs, chat with other members, and allows users to see a history of their songs. One of our goals when creating TrackHub was to make it cross platform, so we implemented it as a website available to run in any modern web browser. The main features that distinguish TrackHub from other music players are its rating/review, chat, and music video integration. .</p></br>
-<div class="img-block">
-    <h4 style=" color: darkslategray; font-family:tahoma; font-size: 22px;">The Team:</h4>
-    <p style="color:white; font-family:tahoma;"><strong>Edgar Oregel</strong></p>
-    <img src="/assets/Blank.jpg" alt="Edgar" style="width:25%"/>
-    <br><br>
-    <p style="color:white; font-family:tahoma;"><strong>Clement Garcia</strong></p>
-    <img src="/assets/ClementG.JPG" alt="Clement" style="width:25%"/>
-    <br><br>
-    <p style="color:white; font-family:tahoma;"><strong>Drew Overgaard</strong></p>
-    <img src="/assets/DrewO.png" alt="Drew" style="width:25%"/>
-    <br><br>
-    <p style="color:white; font-family:tahoma;"><strong>Kyle Hartman</strong></p>
-    <img src="/assets/KyleH.JPG" alt="Kyle" style="width:25%"/>
-    <br><br>
-    <p style="color:white; font-family:tahoma;"><strong>Ryan Espinosa</strong></p>
-    <img src="/assets/Blank.jpg" alt="Ryan" style="width:25%"/>
+<h4 style=" color: darkslategray; font-family:tahoma; font-size: 22px;">The Team:</h4>
+
+<div class="gallery">
+    <img src="/assets/Blank.jpg" alt="Edgar" style="width:100%"/>
+    <div class="desc"; style="color:white; font-weight: bold;">Edgar Oregel</div>
+</div>
+
+<div class="gallery">
+    <img src="/assets/ClementG.JPG" alt="Clement" style="width:100%"/>
+    <div class="desc" style="color:white; font-weight: bold;">Clement Garcia</div>
+</div>
+
+<div class="gallery">
+    <img src="/assets/DrewO.png" alt="Drew" style="width:100%"/>
+    <div class="desc" style="color:white; font-weight: bold;">Drew Overgaard</div>
+</div>
+
+<div class="gallery">
+    <img src="/assets/KyleH.JPG" alt="Kyle" style="width:100%"/>
+    <div class="desc" style="color:white; font-weight: bold;">Kyle Hartman</div>
+</div>
+
+<div class="gallery">
+    <img src="/assets/Blank.jpg" alt="Ryan" style="width:100%"/>
+    <div class="desc" style="color:white; font-weight: bold;">Ryan Espinosa</div>
 </div>
 
 </body>
