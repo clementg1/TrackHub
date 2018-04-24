@@ -126,10 +126,15 @@
     <style type="text/css">
       body {
         font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+        background-image:url(https://images.pexels.com/photos/802958/pexels-photo-802958.jpeg?cs=srgb&dl=earphones-earpods-justifyyourlove-802958.jpg&fm=jpg);
+        /*height: 100%;*/
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
       }
 
       .header {
-        padding: 25px;
+        padding: 50px;
       }
 
       .header-text {
@@ -248,7 +253,10 @@
           margin: 0;
           padding: 0;
           overflow: hidden;
-          background-color: darkslategray;
+          background-color: rgb(80, 135, 160);
+          position: fixed;
+          top: 0;
+          width: 100%;
       }
 
       li {
@@ -264,7 +272,11 @@
       }
 
       li a:hover {
-        background-color: rgba(105, 105, 105, 0.75);
+        background-color: rgba(0, 0, 0, 0.40);
+      }
+
+      .active {
+        background-color: rgba(0, 0, 0, 0.40);
       }
       /*#slideshow {
           margin: 5px auto; 
@@ -284,10 +296,10 @@
       }*/
     </style>
   </head>
-  <body style="background-image:url(https://images.pexels.com/photos/802959/pexels-photo-802959.jpeg?cs=srgb&dl=apple-bright-close-up-802959.jpg&fm=jpg)">
+  <body>
 
     <ul>
-      <li><a class="active" href="client.html" style="font-size: 20px; font-weight: bold; text-align:right;">TrackHub</a></li>
+      <li><a class="active" href="client.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li style="float:right"><a href="register.html" >Register</a></li>

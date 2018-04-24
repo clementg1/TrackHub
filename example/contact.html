@@ -19,7 +19,10 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: darkslategray;
+            background-color: rgb(80, 135, 160);
+            position: fixed;
+            top: 0;
+            width: 100%;
         }
         li {
             float: left;
@@ -32,16 +35,22 @@
             text-decoration: none;
         }
         li a:hover {
-            background-color: rgba(105, 105, 105, 0.75);
+            background-color: rgba(0, 0, 0, 0.40);
         }
+
+        .active {
+            background-color: rgba(0, 0, 0, 0.40);
+        }
+
     </style>
 </head>
 <body>
-
+    <br>
+    <br>
     <ul>
-        <li><a class="active" href="client.html" style="font-size: 20px; font-weight: bold; text-align:right;">TrackHub</a></li>
+        <li><a href="client.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a class="active" href="contact.html">Contact</a></li>
         <li style="float:right"><a href="register.html" >Register</a></li>
         <li style="float:right"><a href="login.html">Login</a></li>
     </ul>
