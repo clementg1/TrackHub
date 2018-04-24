@@ -2,6 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var querystring = require('querystring');
+var mysql = require('mysql');
+
 
 var apiKey = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
 var apiSecret = 'MThmMDBkMmMtMTM0Ni00M2IyLTkyNTYtN2JmOWRjNzE5ZDYy';
