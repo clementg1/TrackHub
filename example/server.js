@@ -18,6 +18,39 @@ app.use(express.static(__dirname + '/'));
 app.use(express.static(__dirname + '/../'));
 app.use(bodyParser.json());
 
+
+
+
+
+
+
+/******************************************************************************************
+************************************** FUNCTIONS ******************************************
+/*****************************************************************************************/
+
+/**
+*MySQL Database connection
+**/
+const db = mysql.createConnection({
+  host: "trackhub.cf4gndt9uoc8.us-east-2.rds.amazonaws.com",
+  user: "trackadmin",
+  password: "track2admin",
+  database: "trackhub"
+});
+
+db.connect((err) => {
+  if (err){
+    console.log("Error in connect: " + err)
+    throw err;
+  } else{
+    console.log("Mysql connected...");
+  }
+});
+
+
+/**
+*Napster functions
+**/
 app.get('/', function(request, response) {
   var path = 'https://api.napster.com/oauth/authorize?' + querystring.stringify({
     response_type: 'code',
@@ -80,6 +113,13 @@ app.get('/reauthorize', function(clientRequest, clientResponse) {
     clientResponse.json(200, JSON.parse(body));
   });
 });
+
+
+
+
+/**
+*Messsage to listen on port
+**/
 
 app.listen(port, function() {
   console.log('Listening on', port);
