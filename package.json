@@ -9,7 +9,11 @@
     "source": "src"
   },
   "dependencies": {
+    "angular": "^1.6.10",
+    "angular-route": "^1.6.10",
+    "bootstrap": "^4.1.0",
     "express": "^4.16.3",
+    "jquery": "^3.3.1",
     "mysql": "^2.15.0",
     "request": "^2.85.0"
   },
