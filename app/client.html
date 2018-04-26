@@ -51,7 +51,30 @@
         return parameters;
       }
 
+      function getUsers(){
+        var promise = new Promise(function(fulfill, reject){
+          $.ajax({
+            url: '/getUsers',
+            success: function(data){
+              data.map(function (obj) {
+                for (prop in obj){
+                  console.log(obj[prop])
+                }
+                return;
+              });
+            }
+          });
+        });
+        return promise;
+      }
+
+
       $(document).ready(function() {
+        var user_promise = getUsers();
+        user_promise.then(function(data){
+          console.log("HERE: " + data);
+        });
+
         var currentTrack;
         Napster.init({ consumerKey: API_KEY });
 

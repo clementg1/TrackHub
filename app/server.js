@@ -48,6 +48,15 @@ db.connect((err) => {
 });
 
 
+app.get('/getUsers', function(request, response){
+  db.query('select * from users', function(err, results){
+    if (err) throw err;
+    console.log("Users: " + results);
+    response.send(results);
+  });
+});
+
+
 /**
 *Napster functions
 **/
