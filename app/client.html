@@ -8,7 +8,11 @@
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
 
 
-      $("#slideshow > div:gt(0)").hide();
+/*********************************************** Functions *********************************************/
+      /**
+      *SLideshow interval function to go to next slide
+      **/
+      /*$("#slideshow > div:gt(0)").hide();
 
       setInterval(function() { 
         $('#slideshow > div:first')
@@ -17,8 +21,11 @@
           .fadeIn(3000)
           .end()
           .appendTo('#slideshow');
-      },  3000);
+      },  3000);*/
 
+      /**
+      *On refresh to localhost:2000, reauthorize Napster authentication
+      **/
       function refresh(callback) {
         $.ajax({
           url: '/reauthorize',
@@ -37,6 +44,9 @@
         });
       }
 
+      /**
+      *Get parameters on authentication for palying the songs
+      **/
       function getParameters() {
         var query = window.location.search.substring(1);
         var parameters = {};
@@ -51,28 +61,32 @@
         return parameters;
       }
 
-      function getUsers(){
-        var promise = new Promise(function(fulfill, reject){
-          $.ajax({
-            url: '/getUsers',
-            success: function(data){
-              data.map(function (obj) {
-                for (prop in obj){
-                  console.log(obj[prop])
-                }
-                return;
-              });
-            }
-          });
+      /**
+      *Get users in DB
+      **/
+      function getUsers(callback){
+        $.ajax({
+          url: '/getUsers',
+          success: function(data){
+            data.map(function (obj) {
+              /*for (prop in obj){
+                console.log(obj[prop])
+              }*/
+              callback(obj)
+            });
+          }
         });
-        return promise;
       }
 
 
+/***************************************** Main Function ****************************************/
+
+      /**
+      *When Document loads...
+      **/
       $(document).ready(function() {
-        var user_promise = getUsers();
-        user_promise.then(function(data){
-          console.log("HERE: " + data);
+        getUsers(function(result){
+          console.log(result);
         });
 
         var currentTrack;
@@ -132,6 +146,7 @@
           $('[data-track="' + currentTrack + '"]').toggleClass('playing', playing).toggleClass('paused', paused);
         });
 
+
         Napster.player.on('playtimer', function(e) {
           var id = currentTrack;
           var current = e.data.currentTime;
@@ -143,7 +158,9 @@
           $("[data-track='" + id + "'] .current-time").html(Napster.util.secondsToTime(total - current));
         });
 
-        Napster.player.on('error', console.log);
+        Napster.player.on('error', function(err){
+
+        });
       });
     </script>
     <style type="text/css">
