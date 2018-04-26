@@ -4,6 +4,9 @@
     <title>TrackHub</title>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="napster.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
+
     <script type="text/javascript">
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
 
@@ -78,7 +81,18 @@
         });
       }
 
+      function notify(type, msg, time_out){
+        
+        if (type === "success"){
 
+        }
+        else if (type === "error"){
+          toastr.options = {
+            "timeout": time_out
+          }
+          toastr.error(msg);
+        }
+      }
 /***************************************** Main Function ****************************************/
 
       /**
@@ -159,7 +173,7 @@
         });
 
         Napster.player.on('error', function(err){
-
+          notify("error","Error",3000);
         });
       });
     </script>

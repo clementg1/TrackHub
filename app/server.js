@@ -50,12 +50,17 @@ db.connect((err) => {
 
 app.get('/getUsers', function(request, response){
   db.query('select * from users', function(err, results){
-    if (err) throw err;
+    if (err){
+      console.log("Error in getUsers: " + err);
+      response.send(400);
+    }
     console.log("Users: " + results);
     response.send(results);
   });
 });
 
+
+/********************************** Napster Functions ******************************/
 
 /**
 *Napster functions
