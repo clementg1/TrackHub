@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>TrackHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="napster.js" type="text/javascript"></script>
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -9,22 +11,23 @@
 
     <script type="text/javascript">
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
-
+      var myIndex = 0;
 
 /*********************************************** Functions *********************************************/
       /**
       *SLideshow interval function to go to next slide
       **/
-      /*$("#slideshow > div:gt(0)").hide();
-
-      setInterval(function() { 
-        $('#slideshow > div:first')
-          .fadeOut(3000)
-          .next()
-          .fadeIn(3000)
-          .end()
-          .appendTo('#slideshow');
-      },  3000);*/
+      function carousel(){
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+           x[i].style.display = "none";  
+        }
+        myIndex++;
+        if (myIndex > x.length) {myIndex = 1}    
+        x[myIndex-1].style.display = "block";  
+        setTimeout(carousel, 4000); // Change image every 2 seconds
+      }
 
       /**
       *On refresh to localhost:2000, reauthorize Napster authentication
@@ -117,6 +120,9 @@
           console.log(users);
         });        
 
+        //Call Slideshow
+        carousel();
+
 
         var currentTrack;
         Napster.init({ consumerKey: API_KEY });
@@ -202,6 +208,14 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+      }
+
+      /**
+      *SLideshow styling
+      **/
+      .mySlides {
+        display: center;
+
       }
 
       .header {
@@ -350,22 +364,6 @@
       .active {
         background-color: rgba(0, 0, 0, 0.40);
       }
-      /*#slideshow {
-          margin: 5px auto; 
-          position: relative; 
-
-          width: 240px; 
-          height: 240px; 
-
-      }
-
-      #slideshow > div { 
-          position: absolute; 
-          top: 10px; 
-          left: 10px; 
-          right: 10px; 
-          bottom: 10px; 
-      }*/
     </style>
   </head>
   <body style="overflow-y: scroll;">
@@ -387,14 +385,10 @@
 
 
 
-    <!--<div id="slideshow">
-       <div>
-         <img src="../assets/welcome.jpg">
-       </div>
-       <div>
-         <img src="../assets/listen_to_music.jpg">
-       </div>
-    </div>-->
+    <div id="w3-content w3-section" style="max-width: 500px;">
+       <img class="mySlides" src="../assets/welcome.jpg" style="width: 100%;">
+       <img class="mySlides" src="../assets/listen_to_music.jpg" style="width: 100%;">
+    </div>
 
     
   </body>
