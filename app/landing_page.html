@@ -108,11 +108,15 @@
       *When Document loads...
       **/
       $(document).ready(function() {
-        getUsers(function(result){
-          console.log(result);
-        });
+        //Variables
+        var users = {};
 
-        
+        //Set Users
+        getUsers(function(result){
+          users = result;
+          console.log(users);
+        });        
+
 
         var currentTrack;
         Napster.init({ consumerKey: API_KEY });
@@ -315,7 +319,7 @@
       .paused .current-time {
         display: block;
       }
-      ul {
+      .navbar {
           list-style-type: none;
           margin: 0;
           padding: 0;
@@ -366,13 +370,15 @@
   </head>
   <body>
 
-    <ul>
-      <li><a class="active" href="client.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li style="float:right"><a href="register.html" >Register</a></li>
-      <li style="float:right"><a href="login.html">Login</a></li>
-    </ul>
+    <div>
+      <ul class="navbar">
+        <li><a class="active" href="client.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li style="float:right"><a href="register.html" >Register</a></li>
+        <li style="float:right"><a href="login.html">Login</a></li>
+      </ul>
+    </div>
 
     <div class="header">
       <div class="header-text" style="font-size: 60px; font-family:tahoma; color: antiquewhite; text-align: center; font-weight:bold;">Welcome To TrackHub<span class="user"></span></div>
