@@ -12,21 +12,33 @@
     <script type="text/javascript">
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
       var myIndex = 0;
-
+      var slideIndex = 1;
 /*********************************************** Functions *********************************************/
       /**
       *SLideshow interval function to go to next slide
       **/
-      function carousel(){
+      function plusDivs(n) {
+        showDivs(slideIndex += n);
+      }
+
+      function currentDiv(n) {
+        showDivs(slideIndex = n);
+      }
+
+      function showDivs(n) {
         var i;
         var x = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("demo");
+        if (n > x.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = x.length}
         for (i = 0; i < x.length; i++) {
-           x[i].style.display = "none";  
+           x[i].style.display = "none";
         }
-        myIndex++;
-        if (myIndex > x.length) {myIndex = 1}    
-        x[myIndex-1].style.display = "block";  
-        setTimeout(carousel, 4000); // Change image every 2 seconds
+        for (i = 0; i < dots.length; i++) {
+           dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
+        }
+        x[slideIndex-1].style.display = "block";
+        dots[slideIndex-1].className += " w3-opacity-off";
       }
 
       /**
@@ -121,8 +133,8 @@
         });        
 
         //Call Slideshow
-        carousel();
-
+        //carousel();
+        showDivs(slideIndex);
 
         var currentTrack;
         Napster.init({ consumerKey: API_KEY });
@@ -213,10 +225,8 @@
       /**
       *SLideshow styling
       **/
-      .mySlides {
-        display: center;
-
-      }
+      .mySlides {display:none}
+      .demo {cursor:pointer}
 
       .header {
         padding: 50px;
@@ -383,12 +393,22 @@
     </div>
 
 
+    <div class="w3-content" style="max-width:1200px">
+      <img class="mySlides" src="../assets/welcome.jpg" style="width: 100%;">
+      <img class="mySlides" src="../assets/listen_to_music.jpg" style="width: 100%;">
 
-
-    <div id="w3-content w3-section" style="max-width: 500px;">
-       <img class="mySlides" src="../assets/welcome.jpg" style="width: 100%;">
-       <img class="mySlides" src="../assets/listen_to_music.jpg" style="width: 100%;">
+      <div class="w3-row-padding w3-section">
+        <div class="w3-col s4">
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/welcome.jpg" style="width:100%" onclick="currentDiv(1)">
+        </div>
+        <div class="w3-col s4">
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:100%" onclick="currentDiv(2)">
+        </div>
+      </div>
     </div>
+
+
+
 
     
   </body>
