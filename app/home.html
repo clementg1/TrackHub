@@ -96,10 +96,6 @@
         }
       }
 
-      function redirectToHome(){
-        test();
-      }
-
 
       function notify(type, msg, time_out, functionCallback){
         
@@ -331,6 +327,7 @@
       ul {
           list-style-type: none;
           margin: 0;
+          margin-left: -10px;
           padding: 0;
           overflow: hidden;
           background-color: rgb(80, 135, 160);
@@ -380,7 +377,7 @@
   <body>
 
     <ul>
-      <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+      <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li style="float:right; cursor: pointer"><a href="landing_page.html">Sign Out</a></li>
