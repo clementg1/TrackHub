@@ -76,8 +76,8 @@ app.get('/', function(request, response) {
 });
 
 app.get('/makeAccount', function(clientRequest, clientResponse){
-  request.posrt({
-    url: 'https://order.napster.com/checkout/rdp',
+  request.post({
+    url: 'https://order.napster.com/checkout/',
     form: {
       client_id: apiKey,
       client_secret: apiSecret,
