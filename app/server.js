@@ -108,7 +108,7 @@ app.get('/authorize', function(clientRequest, clientResponse) {
     }
   }, function(error, response, body) {
     body = JSON.parse(body);
-    clientResponse.redirect(baseUrl + '/landing_page.html?' + querystring.stringify({
+    clientResponse.redirect(baseUrl + '/home.html?' + querystring.stringify({
       accessToken: body.access_token,
       refreshToken: body.refresh_token
     }));
