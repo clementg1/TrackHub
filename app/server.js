@@ -50,24 +50,49 @@ db.connect((err) => {
 
 app.get('/getUsers', function(request, response){
   db.query('select * from users', function(err, results){
-    if (err) throw err;
+    if (err){
+      console.log("Error in getUsers: " + err);
+      response.send(400);
+    }
     console.log("Users: " + results);
     response.send(results);
   });
 });
 
 
+/********************************** Napster Functions ******************************/
+
 /**
 *Napster functions
 **/
 app.get('/', function(request, response) {
-  var path = 'https://api.napster.com/oauth/authorize?' + querystring.stringify({
+  /*var path = 'https://api.napster.com/oauth/authorize?' + querystring.stringify({
     response_type: 'code',
     client_id: apiKey,
     redirect_uri: redirectUri
-  });
-
+  });*/
+  var path = "http://localhost:2000/landing_page.html"
   response.redirect(path);
+});
+
+app.get('/makeAccount', function(clientRequest, clientResponse){
+  request.post({
+    url: 'https://order.napster.com/checkout/',
+    form: {
+      client_id: apiKey,
+      client_secret: apiSecret,
+      response_type: 'code',
+      code: clientRequest.query.code,
+      redirect_uri: redirectUri,
+      grant_type: 'authorization_code'
+    }
+  }, function(err, response, body){
+    body = JSON.parse(body);
+    clientResponse.redirect(baseUrl + '/home.html?' + querystring.stringify({
+      accessToken: body.access_token,
+      refreshToken: body.refresh_token
+    }));
+  });
 });
 
 app.get('/authorize', function(clientRequest, clientResponse) {
@@ -83,7 +108,9 @@ app.get('/authorize', function(clientRequest, clientResponse) {
     }
   }, function(error, response, body) {
     body = JSON.parse(body);
-    clientResponse.redirect(baseUrl + '/client.html?' + querystring.stringify({
+    clientResponse.redirect(baseUrl + '/home.html?' + querystring.stringify({
+      bod: body,
+      res: response,
       accessToken: body.access_token,
       refreshToken: body.refresh_token
     }));

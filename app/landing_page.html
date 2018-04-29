@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TrackHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="napster.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
+
+    <script type="text/javascript">
+      var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
+      var myIndex = 0;
+      var slideIndex = 1;
+      var port = 2000;
+      var baseUrl = 'http://localhost:' + port;
+      var redirectUri = baseUrl + '/authorize';
+
+/*********************************************** Functions *********************************************/
+      /**
+      *1) Slideshow interval function to display the main and other pics under
+      **/
+      function plusDivs(n) {
+        showDivs(slideIndex += n);
+      }
+
+      function currentDiv(n) {
+        showDivs(slideIndex = n);
+      }
+
+      function showDivs(n) {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("demo");
+        if (n > x.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = x.length}
+        for (i = 0; i < x.length; i++) {
+           x[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+           dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
+        }
+        x[slideIndex-1].style.display = "block";
+        dots[slideIndex-1].className += " w3-opacity-off";
+      }
+
+      /**
+      *2) Slideshow interval function to go to next slide
+      **/
+
+      /**
+      *On refresh to localhost:2000, reauthorize Napster authentication
+      **/
+      function refresh(callback) {
+        $.ajax({
+          url: '/reauthorize',
+          method: 'GET',
+          data: { refreshToken: Napster.member.refreshToken },
+          success: function(data) {
+            console.log(Napster.member);
+            Napster.member.set({
+              accessToken: data.access_token,
+              refreshToken: data.refresh_token
+            });
+
+            if (callback) {
+              callback(data);
+            }
+          }
+        });
+      }
+
+      /**
+      *Get parameters on authentication for palying the songs
+      **/
+      function getParameters() {
+        var query = window.location.search.substring(1);
+        var parameters = {};
+
+        if (query) {
+          query.split('&').forEach(function(item) {
+            var param = item.split('=');
+            parameters[param[0]] = param[1];
+          });
+        }
+
+        return parameters;
+      }
+
+      /**
+      *Get users in DB
+      **/
+      function getUsers(callback){
+        $.ajax({
+          url: '/getUsers',
+          success: function(data){
+            data.map(function (obj) {
+              /*for (prop in obj){
+                console.log(obj[prop])
+              }*/
+              callback(obj)
+            });
+          }
+        });
+      }
+
+      function pageReload(){
+        location.reload();
+      }
+
+      function redirectToAuthentication(){
+        try{
+          var path = 'https://api.napster.com/oauth/authorize?response_type=code&client_id=' + API_KEY + '&redirect_uri=' + redirectUri;
+          window.location = path;
+        }
+        catch (err){
+          console.log("Error in redirectToAuthentication: " + err);
+          notify("error", "There as a problem redirecting you to the login page. Please contact an admin.", 5000, undefined);
+        }
+      }
+
+      function redirectToRegister(){
+        window.location = "https://order.napster.com/checkout/rdp?client_id=OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk&redirect_uri=http%3A%2F%2Flocalhost%3A2000%2Fauthorize&response_type=code&pcode=napi&ocode=napi"
+        /*$.ajax({
+          url: '/makeAccount',
+          success: function(response){
+            console.log("makeAccount Response: " + response);
+          },
+          error: function(response){
+            console.log("Error in makeAccount: " + JSON.stringify(response));
+            notify("error", "There was a problem redirecting you to the register page. Please contact an admin.", 5000, undefined);
+          }
+        });*/
+      }
+
+      function notify(type, msg, time_out, functionCallback){
+        
+        if (type === "success"){
+          toastr.options = {
+              "timeout": time_out
+            }
+            toastr.success(msg);
+        }
+        else if (type === "error"){
+          toastr.options = {
+            "timeout": time_out
+          }
+          toastr.error(msg);
+        }
+        if (functionCallback){
+          setTimeout(function(){ functionCallback(); }, time_out);
+        }
+      }
+/***************************************** Main Function ****************************************/
+
+      /**
+      *When Document loads...
+      **/
+      $(document).ready(function() {
+        //Variables
+        var users = {};
+
+        //Set Users
+        getUsers(function(result){
+          users = result;
+          console.log(users);
+        });        
+
+        //Call Slideshow
+        //carousel();
+        showDivs(slideIndex);
+
+        var currentTrack;
+        Napster.init({ consumerKey: API_KEY });
+
+        Napster.player.on('ready', function(e) {
+          var params = getParameters();
+          if (params.accessToken) {
+            Napster.member.set(params);
+          }
+
+          Napster.api.get(false, '/tracks/top', function(data) {
+            var tracks = data.tracks;
+            tracks.forEach(function(track, i) {
+              var $t = $('<div class="track" data-track="' + track.id + '">' +
+                           '<div class="album-art"></div>' +
+                           '<div class="track-info">' +
+                             '<div class="progress-bar"></div>' +
+                             '<div class="name">' + track.name + '</div>' +
+                             '<div class="artist">' + track.artistName + '</div>' +
+                             '<div class="duration">' + Napster.util.secondsToTime(track.playbackSeconds) + '</div>' +
+                             '<div class="current-time">' + Napster.util.secondsToTime(track.playbackSeconds) + '</div>' +
+                           '</div>' +
+                          '</div>');
+
+              $t.click(function() {
+                var id = track.id;
+
+                if (Napster.player.currentTrack === id) {
+                  Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
+                }
+                else {
+                  $('[data-track="' + id + '"] .progress-bar').width(0);
+                  $('[data-track="' + id + '"] .current-time').html($('[data-track="' + id + '"] .duration').html());
+
+                  Napster.player.play(id);
+                }
+              });
+
+              $t.appendTo('#tracks');
+
+              Napster.api.get(false, '/albums/' + track.albumId + '/images', function(data) {
+                var images = data.images;
+                $('[data-track="' + track.id + '"] .album-art')
+                  .append($('<img>', { src: images[0].url }));
+              });
+            });
+          });
+        });
+
+        Napster.player.on('playevent', function(e) {
+          var playing = e.data.playing;
+          var paused = e.data.paused;
+          var currentTrack = e.data.id;
+
+          $('[data-track]').removeClass('playing paused');
+          $('[data-track="' + currentTrack + '"]').toggleClass('playing', playing).toggleClass('paused', paused);
+        });
+
+
+        Napster.player.on('playtimer', function(e) {
+          var id = currentTrack;
+          var current = e.data.currentTime;
+          var total = e.data.totalTime;
+          var width = $("[data-track='" + id + "'] .track-info").width();
+
+          $("[data-track='" + id + "']").addClass("playing");
+          $("[data-track='" + id + "'] .progress-bar").width(parseInt((current / total) * width).toString() + "px");
+          $("[data-track='" + id + "'] .current-time").html(Napster.util.secondsToTime(total - current));
+        });
+
+        Napster.player.on('error', function(err){
+          notify("error","Authentication has timed out. Redirecting to login...",2000, pageReload);
+        });
+      });
+    </script>
+    <style type="text/css">
+      body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+        background-image:url(https://images.pexels.com/photos/802958/pexels-photo-802958.jpeg?cs=srgb&dl=earphones-earpods-justifyyourlove-802958.jpg&fm=jpg);
+        /*height: 100%;*/
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      /**
+      *SLideshow styling
+      **/
+      .mySlides {display:none}
+      .demo {cursor:pointer}
+
+      .header {
+        padding: 50px;
+      }
+
+      .header-text {
+        font-weight: 100;
+        font-size: 50px;
+        color: #31404d;
+      }
+
+      .user {
+        font-weight: 200;
+        font-size: 20px;
+      }
+
+      .tracks {
+        width: 100%;
+        max-width: 700px;
+        display: table;
+        border-collapse: collapse;
+      }
+
+      .track {
+        overflow: hidden;
+        display: table-row;
+        height: 130px;
+        width: 100%;
+      }
+
+      .track img {
+        display: block;
+        height: 150px;
+        width: 150px;
+      }
+
+      .album-art {
+        width: 150px;
+        height: 150px;
+      }
+
+      .track-info {
+        position: relative;
+        vertical-align: top;
+        font-weight: 200;
+        height: 100%;
+        width: 100%;
+      }
+
+      .album-art, .track-info {
+        display: table-cell;
+        border: 3px solid transparent;
+      }
+
+      .track:hover {
+        background-color: rgba(230, 230, 237, 0.6);
+      }
+
+      .progress-bar {
+        background-color: white;
+        z-index: 1;
+        position: absolute;
+        display: none;
+        height: 130px;
+        top: 0;
+        left: 0;
+        width: 0;
+      }
+
+      .playing .progress-bar, .paused .progress-bar {
+        display: block;
+      }
+
+      .artist, .name {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .name {
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 10px;
+        color: white;
+      }
+
+      .artist { top: 42px; }
+
+      .artist, .duration, .current-time {
+        font-size: 19px;
+        color: antiquewhite;
+      }
+
+      .name, .artist, .duration, .current-time {
+        position: absolute;
+        left: 25px;
+        z-index: 2;
+      }
+
+      .duration, .current-time {
+        bottom: 10px;
+        font-weight: 300;
+      }
+
+      .current-time {
+        display: none;
+      }
+
+      .playing .duration,
+      .paused .duration {
+        display: none;
+      }
+
+      .playing .current-time,
+      .paused .current-time {
+        display: block;
+      }
+      .navbar {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: rgb(80, 135, 160);
+          position: fixed;
+          top: 0;
+          width: 100%;
+
+      }
+
+      li {
+          float: left;
+      }
+
+      li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+      }
+
+      li a:hover {
+        background-color: rgba(0, 0, 0, 0.40);
+      }
+
+      .active {
+        background-color: rgba(0, 0, 0, 0.40);
+      }
+    </style>
+  </head>
+  <body style="overflow-y: scroll;">
+
+    <div>
+      <ul class="navbar">
+        <li><a class="active" href="client.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li style="float:right; cursor: pointer"><a href="register.html">Register</a></li>
+        <li style="float:right; cursor: pointer"><a href="login.html">Login</a></li>
+      </ul>
+    </div>
+
+    <div class="header">
+      <div class="header-text" style="font-size: 80px; text-shadow: 10px 10px #037887; font-family:tahoma; color: antiquewhite; text-align: center; font-weight:bold;">Welcome To TrackHub<span class="user"></span></div>
+    </div>
+
+
+    <div class="w3-content" style="max-width:1200px">
+      <img class="mySlides" src="../assets/welcome.jpg" style="width: 100%;">
+      <img class="mySlides" src="../assets/listen_to_music.jpg" style="width: 100%;">
+
+      <div class="w3-row-padding w3-section">
+        <div class="w3-col s4">
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/welcome.jpg" style="width:100%" onclick="currentDiv(1)">
+        </div>
+        <div class="w3-col s4">
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:100%" onclick="currentDiv(2)">
+        </div>
+      </div>
+    </div>
+
+
+
+
+    
+  </body>
+</html>
