@@ -135,8 +135,9 @@
           }
           toastr.error(msg);
         }
-        if 
-        setTimeout(function(){ functionCallback(); }, time_out);
+        if (functionCallback){
+          setTimeout(function(){ functionCallback(); }, time_out);
+        }
       }
 /***************************************** Main Function ****************************************/
 
