@@ -66,12 +66,12 @@ app.get('/getUsers', function(request, response){
 *Napster functions
 **/
 app.get('/', function(request, response) {
-  var path = 'https://api.napster.com/oauth/authorize?' + querystring.stringify({
+  /*var path = 'https://api.napster.com/oauth/authorize?' + querystring.stringify({
     response_type: 'code',
     client_id: apiKey,
     redirect_uri: redirectUri
-  });
-
+  });*/
+  var path = "http://localhost:2000/landing_page.html"
   response.redirect(path);
 });
 
@@ -88,7 +88,7 @@ app.get('/makeAccount', function(clientRequest, clientResponse){
     }
   }, function(err, response, body){
     body = JSON.parse(body);
-    clientResponse.redirect(baseUrl + '/landing_page.html?' + querystring.stringify({
+    clientResponse.redirect(baseUrl + '/home.html?' + querystring.stringify({
       accessToken: body.access_token,
       refreshToken: body.refresh_token
     }));
