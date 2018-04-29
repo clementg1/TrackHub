@@ -6,7 +6,7 @@
     <script src="napster.js" type="text/javascript"></script>
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
-
+    <script src="sharedFunctions.js" type="text/javascript"></script>
 
 
     <script type="text/javascript">
@@ -94,6 +94,10 @@
           console.log("Error in redirectToAuthentication: " + err);
           notify("error", "There as a problem redirecting you to the login page. Please contact an admin.", 5000, undefined);
         }
+      }
+
+      function redirectToHome(){
+        test();
       }
 
 
@@ -376,7 +380,7 @@
   <body>
 
     <ul>
-      <li><a class="active" href="client.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+      <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; text-align:right;">TrackHub</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li style="float:right; cursor: pointer"><a href="landing_page.html">Sign Out</a></li>
