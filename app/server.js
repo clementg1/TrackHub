@@ -75,6 +75,26 @@ app.get('/', function(request, response) {
   response.redirect(path);
 });
 
+app.get('/makeAccount', function(clientRequest, clientResponse){
+  request.posrt({
+    url: 'https://order.napster.com/checkout/rdp',
+    form: {
+      client_id: apiKey,
+      client_secret: apiSecret,
+      response_type: 'code',
+      code: clientRequest.query.code,
+      redirect_uri: redirectUri,
+      grant_type: 'authorization_code'
+    }
+  }, function(err, response, body){
+    body = JSON.parse(body);
+    clientResponse.redirect(baseUrl + '/landing_page.html?' + querystring.stringify({
+      accessToken: body.access_token,
+      refreshToken: body.refresh_token
+    }));
+  });
+});
+
 app.get('/authorize', function(clientRequest, clientResponse) {
   request.post({
     url: 'https://api.napster.com/oauth/access_token',
