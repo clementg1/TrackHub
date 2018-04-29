@@ -13,6 +13,10 @@
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
       var myIndex = 0;
       var slideIndex = 1;
+      var port = 2000;
+      var baseUrl = 'http://localhost:' + port;
+      var redirectUri = baseUrl + '/authorize';
+
 /*********************************************** Functions *********************************************/
       /**
       *1) Slideshow interval function to display the main and other pics under
@@ -54,6 +58,7 @@
           method: 'GET',
           data: { refreshToken: Napster.member.refreshToken },
           success: function(data) {
+            console.log(Napster.member);
             Napster.member.set({
               accessToken: data.access_token,
               refreshToken: data.refresh_token
@@ -106,7 +111,8 @@
 
       function redirectToAuthentication(){
         try{
-          window.location = "http://localhost:2000";
+          var path = 'https://api.napster.com/oauth/authorize?response_type=code&client_id=' + API_KEY + '&redirect_uri=' + redirectUri;
+          window.location = path;
         }
         catch (err){
           console.log("Error in redirectToAuthentication: " + err);
