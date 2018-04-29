@@ -15,7 +15,7 @@
       var slideIndex = 1;
 /*********************************************** Functions *********************************************/
       /**
-      *SLideshow interval function to go to next slide
+      *1) Slideshow interval function to display the main and other pics under
       **/
       function plusDivs(n) {
         showDivs(slideIndex += n);
@@ -39,7 +39,12 @@
         }
         x[slideIndex-1].style.display = "block";
         dots[slideIndex-1].className += " w3-opacity-off";
+        setTimeout(plusDivs(n+1), 2000);
       }
+
+      /**
+      *2) Slideshow interval function to go to next slide
+      **/
 
       /**
       *On refresh to localhost:2000, reauthorize Napster authentication
@@ -206,9 +211,7 @@
         });
 
         Napster.player.on('error', function(err){
-          notify("error","Authentication has timed out. Redirecting to login...",2000, function(){
-            $window.location.reload;
-          });
+          notify("error","Authentication has timed out. Redirecting to login...",2000, pageReload);
         });
       });
     </script>
@@ -389,7 +392,7 @@
     </div>
 
     <div class="header">
-      <div class="header-text" style="font-size: 100px; text-shadow: 10px 10px #037887; font-family:tahoma; color: antiquewhite; text-align: center; font-weight:bold;">Welcome To TrackHub<span class="user"></span></div>
+      <div class="header-text" style="font-size: 80px; text-shadow: 10px 10px #037887; font-family:tahoma; color: antiquewhite; text-align: center; font-weight:bold;">Welcome To TrackHub<span class="user"></span></div>
     </div>
 
 
