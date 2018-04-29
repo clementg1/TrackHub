@@ -105,7 +105,13 @@
       }
 
       function redirectToAuthentication(){
-        window.location = "http://localhost:2000";
+        try{
+          window.location = "http://localhost:2000";
+        }
+        catch (err){
+          console.log("Error in redirectToAuthentication: " + err);
+          notify("error", "There as a problem redirecting you to the login page. Please contact an admin.", 5000, undefined);
+        }
       }
 
       function redirectToRegister(){
