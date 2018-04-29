@@ -115,7 +115,8 @@
             console.log("makeAccount Response: " + response);
           },
           error: function(response){
-            console.log("Error in makeAccount: " + response);
+            console.log("Error in makeAccount: " + JSON.stringify(response));
+            notify("error", "There was a problem redirecting you to the register page. Please contact an admin.", 5000, undefined);
           }
         });
       }
@@ -134,6 +135,7 @@
           }
           toastr.error(msg);
         }
+        if 
         setTimeout(function(){ functionCallback(); }, time_out);
       }
 /***************************************** Main Function ****************************************/
