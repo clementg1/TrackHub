@@ -39,7 +39,6 @@
         }
         x[slideIndex-1].style.display = "block";
         dots[slideIndex-1].className += " w3-opacity-off";
-        setTimeout(plusDivs(n+1), 2000);
       }
 
       /**
@@ -107,6 +106,18 @@
 
       function redirectToAuthentication(){
         window.location = "http://localhost:2000";
+      }
+
+      function redirectToRegister(){
+        $.ajax({
+          url: '/makeAccount',
+          success: function(response){
+            console.log("makeAccount Response: " + response);
+          },
+          error: function(response){
+            console.log("Error in makeAccount: " + response);
+          }
+        });
       }
 
       function notify(type, msg, time_out, functionCallback){
@@ -389,8 +400,8 @@
         <li><a class="active" href="client.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li style="float:right"><a href="register.html" >Register</a></li>
-        <li style="float:right"><a onclick="redirectToAuthentication()">Login</a></li>
+        <li style="float:right; cursor: pointer"><a onclick="redirectToRegister()">Register</a></li>
+        <li style="float:right; cursor: pointer"><a onclick="redirectToAuthentication()">Login</a></li>
       </ul>
     </div>
 
