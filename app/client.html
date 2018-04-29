@@ -81,10 +81,9 @@
         });
       }
 
-      function pageReload(){
-        location.reload();
+      function redirectToAuthentication(){
+        window.location = "http://localhost:2000";
       }
-
 
       function notify(type, msg, time_out, functionCallback){
         
@@ -184,9 +183,7 @@
         });
 
         Napster.player.on('error', function(err){
-          notify("error","Authentication has timed out. Redirecting to login...",2000, function(){
-            $window.location.reload;
-          });
+          notify("error","Authentication has timed out. Redirecting to login...",2000, redirectToAuthentication);
         });
       });
     </script>
