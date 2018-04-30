@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TrackHub</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="napster.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
+
+
+        $("#slideshow > div:gt(0)").hide();
+
+        setInterval(function() {
+            $('#slideshow > div:first')
+                .fadeOut(3000)
+                .next()
+                .fadeIn(3000)
+                .end()
+                .appendTo('#slideshow');
+        },  3000);
+
+        function refresh(callback) {
+            $.ajax({
+                url: '/reauthorize',
+                method: 'GET',
+                data: { refreshToken: Napster.member.refreshToken },
+                success: function(data) {
+                    Napster.member.set({
+                        accessToken: data.access_token,
+                        refreshToken: data.refresh_token
+                    });
+
+                    if (callback) {
+                        callback(data);
+                    }
+                }
+            });
+        }
+
+        function getParameters() {
+            var query = window.location.search.substring(1);
+            var parameters = {};
+
+            if (query) {
+                query.split('&').forEach(function(item) {
+                    var param = item.split('=');
+                    parameters[param[0]] = param[1];
+                });
+            }
+
+            return parameters;
+        }
+
+        function submitMe(input) {
+            query = "http://api.napster.com/v2.2/search/verbose?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&query=" + input;
+            //alert(query); //should output text box input
+
+
+            Napster.api.getSearch(false, '/search/verbose', function(data) {
+                var artists = data.meta;
+
+                //alert(input); //should output text box input
+
+                console.log(data);
+
+                //alert(artists); //should output text box input
+                artists.forEach(function(artist, i) {
+
+                    var blurb;
+
+                    if(artist.blurbs[0] == null)
+                    {
+                        var blurb = "There is no bio available for this artist.";
+                    }
+                    else
+                    {
+                        blurb = artist.bios[0].bio;
+                    }
+
+                    var $t = $('<div class="artist" data-artist="' + artist.id + '">' +
+                        '<div class="album-art"></div>' +
+                        '<div class="artist-info">' +
+                        '<div class="name">' + artist.name + '</div>' +
+                        '<div class="artist">' + blurb + '</div>' +
+                        '</div>' +
+                        '</div>');
+
+
+
+
+
+
+
+
+
+                    $t.click(function() {
+
+                        var topTracks = artist.links.topTracks.href;
+
+
+                        topTracks = (topTracks.substring('https://api.napster.com/v2.1'.length));
+
+                        // alert(topTracks);
+
+                        Napster.api.get(false, topTracks, function(data) {
+                            var tracks = data.tracks;
+                            //alert(tracks[0].id);
+                            trackid = tracks[0].id;
+                            /*
+                            tracks.forEach(function(track, i) {
+                                var $id = $(track.id);
+                            });
+                            */
+                        });
+
+
+                        var id = trackid;
+                        Napster.player.play(id)
+                        //alert(id);
+                        //alert($id);
+
+
+                        /*
+                        if (Napster.player.currentTrack === id) {
+                            Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
+                        }
+                        else {
+                            $('[data-artist="' + id + '"] .progress-bar').width(0);
+                            $('[data-artist="' + id + '"] .current-time').html($('[data-track="' + id + '"] .duration').html());
+
+                            Napster.player.play(id);
+                        }
+                        */
+
+                    });
+
+
+                    $t.appendTo('#artists');
+
+
+
+                    Napster.api.get(false, '/albums/' + artist.albumGroups.main[0] + '/images', function(data) {
+                        var images = data.images;
+                        $('[data-artist="' + artist.id + '"] .album-art')
+                            .append($('<img>', { src: images[0].url }));
+                    });
+                });
+            }, input);
+
+        }
+
+        $(document).ready(function() {
+            var currentartist;
+            Napster.init({ consumerKey: API_KEY });
+
+            Napster.player.on('ready', function(e) {
+                var params = getParameters();
+                if (params.accessToken) {
+                    Napster.member.set(params);
+                }
+
+                Napster.api.get(false, '/artists/top', function(data) {
+                    var artists = data.artists;
+                    artists.forEach(function(artist, i) {
+
+                        var blurb;
+
+                        if(artist.blurbs[0] == null)
+                        {
+                            var blurb = "There is no bio available for this artist.";
+                        }
+                        else
+                        {
+                            blurb = artist.bios[0].bio;
+                        }
+
+                        var $t = $('<div class="artist" data-artist="' + artist.id + '">' +
+                            '<div class="album-art"></div>' +
+                            '<div class="artist-info">' +
+                            '<div class="name">' + artist.name + '</div>' +
+                            '<div class="artist">' + blurb + '</div>' +
+                            '</div>' +
+                            '</div>');
+
+
+
+
+
+
+
+
+
+                        $t.click(function() {
+
+                            var topTracks = artist.links.topTracks.href;
+
+
+                            topTracks = (topTracks.substring('https://api.napster.com/v2.1'.length));
+
+                            // alert(topTracks);
+
+                            Napster.api.get(false, topTracks, function(data) {
+                                var tracks = data.tracks;
+                                //alert(tracks[0].id);
+                                trackid = tracks[0].id;
+                                /*
+                                tracks.forEach(function(track, i) {
+                                    var $id = $(track.id);
+                                });
+                                */
+                            });
+
+
+                            var id = trackid;
+                            Napster.player.play(id)
+                            //alert(id);
+                            //alert($id);
+
+
+                            /*
+                            if (Napster.player.currentTrack === id) {
+                                Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
+                            }
+                            else {
+                                $('[data-artist="' + id + '"] .progress-bar').width(0);
+                                $('[data-artist="' + id + '"] .current-time').html($('[data-track="' + id + '"] .duration').html());
+
+                                Napster.player.play(id);
+                            }
+                            */
+
+                        });
+
+
+                        $t.appendTo('#artists');
+
+
+
+                        Napster.api.get(false, '/albums/' + artist.albumGroups.main[0] + '/images', function(data) {
+                            var images = data.images;
+                            $('[data-artist="' + artist.id + '"] .album-art')
+                                .append($('<img>', { src: images[0].url }));
+                        });
+                    });
+                });
+            });
+
+
+            Napster.player.on('playevent', function(e) {
+                var playing = e.data.playing;
+                var paused = e.data.paused;
+                var currentTrack = e.data.id;
+
+                $('[data-artist]').removeClass('playing paused');
+                $('[data-artist="' + currentTrack + '"]').toggleClass('playing', playing).toggleClass('paused', paused);
+            });
+
+            Napster.player.on('playtimer', function(e) {
+                var id = currentTrack;
+                var current = e.data.currentTime;
+                var total = e.data.totalTime;
+                var width = $("[data-artist='" + id + "'] .artist-info").width();
+
+                $("[data-artist='" + id + "']").addClass("playing");
+                $("[data-artist='" + id + "'] .progress-bar").width(parseInt((current / total) * width).toString() + "px");
+                $("[data-artist='" + id + "'] .current-time").html(Napster.util.secondsToTime(total - current));
+            });
+
+            Napster.player.on('error', console.log);
+
+        });
+    </script>
+    <style type="text/css">
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+        }
+
+        .header {
+            padding: 25px;
+        }
+
+        .header-text {
+            font-weight: 100;
+            font-size: 50px;
+            color: #31404d;
+        }
+
+        .user {
+            font-weight: 200;
+            font-size: 20px;
+        }
+
+        .artists {
+            width: 100%;
+            max-width: 700px;
+            display: table;
+            border-collapse: collapse;
+        }
+
+        .artist {
+            overflow: hidden;
+            display: table-row;
+            height: 130px;
+            width: 100%;
+        }
+
+        .artist img {
+            display: block;
+            height: 130px;
+            width: 130px;
+        }
+
+        .album-art {
+            width: 130px;
+            height: 130px;
+        }
+
+        .artist-info {
+            position: relative;
+            vertical-align: top;
+            font-weight: 200;
+            height: 100%;
+            width: 100%;
+        }
+
+        .album-art, .artist-info {
+            display: table-cell;
+            border-top: 5px solid white;
+        }
+
+        .artist:hover {
+            background-color: rgba(230, 230, 237, 0.6);
+        }
+
+        .artist, .name {
+            text-overflow: ellipsis;
+            /*
+            white-space: nowrap;
+            */
+        }
+
+        .name {
+            font-size: 25px;
+            margin-top: 10px;
+            color: #45565E;
+        }
+
+        .artist { top: 42px; }
+
+        .artist {
+            font-size: 19px;
+            color: #31404d;
+        }
+
+        .name, .artist {
+            /*
+            position: absolute;
+            left: 25px;
+            z-index: 2;
+            */
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: #111;
+        }
+
+        /*#slideshow {
+            margin: 5px auto;
+            position: relative;
+
+            width: 240px;
+            height: 240px;
+
+        }
+
+        #slideshow > div {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+        }*/
+    </style>
+</head>
+<body bgcolor="#A9BCF5">
+
+<ul>
+    <li><a class="active" href="#home" style="font-size: 20px;">TrackHub</a></li>
+    <li><a href="#news">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about">Login</a></li>
+    <li><a href="#about" >Register</a></li>
+</ul>
+
+<div class="header">
+    <div class="header-text" style="font-size: 80px; ">Today's Top Artists<span class="user"></span></div>
+</div>
+
+<input type="text" id="test"  value="" />
+<br/>
+<button onclick="submitMe(document.getElementById('test').value)" id="testButton" >Submit Response</button>
+
+
+<!--
+<div id="slideshow">
+   <div>
+     <img src="../assets/welcome.jpg">
+   </div>
+   <div>
+     <img src="../assets/listen_to_music.jpg">
+   </div>
+</div>-->
+
+<!--Shows the artists-->
+<div id="artists"></div>
+</body>
+</html>

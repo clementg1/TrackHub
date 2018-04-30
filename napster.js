@@ -135,6 +135,31 @@
         });
       },
 
+        getSearch: function(secure, path, cb, searchterm) {
+
+            var data = { apikey: this.consumerKey + "=3D" + searchterm}; //problem area
+
+            alert(this.consumerKey);
+            alert(data); //should output text box input
+            alert(searchterm);
+            alert(secure);
+            alert(path);
+
+            $.ajax({
+                type: 'GET',
+                dataType: this.dataType(),
+                data: data,
+                headers: this.headers(secure),
+                url: this.endpoint(secure) + path,
+                success: function(data, textStatus, jqXHR) {
+                    cb(data);
+                },
+                error: function(jqXHR) {
+                    cb({ status: jqXHR.status, error: jqXHR.statusText, response: jqXHR.responseJSON });
+                }
+            });
+        },
+
       post: function(secure, path, data, cb) {
 
         if (!data) data = {};
