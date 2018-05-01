@@ -137,9 +137,9 @@
 
         getSearch: function(secure, path, cb, searchterm) {
 
-            var data = { apikey: this.consumerKey + "=3D" + searchterm}; //problem area
+            var data = { apikey: this.consumerKey} + searchterm; //problem area
 
-            alert(this.consumerKey);
+            alert(this.consumerKey + "=" + searchterm);
             alert(data); //should output text box input
             alert(searchterm);
             alert(secure);
