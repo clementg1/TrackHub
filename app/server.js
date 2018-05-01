@@ -56,6 +56,13 @@ app.get('/getUsers', function(request, response){
   });
 });
 
+app.get('/setUsersFav', function(request, response){
+    db.query('insert into users (email, first_name, last_name) values (test@gmail.com, test, password)', function(err, results){
+        if (err) throw err;
+        console.log("Users favorite track is: " + results);
+        response.send(results);
+    });
+});
 
 /**
 *Napster functions

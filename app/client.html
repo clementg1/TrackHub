@@ -79,7 +79,26 @@
       }
 
 
-/***************************************** Main Function ****************************************/
+      /**
+       *Get users favorit track in DB
+       **/
+      function setUsersFav(callback){
+          $.ajax({
+              url: '/getUsers/fav_track',
+              success: function(data){
+                  data.map(function (obj) {
+                      /*for (prop in obj){
+                        console.log(obj[prop])
+                      }*/
+                      callback(obj)
+                  });
+              }
+          });
+      }
+
+
+
+      /***************************************** Main Function ****************************************/
 
       /**
       *When Document loads...
@@ -88,6 +107,10 @@
         getUsers(function(result){
           console.log(result);
         });
+
+          setUsersFav(function(result){
+              console.log(result);
+          });
 
         var currentTrack;
         Napster.init({ consumerKey: API_KEY });
