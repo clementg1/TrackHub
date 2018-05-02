@@ -75,6 +75,22 @@ app.get('/createNewUser', function(request, response){
   });
 });
 
+app.get('/signIn', function(request, response){
+  var username = request.param('username', '');
+  var password = request.param('password', '');
+
+  db.query('select * from users where username="' + username + '" and password = "' + password + '";', function(err, results){
+    if (err){
+      console.log("Error in signIn: " + err);
+      response.send(400);
+    }
+    else{
+      console.log("Logged in!");
+      response.send(results);
+    }
+  });
+});
+
 
 /********************************** Napster Functions ******************************/
 
