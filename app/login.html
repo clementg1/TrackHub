@@ -27,28 +27,23 @@
       var password = '';
       var HOME_PAGE = "http://localhost:2000/home.html"
 
-
-      function createNewUser(){
-        username = document.getElementById("username").value;
-        password = document.getElementById("password").value;
-        
-        $.ajax({
-          url: '/createNewUser',
-          data: {
-            user: username,
-            pass: password
-          },
-          success: function(repsonse){
-            console.log("Response from createNewUser: " + response);
-          }
-        })
-        window.location = HOME_PAGE;
-      }
-
       function signIn(){
         username = document.getElementById("username").value;
         password = document.getElementById("password").value;
         
+        if(!username && !password){
+          notify("warning", "Please enter credentials", 2000, undefined);
+          return;
+        }
+        else if(!username){
+          notify("warning", "Don't forget to enter your username", 2000, undefined);
+          return;
+        }
+        else if(!password){
+          notify("warning", "Don't forget to enter your password", 2000, undefined);
+          return;
+        }
+
         $.ajax({
           url: '/signIn',
           data: {
@@ -57,6 +52,11 @@
           },
           success: function(response){
             console.log("Response from singIn: " + response);
+            if (response !== ""){
+              notify("error", "Account not found with that username/password combo. Try again", 3000, undefined);
+            }else{
+              window.location = HOME_PAGE;
+            }
           }
         })
       }
@@ -170,7 +170,7 @@
                     </div>
 
                     <div class="container-login100-form-btn m-t-17">
-                        <input type="buttom" class="login100-form-btn" onclick="signIn()" value="Sing in" style="text-align: center; cursor: pointer" />
+                        <input type="button" class="login100-form-btn" onclick="signIn()" value="Sing in" style="text-align: center; cursor: pointer" />
 
                     </div>
 
