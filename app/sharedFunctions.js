@@ -31,3 +31,21 @@ function redirectToHome(){
 		window.location = PATHS.landing_page;
 	}
 }
+
+function notify(type, msg, time_out, functionCallback){     
+    if (type === "success"){
+      toastr.options = {
+          "timeout": time_out
+        }
+        toastr.success(msg);
+    }
+    else if (type === "error"){
+      toastr.options = {
+        "timeout": time_out
+      }
+      toastr.error(msg);
+    }
+    if (functionCallback){
+      setTimeout(function(){ functionCallback(); }, time_out);
+    }
+  }
