@@ -85,7 +85,7 @@ app.get('/signIn', function(request, response){
       response.send(400);
     }
     else{
-      console.log("Logged in!");
+      console.log("Got log in results!" + results);
       response.send(results);
     }
   });
