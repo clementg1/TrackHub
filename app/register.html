@@ -56,10 +56,10 @@
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
             background-image:url(https://images.pexels.com/photos/802958/pexels-photo-802958.jpeg?cs=srgb&dl=earphones-earpods-justifyyourlove-802958.jpg&fm=jpg);
-            /*height: 100%;*/
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
+            color: white;
         }
 
         .user {
@@ -72,7 +72,10 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: darkslategray;
+            background-color: rgb(80, 135, 160);
+            position: fixed;
+            top: 0;
+            width: 100%;
         }
 
         li {
@@ -89,20 +92,29 @@
 
         li a:hover {
             background-color: rgba(105, 105, 105, 0.75);
+            color: white;
         }
+
+        .active {
+            background-color: rgba(0, 0, 0, 0.40);
+
+        }
+
     </style>
 </head>
 <body>
 
-<ul>
-    <li><a class="active" href="client.html" style="font-size: 20px; font-weight: bold; text-align:right;">TrackHub</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="login.html">Login</a></li>
-    <li><a href="register.html" >Register</a></li>
-</ul>
+<div style="position: relative;">
+    <ul>
+        <li><a class="active"  style="font-size: 20px; font-weight: bold; text-align:right;">TrackHub</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="register.html" >Register</a></li>
+    </ul>
+</div>
 
-<div class="limiter">
+<div class="limiter" style="margin-top: 50px">
     <div class="container-login100" >
         <div class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
             <form class="login100-form validate-form flex-sb flex-w">
