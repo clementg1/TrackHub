@@ -25,13 +25,13 @@
     <script type="text/javascript">
       var username = '';
       var password = '';
-      var home_page = "http://localhost:2000/home.html"
+      var HOME_PAGE = "http://localhost:2000/home.html"
 
 
       function createNewUser(){
         username = document.getElementById("username").value;
         password = document.getElementById("password").value;
-        return
+        
         $.ajax({
           url: '/createNewUser',
           data: {
@@ -42,7 +42,7 @@
             console.log("Response from createNewUser: " + response);
           }
         })
-        window.location(home_page)
+        //window.location = HOME_PAGE;
       }
 
       
@@ -155,7 +155,7 @@
 
                     <div class="container-login100-form-btn m-t-17">
                         <button class="login100-form-btn" onclick="createNewUser()">
-                            Sign In
+                            Sign in
                         </button>
                     </div>
 
