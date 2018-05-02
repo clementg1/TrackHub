@@ -42,7 +42,23 @@
             console.log("Response from createNewUser: " + response);
           }
         })
-        //window.location = HOME_PAGE;
+        window.location = HOME_PAGE;
+      }
+
+      function signIn(){
+        username = document.getElementById("username").value;
+        password = document.getElementById("password").value;
+        
+        $.ajax({
+          url: '/signIn',
+          data: {
+            username: username,
+            password: password
+          },
+          success: function(response){
+            console.log("Response from singIn: " + response);
+          }
+        })
       }
 
       
@@ -154,9 +170,8 @@
                     </div>
 
                     <div class="container-login100-form-btn m-t-17">
-                        <button class="login100-form-btn" onclick="createNewUser()">
-                            Sign in
-                        </button>
+                        <input type="buttom" class="login100-form-btn" onclick="signIn()" value="Sing in" style="text-align: center; cursor: pointer" />
+
                     </div>
 
                     <div class="w-full text-center p-t-55">
