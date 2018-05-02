@@ -29,8 +29,8 @@
 
 
       function createNewUser(){
-        username = document.getElementById("username").validate
-
+        username = document.getElementById("username").value;
+        password = document.getElementById("password").value;
         return
         $.ajax({
           url: '/createNewUser',
@@ -167,7 +167,7 @@
                             Sign up now
                         </a>
                     </div>
-                    
+
                 </form>
             </div>
         </div>
