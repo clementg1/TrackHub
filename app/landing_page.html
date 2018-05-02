@@ -123,16 +123,6 @@
 
       function redirectToRegister(){
         window.location = "https://order.napster.com/checkout/rdp?client_id=OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk&redirect_uri=http%3A%2F%2Flocalhost%3A2000%2Fauthorize&response_type=code&pcode=napi&ocode=napi"
-        /*$.ajax({
-          url: '/makeAccount',
-          success: function(response){
-            console.log("makeAccount Response: " + response);
-          },
-          error: function(response){
-            console.log("Error in makeAccount: " + JSON.stringify(response));
-            notify("error", "There was a problem redirecting you to the register page. Please contact an admin.", 5000, undefined);
-          }
-        });*/
       }
 
       function notify(type, msg, time_out, functionCallback){
