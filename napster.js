@@ -65,6 +65,7 @@
 
     init: function(options) {
       this.api.consumerKey = options.consumerKey;
+      this.api.consumerKeySearch = options.consumerKeySearch;
       this.api.version = options.version || this.api.version;
       this.api.catalog = options.catalog || this.api.catalog;
 
@@ -99,7 +100,7 @@
     api: {
       host: 'api.napster.com',
       catalog: 'US',
-      version: 'v2.1',
+      version: 'v2.2',
       endpoint: function(secure) {
         return (secure ? 'https://' : 'http://') + [this.host, this.version].join('/');
       },
@@ -137,13 +138,18 @@
 
         getSearch: function(secure, path, cb, searchterm) {
 
-            var data = { apikey: this.consumerKey} + searchterm; //problem area
 
-            alert(this.consumerKey + "=" + searchterm);
-            alert(data); //should output text box input
-            alert(searchterm);
-            alert(secure);
-            alert(path);
+            //var data = { apikey: this.consumerKey + searchterm}; //problem area
+
+            var data = "apikey=" + this.consumerKey + "&query=" + searchterm; //problem area
+
+            //data =  data + "=" + searchterm;
+
+            //alert(this.consumerKey + "=" + searchterm);
+            //alert(data); //should output text box input
+            //alert(searchterm);
+            //alert(secure);
+            //alert(path);
 
             $.ajax({
                 type: 'GET',
