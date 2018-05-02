@@ -33,17 +33,17 @@ function redirectToHome(){
 }
 
 function notify(type, msg, time_out, functionCallback){     
+    toastr.options = {
+        "timeout": time_out
+      }
     if (type === "success"){
-      toastr.options = {
-          "timeout": time_out
-        }
         toastr.success(msg);
     }
     else if (type === "error"){
-      toastr.options = {
-        "timeout": time_out
-      }
       toastr.error(msg);
+    }
+    else if (type === "warning"){
+    	toastr.warning(msg)
     }
     if (functionCallback){
       setTimeout(function(){ functionCallback(); }, time_out);
