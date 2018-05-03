@@ -62,8 +62,11 @@ app.get('/getUsers', function(request, response){
 app.get('/createNewUser', function(request, response){
   var username = request.param('user', '');
   var password = request.param('pass', '');
+  var email = request.param('email', '');
+  var first_name = request.param('first_name', '');
+  var last_name = request.param('last_name', '');
 
-  db.query('insert into users (username, password, email, first_name, last_name, fav_track) values ("' + username + '", "' + password + '", "", "", "", "");', function(err, results){
+  db.query('insert into users (username, password, email, first_name, last_name) values ("' + username + '", "' + password + '", "' + email + '", "' + first_name + '", "' + last_name + '");', function(err, results){
     if (err){
       console.log("Error in createNewUser: " + err);
       response.send(400);
