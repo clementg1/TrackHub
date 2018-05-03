@@ -47,9 +47,24 @@
 
         function createNewUser(){
             username = document.getElementById("username").value;
-            notify("success", "", 1000, undefined);
+            password = document.getElementById("password").value;
+            email = document.getElementById("email").value;
+            f_name = document.getElementById("first_name").value;
+            l_name = document.getElementById("last_name").value;
 
-
+            var fields = {
+                "Username": username,
+                "Password": password,
+                "Email": email,
+                "First Name": f_name,
+                "Last Name": l_name
+            }
+            
+            var response = checkInputs(fields);
+            console.log(response.msg);
+            if(response.changed){
+                notify("warning", response.msg, 3000, undefined);
+            }
             return;
             $.ajax({
               url: '/createNewUser',

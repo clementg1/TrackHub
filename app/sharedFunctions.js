@@ -59,14 +59,14 @@ function checkInputs(inputs){
   for (field_name in inputs){
     var field = inputs[field_name];
     if(field === "" || (field.trim() === "")){
-      msg += field + ", ";
+      msg += field_name + ", ";
       changed = true;
     }
   }
 
   msg = msg.slice(0,-2);
   console.log("Error msg test: " + msg);
-	return msg, changed;
+	return {"msg": msg, "changed": changed};
 }
 
 function passwordRequirementsCheck(password){
