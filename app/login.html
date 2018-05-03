@@ -52,8 +52,9 @@
             password: password
           },
           success: function(response){
-            console.log("Response from singIn: " + response);
-            if (response !== ""){
+            console.log("Response from singIn: " + response[0].count);
+            var count = response[0].count;
+            if (count !== 1){
               notify("error", "Account not found with that username/password combo. Try again", 3000, undefined);
             }else{
               setLoggedIn();
