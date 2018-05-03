@@ -27,12 +27,15 @@
         var HOME_PAGE = "http://localhost:2000/home.html"
 
         function checkPassword() {
-            if (document.getElementById('pass').value) {
-                document.getElementById('message').style.color = 'green';
-                document.getElementById('message').innerHTML = 'matching';
+            var password = document.getElementById('password').value;
+            var meets_requirements = passwordRequirements(password);
+
+            if (meets_requirements) {
+                document.getElementById('password').style.color = 'green';
+                document.getElementById('password').innerHTML = 'Good';
             } else {
-                document.getElementById('message').style.color = 'red';
-                document.getElementById('message').innerHTML = 'not matching';
+                document.getElementById('password').style.color = 'red';
+                document.getElementById('password').innerHTML = "Doesn't meet requirements";
             }
         }
 
@@ -175,7 +178,7 @@
 						</span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                    <input class="input100" type="new_password" name="pass" onkeyup="check()" id="password" >
+                    <input class="input100" type="new_password" name="pass" onkeyup="checkPassword()" id="password" >
                     <span class="focus-input100"></span>
                 </div>
 
