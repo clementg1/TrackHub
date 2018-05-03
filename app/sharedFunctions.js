@@ -24,6 +24,13 @@ function getLoggedIn(){
 }
 
 /**
+*Reset Logged in variable when user logs out
+**/
+function resetLoggedIn(){
+	logged_in = false;
+}
+
+/**
 *Check if logged_in to know where to redirect to home
 **/
 function redirectToHome(){
