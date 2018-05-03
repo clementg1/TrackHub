@@ -61,7 +61,11 @@ function checkInputs(inputs){
 		}
 	}
 
-	msg = msg.substring(1, msg.length-2);
-	console.log(msg);
+  msg = msg.slice(0,-2);
+  console.log("Error msg test: " + msg);
 	return msg, changed;
+}
+
+function passwordRequirementsCheck(password){
+  return password;
 }
