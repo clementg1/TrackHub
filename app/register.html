@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <script src="sharedFunctions.js"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
     <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
     <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
     <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
@@ -43,12 +45,20 @@
             username = document.getElementById("username").value;
             password = document.getElementById("password").value;
             email = document.getElementById("email").value;
-            f_name: document.getElementById("first_name").value;
-            l_name: document.getElementById("last_name").value;
+            f_name = document.getElementById("first_name").value;
+            l_name = document.getElementById("last_name").value;
+            
+            var fields = {
+                "username": username,
+                "password": password,
+                "email": email,
+                "f_name": f_name,
+                "Last Name": l_name
+            };
+            console.log(fields);
+            var msg, changed = checkInputs(fields);
 
-            var msg, changed = checkInputs(username, password, email, f_name, l_name);
 
-            return;
             if(changed){
                 notify("warning", msg, 3000, undefined);
                 return;
@@ -153,7 +163,7 @@
                         </span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "First name is required">
-                    <input class="input100" type="text" name="firt_name" id="first_name" >
+                    <input class="input100" type="text" name="first_name" id="first_name" value=" " />
                     <span class="focus-input100"></span>
                 </div>
 
@@ -163,7 +173,7 @@
                         </span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Last name is required">
-                    <input class="input100" type="text" name="last_name" id="last_name">
+                    <input class="input100" type="text" name="last_name" id="last_name" value=" " />
                     <span class="focus-input100"></span>
                 </div>
 
@@ -173,7 +183,7 @@
                         </span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Username is required">
-                    <input class="input100" type="text" name="username" id="username">
+                    <input class="input100" type="text" name="username" id="username" value=" " />
                     <span class="focus-input100"></span>
                 </div>
 
@@ -183,7 +193,7 @@
 						</span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Email is required">
-                    <input class="input100" type="text" name="email" id="email">
+                    <input class="input100" type="text" name="email" id="email" value=" " />
                     <span class="focus-input100"></span>
                 </div>
 
@@ -193,7 +203,7 @@
 						</span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                    <input class="input100" type="new_password" name="pass" onkeyup="checkPassword()" id="password" >
+                    <input class="input100" type="new_password" name="password" onkeyup="checkPassword()" id="password" value=" " />
                     <span class="focus-input100"></span>
                 </div>
 

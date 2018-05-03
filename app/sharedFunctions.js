@@ -1,3 +1,5 @@
+
+
 /**
 * Global Variable definitions
 **/
@@ -34,8 +36,8 @@ function redirectToHome(){
 
 function notify(type, msg, time_out, functionCallback){     
     toastr.options = {
-        "timeout": time_out
-      }
+      "timeout": time_out
+    }
     if (type === "success"){
         toastr.success(msg);
     }
@@ -54,12 +56,13 @@ function checkInputs(inputs){
 	var msg = "Don't forget ";
 	var changed = false
 
-	for (var field in inputs){
-		if(!field){
-			changed = true;
-			msg += str(field + ", ");
-		}
-	}
+  for (field_name in inputs){
+    var field = inputs[field_name];
+    if(field === "" || (field.trim() === "")){
+      msg += field + ", ";
+      changed = true;
+    }
+  }
 
   msg = msg.slice(0,-2);
   console.log("Error msg test: " + msg);
