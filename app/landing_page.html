@@ -231,12 +231,13 @@
                 try {
                     Napster.api.get(false, '/albums/' + albuminfo.id + '/images', function (data) {
                         var images = data.images;
+                        var link = images[0].url;
                         //console.log(images);
                         //$('[data-artist="' + albuminfo.id + '"] .album-art-artist')
-                            //.append($('<img>', {src: images[0].url}));
-                        var link = images[0].url;
-                        $art = '<img class="art" src=link style="width:100%;">Artwork</img>;'
-                        //.appendTo("#image");
+                            //.append($('<img>', {src: link}));
+                        console.log(link);
+                        var $art = $('<img id="artwork" class="art" src=link style="width:100%;">Artwork</img>;')
+                        $art.appendTo("#image");
 
 
                        // });
@@ -244,7 +245,7 @@
                 }catch (e) {
                     console.log("No image exists.");
                 }
-            console.log(artwork[0]);
+            //console.log(artwork[0]);
             });
           });
       });
