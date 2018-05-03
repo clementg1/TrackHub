@@ -49,3 +49,19 @@ function notify(type, msg, time_out, functionCallback){
       setTimeout(function(){ functionCallback(); }, time_out);
     }
   }
+
+function checkInputs(inputs){
+	var msg = "Don't forget ";
+	var changed = false
+
+	for (var field in inputs){
+		if(!field){
+			changed = true;
+			msg += str(field + ", ");
+		}
+	}
+
+	msg = msg.substring(1, msg.length-2);
+	console.log(msg);
+	return msg, changed;
+}

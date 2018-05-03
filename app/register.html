@@ -40,34 +40,39 @@
         }
 
         function createNewUser(){
-        username = document.getElementById("username").value;
-        password = document.getElementById("password").value;
-        email = document.getElementById("email").value;
-        f_name: document.getElementById("first_name").value;
-        l_name: document.getElementById("l_name").value;
+            username = document.getElementById("username").value;
+            password = document.getElementById("password").value;
+            email = document.getElementById("email").value;
+            f_name: document.getElementById("first_name").value;
+            l_name: document.getElementById("l_name").value;
 
-        console.log(username, password, email, f_name, l_name);
-        return;
-        $.ajax({
-          url: '/createNewUser',
-          data: {
-            user: username,
-            pass: password,
-            first_name: f_name,
-            last_name: l_name,
-            email: email
-          },
-          success: function(repsonse){
-            console.log("Response from createNewUser: " + response);
-            if (response === "error"){
-                notify("error", "Something went wrong. Please try again.", 2000, undefined);
+            var msg, changed = checkInputs(username, password, email, f_name, l_name);
+
+            if(changed){
+                notify("warning", msg, 3000, undefined);
                 return;
             }
-            else{
-                window.location = HOME_PAGE;
-            }
-          }
-        })
+            return;
+            $.ajax({
+              url: '/createNewUser',
+              data: {
+                user: username,
+                pass: password,
+                first_name: f_name,
+                last_name: l_name,
+                email: email
+              },
+              success: function(repsonse){
+                console.log("Response from createNewUser: " + response);
+                if (response === "error"){
+                    notify("error", "Something went wrong. Please try again.", 2000, undefined);
+                    return;
+                }
+                else{
+                    window.location = HOME_PAGE;
+                }
+              }
+            });
         }
 
     </script>
