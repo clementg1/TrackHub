@@ -3,32 +3,55 @@
 /**
 * Global Variable definitions
 **/
-var logged_in = false;
 var PATHS = {
 	landing_page: 'http://localhost:2000/landing_page.html',
 	home_page: 'http://localhost:2000/home.html'
 }
 
+
+/************************************************************************************/
+/********************************** Window Session **********************************/
+// window object
+var win = window.top || window;
+
+// session store
+var store = (win.name ? JSON.parse(win.name) : {});
+
+// save store on page unload
+function Save() {
+	win.name = JSON.stringify(store);
+};
+
+// page unload event
+if (window.addEventListener) window.addEventListener("unload", Save, false);
+else if (window.attachEvent) window.attachEvent("onunload", Save);
+else window.onunload = Save;
+
+/************************************************************************************/
 /**
 *Set logged_in variable when a user is logged in
 **/
 function setLoggedIn(){
-	logged_in = true;
+	store["logged_in"] = true;
 }
 
 /**
 *Get logged_in variable
 **/
 function getLoggedIn(){
-	return logged_in;
+	return store["logged_in"];
 }
 
 /**
 *Reset Logged in variable when user logs out
 **/
 function resetLoggedIn(){
-	logged_in = false;
+	store["logged_in"] = false;
 }
+
+/**
+*Grab value from database to see if user is logged in
+**/
 
 /**
 *Check if logged_in to know where to redirect to home
