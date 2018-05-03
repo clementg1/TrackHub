@@ -50,20 +50,27 @@ function resetLoggedIn(){
 }
 
 /**
-*Grab value from database to see if user is logged in
+*Logging out function to reset logged_in and redirect to home
 **/
+function loggingOut(){
+	resetLoggedIn();
+	redirectToHome();
+}
 
 /**
 *Check if logged_in to know where to redirect to home
 **/
 function redirectToHome(){
-	if (logged_in){
+	if (store["logged_in"]){
 		window.location = PATHS.home_page;
 	} else{
 		window.location = PATHS.landing_page;
 	}
 }
 
+/**
+*Toastr fuction to use notifications
+**/
 function notify(type, msg, time_out, functionCallback){     
     toastr.options = {
       "timeout": time_out
