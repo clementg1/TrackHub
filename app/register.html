@@ -19,8 +19,11 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     
     <script>
-        var username = '';
-        var password = '';
+        var username;
+        var password;
+        var email;
+        var f_name;
+        var l_name;
         var HOME_PAGE = "http://localhost:2000/home.html"
 
         function check() {
@@ -36,16 +39,28 @@
         function createNewUser(){
         username = document.getElementById("username").value;
         password = document.getElementById("password").value;
+        email = document.getElementById("email").value;
+        f_name: document.getElementById("first_name").value;
+        l_name: document.getElementById("l_name").value;
 
         $.ajax({
           url: '/createNewUser',
           data: {
             user: username,
-            pass: password
+            pass: password,
+            first_name: f_name,
+            last_name: l_name,
+            email: email;
           },
           success: function(repsonse){
             console.log("Response from createNewUser: " + response);
-            window.location = HOME_PAGE;
+            if (response === "error"){
+                notify("error", "Something went wrong. Please try again.", 2000, undefined);
+                return;
+            }
+            else{
+                window.location = HOME_PAGE;
+            }
           }
         })
         }
