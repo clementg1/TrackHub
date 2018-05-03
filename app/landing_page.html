@@ -8,6 +8,7 @@
     <script src="napster.js" type="text/javascript"></script>
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
+    <script src="sharedFunctions.js"></script>
 
     <script type="text/javascript">
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
@@ -16,6 +17,7 @@
       var port = 2000;
       var baseUrl = 'http://localhost:' + port;
       var redirectUri = baseUrl + '/authorize';
+      var NAPSTER_REGISTER_PAGE = "https://order.napster.com/checkout/rdp?client_id=OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk&redirect_uri=http%3A%2F%2Flocalhost%3A2000%2Fauthorize&response_type=code&pcode=napi&ocode=napi"
 
 /*********************************************** Functions *********************************************/
       /**
@@ -121,37 +123,10 @@
       }
 
       function redirectToRegister(){
-        window.location = "https://order.napster.com/checkout/rdp?client_id=OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk&redirect_uri=http%3A%2F%2Flocalhost%3A2000%2Fauthorize&response_type=code&pcode=napi&ocode=napi"
-        /*$.ajax({
-          url: '/makeAccount',
-          success: function(response){
-            console.log("makeAccount Response: " + response);
-          },
-          error: function(response){
-            console.log("Error in makeAccount: " + JSON.stringify(response));
-            notify("error", "There was a problem redirecting you to the register page. Please contact an admin.", 5000, undefined);
-          }
-        });*/
+        window.location = NAPSTER_REGISTER_PAGE
       }
 
-      function notify(type, msg, time_out, functionCallback){
-        
-        if (type === "success"){
-          toastr.options = {
-              "timeout": time_out
-            }
-            toastr.success(msg);
-        }
-        else if (type === "error"){
-          toastr.options = {
-            "timeout": time_out
-          }
-          toastr.error(msg);
-        }
-        if (functionCallback){
-          setTimeout(function(){ functionCallback(); }, time_out);
-        }
-      }
+
 /***************************************** Main Function ****************************************/
 
       /**
@@ -409,11 +384,11 @@
       }
     </style>
   </head>
-  <body style="overflow-y: scroll;">
+  <body >
 
     <div>
       <ul class="navbar">
-        <li><a class="active" href="client.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+        <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li style="float:right; cursor: pointer"><a href="register.html">Register</a></li>
@@ -430,13 +405,14 @@
       <img class="mySlides" src="../assets/welcome.jpg" style="width: 100%;">
       <img class="mySlides" src="../assets/listen_to_music.jpg" style="width: 100%;">
 
-      <div class="w3-row-padding w3-section">
+      <div class="w3-row-padding w3-section" style="margin-right: 0; padding: 0;">
         <div class="w3-col s4">
-          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/welcome.jpg" style="width:100%" onclick="currentDiv(1)">
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/welcome.jpg" style="width:47%" onclick="currentDiv(1)">
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:50%; float: right; padding-left: 10px" onclick="currentDiv(2)">
         </div>
-        <div class="w3-col s4">
-          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:100%" onclick="currentDiv(2)">
-        </div>
+        <!-- <div class="w3-col s4" >
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:50%" onclick="currentDiv(2)">
+        </div> -->
       </div>
     </div>
 
