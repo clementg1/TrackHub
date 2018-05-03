@@ -26,8 +26,8 @@
         var l_name;
         var HOME_PAGE = "http://localhost:2000/home.html"
 
-        function check() {
-            if (document.getElementById('pass').value == document.getElementById('pass_2').value) {
+        function checkPassword() {
+            if (document.getElementById('pass').value) {
                 document.getElementById('message').style.color = 'green';
                 document.getElementById('message').innerHTML = 'matching';
             } else {
@@ -43,6 +43,8 @@
         f_name: document.getElementById("first_name").value;
         l_name: document.getElementById("l_name").value;
 
+        console.log(username, password, email, f_name, l_name);
+        return;
         $.ajax({
           url: '/createNewUser',
           data: {
@@ -50,7 +52,7 @@
             pass: password,
             first_name: f_name,
             last_name: l_name,
-            email: email;
+            email: email
           },
           success: function(repsonse){
             console.log("Response from createNewUser: " + response);
@@ -169,11 +171,11 @@
 
                 <div class="p-t-13 p-b-9">
 						<span class="txt1">
-							New Password
+							Password
 						</span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                    <input class="input100" type="new_password" name="pass" onkeyup="check()" >
+                    <input class="input100" type="new_password" name="pass" onkeyup="check()" id="password" >
                     <span class="focus-input100"></span>
                 </div>
 
