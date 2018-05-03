@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TrackHub</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="napster.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
+
+
+        $("#slideshow > div:gt(0)").hide();
+
+        setInterval(function() {
+            $('#slideshow > div:first')
+                .fadeOut(3000)
+                .next()
+                .fadeIn(3000)
+                .end()
+                .appendTo('#slideshow');
+        },  3000);
+
+        function refresh(callback) {
+            $.ajax({
+                url: '/reauthorize',
+                method: 'GET',
+                data: { refreshToken: Napster.member.refreshToken },
+                success: function(data) {
+                    Napster.member.set({
+                        accessToken: data.access_token,
+                        refreshToken: data.refresh_token
+                    });
+
+                    if (callback) {
+                        callback(data);
+                    }
+                }
+            });
+        }
+
+        //Hide the results until search is pressed
+        $(function() {
+            $('#results').hide();
+            $('#albumselected').hide();
+        });
+
+
+
+
+        function getParameters() {
+            var query = window.location.search.substring(1);
+            var parameters = {};
+
+            if (query) {
+                query.split('&').forEach(function(item) {
+                    var param = item.split('=');
+                    parameters[param[0]] = param[1];
+                });
+            }
+
+            return parameters;
+        }
+
+
+        function backAlbumInfo(){
+            $('#results').show();
+            $('#albumselected').hide();
+        }
+
+            function submitMe(input) {
+                query = "http://api.napster.com/v2.2/search/verbose?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&query=" + input;
+                //alert(query); //should output text box input
+                Napster.init({consumerKey: API_KEY});
+
+
+                $("#tracks:not(:empty)").empty();
+                $("#artists:not(:empty)").empty();
+                $("#playlists:not(:empty)").empty();
+                $("#albums:not(:empty)").empty();
+
+
+                Napster.api.getSearch(false, '/search/verbose', function (data) {
+                    var searchAlbums = data.search.data.albums;
+                    var searchArtists = data.search.data.artists;
+                    var searchTracks = data.search.data.tracks;
+                    var searchPaylists = data.search.data.playlists;
+
+
+                    //alert(input); //should output text box input
+
+                    console.log(data);
+
+
+                    //alert(search); //should output text box input
+
+                    searchAlbums.forEach(function (searchAlbums, i) {
+
+
+                        var $albumResults = $('<div class="artist" data-artist="' + searchAlbums.id + '">' +
+                            '<div class="album-art"></div>' +
+                            '<div class="artist-info">' +
+                            '<div class="name">' + searchAlbums.name + '</div>' +
+                            '<div class="artist">' + searchAlbums.artistName + '</div>' +
+                            '</div>' +
+                            '</div>');
+
+
+                        $albumResults.click(function() {
+                            $('#results').hide();
+
+
+                            $("#albumtracks:not(:empty)").empty();
+                            $("#albumTitle:not(:empty)").empty();
+
+                            var albumTracks = searchAlbums.links.tracks.href;
+
+                            albumTracks = (albumTracks.substring('https://api.napster.com/v2.1'.length));
+
+                            //alert(albumTracks);
+
+                            Napster.api.get(false, albumTracks, function(data) {
+                                var track = data.tracks;
+
+                                var $albumName = $('<div class="trackList">' + track[0].albumName + '</div>');
+
+                                $albumName.appendTo("#albumTitle");
+
+                                track.forEach(function(track, i) {
+
+                                    //var $trackName = $('<div class="trackList">' + track.name + '</div>');
+
+                                    var $trackName = $('<div class="artist" data-artist="' + track.id + '">' +
+                                        '<div class="album-art"></div>' +
+                                        '<div class="artist-info">' +
+                                        '<div class="name">' + track.name + '</div>' +
+                                        '<div class="artist">' + track.artistName + '</div>' +
+                                        '</div>' +
+                                        '</div>');
+
+
+
+
+                                    $trackName.appendTo("#albumtracks");
+
+
+
+                                });
+
+                            });
+
+                            $('#albumselected').show();
+                            window.scrollTo(0, 0);
+                        });
+
+
+
+
+                        $albumResults.appendTo('#albums');
+
+
+                        Napster.api.get(false, '/albums/' + searchAlbums.id + '/images', function (data) {
+                            var images = data.images;
+                            $('[data-artist="' + searchAlbums.id + '"] .album-art')
+                                .append($('<img>', {src: images[0].url}));
+                        });
+
+                    });
+
+                    searchTracks.forEach(function (searchTracks, i) {
+
+
+                        var $trackResults = $('<div class="artist" data-artist="' + searchTracks.id + '">' +
+                            '<div class="album-art"></div>' +
+                            '<div class="artist-info">' +
+                            '<div class="name">' + searchTracks.name + '</div>' +
+                            '<div class="artist">' + searchTracks.artistName + '</div>' +
+                            '</div>' +
+                            '</div>');
+
+
+                        //CHECK TO SEE IF PLAYING WORKS----------------------------------------------------------------
+                        $trackResults.click(function() {
+                            var id = searchTracks.id;
+
+                            if (Napster.player.currentTrack === id) {
+                                Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
+                            }
+                            else {
+                                $('[data-track="' + id + '"] .progress-bar').width(0);
+                                $('[data-track="' + id + '"] .current-time').html($('[data-track="' + id + '"] .duration').html());
+
+                                Napster.player.play(id);
+                            }
+                        });
+                        //--------------------------------------------------------------------------------------------
+
+
+                        $trackResults.appendTo('#tracks');
+
+                        /*
+                    Napster.api.get(false, '/albums/' + searchTracks.artistId + '/images', function(data) {
+                        var images = data.images;
+                        $('[data-artist="' + searchTracks.artistId + '"] .album-art')
+                            .append($('<img>', { src: images[0].url }));
+                    });
+                    */
+
+                    });
+
+                    searchArtists.forEach(function (searchArtists, i) {
+
+                        var bio;
+                        try {
+                            bio = searchArtists.bios[0].bio;
+                        } catch (err) {
+                            bio = "Bio not currently available for this artist.";
+                        }
+
+
+
+                        var $artistResults = $('<div class="artist" data-artist="' + searchArtists.id + '">' +
+                            '<div class="album-art-artist"></div>' +
+                            '<div class="artist-info">' +
+                            '<div class="name">' + searchArtists.name + '</div>' +
+                            '<div class="artist">' + bio + '</div>' +
+                            '</div>' +
+                            '</div>');
+
+                        /*
+                        $artistResults.click(function () {
+
+                            $('#results').hide();
+
+
+                            $("#albumtracks:not(:empty)").empty();
+                            $("#albumTitle:not(:empty)").empty();
+
+                            var albumTracks = searchAlbums.links.tracks.href;
+
+                            albumTracks = (albumTracks.substring('https://api.napster.com/v2.1'.length));
+
+                            //alert(albumTracks);
+
+                            Napster.api.get(false, albumTracks, function(data) {
+                                var track = data.tracks;
+
+                                var $albumName = $('<div class="trackList">' + track[0].albumName + '</div>');
+
+                                $albumName.appendTo("#albumTitle");
+
+                                track.forEach(function(track, i) {
+
+                                    var $trackName = $('<div class="trackList">' + track.name + '</div>');
+
+
+
+
+                                    $trackName.appendTo("#albumtracks");
+
+
+
+                                });
+
+                            });
+
+                            $('#albumselected').show();
+                        });
+                        */
+
+                        $artistResults.appendTo('#artists');
+
+                    try {
+                        Napster.api.get(false, '/artists/' + searchArtists.id + '/images', function (data) {
+                            var images = data.images;
+                            $('[data-artist="' + searchArtists.id + '"] .album-art-artist')
+                                .append($('<img>', {src: images[0].url}));
+                        });
+                    }catch (e) {
+                        console.log("No image exists.");
+                    }
+
+
+                    });
+
+                    searchPaylists.forEach(function (searchPlaylists, i) {
+
+
+                        var $playlistsResults = $('<div class="artist" data-artist="' + searchPlaylists.id + '">' +
+                            '<div class="album-art-art"></div>' +
+                            '<div class="artist-info">' +
+                            '<div class="name">' + searchPlaylists.name + '</div>' +
+                            '<div class="artist">' + searchPlaylists.description + '</div>' +
+                            '</div>' +
+                            '</div>');
+
+
+
+
+                        $playlistsResults.click(function () {
+
+                            $('#results').hide();
+
+
+                            $("#albumtracks:not(:empty)").empty();
+                            $("#albumTitle:not(:empty)").empty();
+
+                            playlistTracks = searchPlaylists.links.tracks.href;
+                            playlistTracks = (playlistTracks.substring('https://api.napster.com/v2.1'.length));
+
+                            //alert(albumTracks);
+
+                            Napster.api.getPlaylist(false, playlistTracks, function(data) {
+                                var track = data.tracks;
+
+                                //var $albumName = $('<div class="trackList">' + track[0].albumName + '</div>');
+
+                                //$albumName.appendTo("#albumTitle");
+
+                                track.forEach(function(track, i) {
+
+                                    //var $trackName = $('<div class="trackList">' + 'Track Name: ' + track.name + '<br> Album Name: ' + track.albumName + '<br> Artist Name: ' + track.artistName + '</div>');
+
+                                    var $trackName = $('<div class="artist" data-artist="' + track.id + '">' +
+                                        '<div class="album-art"></div>' +
+                                        '<div class="artist-info">' +
+                                        '<div class="name">' + track.name + '</div>' +
+                                        '<div class="artist">' + 'Artist Name: ' + track.artistName + '<br> Album Name: ' + track.albumName + '</div>' +
+                                        '</div>' +
+                                        '</div>');
+
+                                    //CHECK TO SEE IF PLAYING WORKS----------------------------------------------------------------
+                                    $trackName.click(function() {
+                                        var id = track.id;
+
+                                        if (Napster.player.currentTrack === id) {
+                                            Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
+                                        }
+                                        else {
+                                            $('[data-track="' + id + '"] .progress-bar').width(0);
+                                            $('[data-track="' + id + '"] .current-time').html($('[data-track="' + id + '"] .duration').html());
+
+                                            Napster.player.play(id);
+                                        }
+                                    });
+                                    //--------------------------------------------------------------------------------------------
+
+
+
+                                    $trackName.appendTo("#albumtracks");
+
+                                    /*
+                                    Napster.api.get(false, '/albums/' + track.albumId + '/images', function (data) {
+                                        var images = data.images;
+                                        $('[data-artist="' + track.albumId + '"] .album-art')
+                                            .append($('<img>', {src: images[0].url}));
+                                    });
+                                    */
+
+
+
+                                });
+
+                            });
+
+                            $('#albumselected').show();
+                            window.scrollTo(0, 0);
+                        });
+
+
+
+                        $playlistsResults.appendTo('#playlists');
+
+                        /*
+                    Napster.api.get(false, '/albums/' + searchTracks.artistId + '/images', function(data) {
+                        var images = data.images;
+                        $('[data-artist="' + searchTracks.artistId + '"] .album-art')
+                            .append($('<img>', { src: images[0].url }));
+                    });
+                    */
+
+                    });
+
+
+                    $('#results').show();
+
+
+                }, input);
+
+            }
+
+        $(document).ready(function() {
+            var currentartist;
+            Napster.init({ consumerKey: API_KEY });
+
+            Napster.player.on('ready', function(e) {
+                var params = getParameters();
+                if (params.accessToken) {
+                    Napster.member.set(params);
+                }
+
+
+            });
+
+
+            Napster.player.on('playevent', function(e) {
+                var playing = e.data.playing;
+                var paused = e.data.paused;
+                var currentTrack = e.data.id;
+
+                $('[data-artist]').removeClass('playing paused');
+                $('[data-artist="' + currentTrack + '"]').toggleClass('playing', playing).toggleClass('paused', paused);
+            });
+
+            Napster.player.on('playtimer', function(e) {
+                var id = currentTrack;
+                var current = e.data.currentTime;
+                var total = e.data.totalTime;
+                var width = $("[data-artist='" + id + "'] .artist-info").width();
+
+                $("[data-artist='" + id + "']").addClass("playing");
+                $("[data-artist='" + id + "'] .progress-bar").width(parseInt((current / total) * width).toString() + "px");
+                $("[data-artist='" + id + "'] .current-time").html(Napster.util.secondsToTime(total - current));
+            });
+
+            Napster.player.on('error', console.log);
+
+        });
+    </script>
+    <style type="text/css">
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+            background-color: #34495e;
+        }
+
+        .header {
+            padding: 25px;
+        }
+
+        .header-text {
+            font-weight: 100;
+            font-size: 50px;
+            color: white;
+            text-align: center;
+        }
+
+        .user {
+            font-weight: 200;
+            font-size: 20px;
+        }
+
+        .artists {
+            width: 100%;
+            max-width: 700px;
+            display: table;
+            border-collapse: collapse;
+        }
+
+        .artist {
+            overflow: hidden;
+            display: table-row;
+            height: 130px;
+            width: 100%;
+        }
+
+        .artist img {
+            display: block;
+            height: 300px;
+            width: 300px;
+            border-radius: 15px;
+            background: white;
+            padding: 1px;
+
+        }
+
+        .album-art {
+            width: 130px;
+            height: 130px;
+        }
+
+        .album-art-artist {
+            width: 300px;
+            height: 300px;
+        }
+
+        .artist-info {
+            position: relative;
+            vertical-align: top;
+            font-weight: 200;
+            height: 100%;
+            width: 100%;
+        }
+
+        .album-art, .artist-info {
+            display: table-cell;
+            border-bottom: 1px solid white;
+            padding-bottom: 10px;
+
+        }
+
+
+
+        .artist, .name {
+            text-overflow: ellipsis;
+            /*
+            white-space: nowrap;
+            */
+        }
+
+        .name {
+            font-size: 25px;
+            margin-top: 10px;
+            color: black;
+
+        }
+
+        .artist { top: 42px; }
+
+        .artist {
+            font-size: 19px;
+            color: white;
+        }
+
+        .name, .artist {
+            /*
+            position: absolute;
+            left: 25px;
+            z-index: 2;
+            */
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+
+        /*#slideshow {
+            margin: 5px auto;
+            position: relative;
+
+            width: 240px;
+            height: 240px;
+
+        }
+
+        #slideshow > div {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+        }*/
+
+        .searchBar {
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+            text-align: center;
+        }
+
+         * {
+             box-sizing: border-box;
+         }
+
+        /* Create four equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 44%;
+            padding: 10px;
+            overflow: scroll;
+            overflow-x: hidden;
+            border: 1px solid white;
+            border-radius: 5px;
+            margin-bottom: 100px;
+            margin-right: 20px;
+            margin-left: 50px;
+        }
+        .columnx {
+            float: left;
+            width: 100%;
+            padding: 10px;
+            height: 300px; /* Should be removed. Only for demonstration */
+            overflow: scroll;
+            overflow-x: hidden;
+            border: 1px solid white;
+            border-radius: 5px;
+            margin-bottom: 100px;
+        }
+
+        .columnalbumtracks {
+            float: left;
+            padding: 10px;
+            height: auto;
+            width: auto;
+            border: 1px solid white;
+            border-radius: 5px;
+            margin:auto;
+            margin-left: 250px;
+            margin-right: 250px;
+        }
+
+
+        .subTitle {
+            text-align: center;
+        }
+
+        .button {
+            background-color: #18afa5;
+            border: none;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+            width: 18%;
+            height: 60px;
+        }
+
+        .buttonBackAlbum {
+            background-color: #18afa5;
+            border: none;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+            width: 18%;
+            height: 60px;
+            margin-bottom: 50px;
+        }
+
+        .textBox {
+            width: 100%;
+            background-color: white;
+            color: black;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 25px;
+        }
+
+
+
+
+
+
+
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /*
+        .viewtracksplaylists{
+            text-align: center;
+        }
+        */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+<ul>
+    <li><a class="active" href="#home" style="font-size: 20px;">TrackHub</a></li>
+    <li><a href="#news">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about">Login</a></li>
+    <li><a href="#about" >Register</a></li>
+</ul>
+
+<div class="header">
+    <div class="header-text" style="font-size: 80px; ">Search<span class="user"></span></div>
+</div>
+
+<div class="searchBar">
+<input class = "textBox" type="text" id="test"  value="" placeholder="Search for anything! Artist, Album, Track..." />
+<br/>
+<button class = "button" onclick="submitMe(document.getElementById('test').value)" id="testButton" >Search</button>
+</div>
+
+<!--
+<div id="slideshow">
+   <div>
+     <img src="../assets/welcome.jpg">
+   </div>
+   <div>
+     <img src="../assets/listen_to_music.jpg">
+   </div>
+</div>-->
+
+<!--Shows the artists-->
+
+
+
+<div id="results">
+
+    <h1 class="subTitle">Artists</h1>
+
+    <div class="columnx">
+
+    <div id="artists"></div>
+
+    </div>
+
+
+
+    <div class="column">
+
+        <h1 class="subTitle">Albums</h1>
+
+    <div id="albums"></div>
+
+    </div>
+
+
+
+    <div class="column">
+
+        <h1 class="subTitle">Tracks</h1>
+
+    <div id="tracks"></div>
+
+    </div>
+
+
+    <div class="columnx">
+
+    <h1 class="subTitle">Playlists</h1>
+
+    <div id="playlists"></div>
+
+    </div>
+
+
+    <div id="albumInfo"></div>
+
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+
+            <h1 id = "modalAlbumName"> </h1>
+            <p id = "modalContent"> </p>
+        </div>
+
+    </div>
+
+</div>
+
+<div id = "albumselected">
+    <button class = "buttonBackAlbum" onclick="backAlbumInfo()" id="backButtonAlbum" >Back</button>
+
+
+    <h1 id = "albumTitle" class="subTitle">Album Tracks</h1>
+    <div class="columnalbumtracks">
+    <div class = "viewtracksplaylists" id = "albumtracks"></div>
+    </div>
+
+</div>
+
+<script>
+    var input = document.getElementById("test");
+
+    // Execute a function when the user releases a key on the keyboard
+    input.addEventListener("keyup", function(event) {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+            // Trigger the button element with a click
+            document.getElementById("testButton").click();
+        }
+    });
+</script>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>

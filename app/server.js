@@ -6,6 +6,7 @@ var mysql = require('mysql');
 
 
 var apiKey = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
+var apiKeySearch = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk=';
 var apiSecret = 'MThmMDBkMmMtMTM0Ni00M2IyLTkyNTYtN2JmOWRjNzE5ZDYy';
 
 var port = 2000;
