@@ -54,15 +54,10 @@
         function submitMe(input) {
             query = "http://api.napster.com/v2.2/search/verbose?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&query=" + input;
             //alert(query); //should output text box input
-            Napster.init({ consumerKey: API_KEY });
 
 
             Napster.api.getSearch(false, '/search/verbose', function(data) {
                 var search = data.search.data.albums;
-
-
-                var review;
-
 
                 //alert(input); //should output text box input
 
@@ -72,48 +67,11 @@
                 //alert(search); //should output text box input
                 search.forEach(function(search, i) {
 
-                    var reviewlink = search.links.reviews.href;
-
-                    if (reviewlink !== null || reviewlink !== "undefined") {
-                        reviewlink = (reviewlink.substring('http://api.napster.com/v2.22'.length));
-                    }
-                    else
-                    {
-                        var reviewlink = "None available."
-                    }
-
-
-
-
-
-                    Napster.api.get(false, reviewlink, function(data) {
-                        review = data.reviews;
-
-                        review.forEach(function(review, i) {
-
-                            alert(i);
-
-                        });
-
-                        //alert(tracks[0].id);
-
-
-                        //trackid = tracks[0].id;
-                        /*
-                        tracks.forEach(function(track, i) {
-                            var $id = $(track.id);
-                        });
-                        */
-
-                    });
-
-
-
                     var $t = $('<div class="artist" data-artist="' + search.id + '">' +
                         '<div class="album-art"></div>' +
                         '<div class="artist-info">' +
                         '<div class="name">' + search.name + '</div>' +
-                        '<div class="artist">' + search.blurbs + '</div>' +
+                        '<div class="artist">' + search.originallyReleased + '</div>' +
                         '</div>' +
                         '</div>');
 
@@ -170,13 +128,13 @@
 
                     $t.appendTo('#artists');
 
-
-                    Napster.api.get(false, '/albums/' + search.id + '/images', function(data) {
+                /*
+                    Napster.api.get(false, '/albums/' + artist.albumGroups.main[0] + '/images', function(data) {
                         var images = data.images;
-                        $('[data-artist="' + search.id + '"] .album-art')
+                        $('[data-artist="' + artist.id + '"] .album-art')
                             .append($('<img>', { src: images[0].url }));
                     });
-
+                 */
                 });
             }, input);
 
@@ -192,7 +150,88 @@
                     Napster.member.set(params);
                 }
 
+                Napster.api.get(false, '/artists/top', function(data) {
+                    var artists = data.artists;
+                    artists.forEach(function(artist, i) {
 
+                        var blurb;
+
+                        if(artist.blurbs[0] == null)
+                        {
+                            var blurb = "There is no bio available for this artist.";
+                        }
+                        else
+                        {
+                            blurb = artist.bios[0].bio;
+                        }
+
+                        var $t = $('<div class="artist" data-artist="' + artist.id + '">' +
+                            '<div class="album-art"></div>' +
+                            '<div class="artist-info">' +
+                            '<div class="name">' + artist.name + '</div>' +
+                            '<div class="artist">' + blurb + '</div>' +
+                            '</div>' +
+                            '</div>');
+
+
+
+
+
+
+
+                        $t.click(function() {
+
+                            var topTracks = artist.links.topTracks.href;
+
+
+                            topTracks = (topTracks.substring('https://api.napster.com/v2.1'.length));
+
+                            // alert(topTracks);
+
+                            Napster.api.get(false, topTracks, function(data) {
+                                var tracks = data.tracks;
+                                //alert(tracks[0].id);
+                                trackid = tracks[0].id;
+                                /*
+                                tracks.forEach(function(track, i) {
+                                    var $id = $(track.id);
+                                });
+                                */
+                            });
+
+
+                            var id = trackid;
+                            Napster.player.play(id)
+                            //alert(id);
+                            //alert($id);
+
+
+                            /*
+                            if (Napster.player.currentTrack === id) {
+                                Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
+                            }
+                            else {
+                                $('[data-artist="' + id + '"] .progress-bar').width(0);
+                                $('[data-artist="' + id + '"] .current-time').html($('[data-track="' + id + '"] .duration').html());
+
+                                Napster.player.play(id);
+                            }
+                            */
+
+                        });
+
+
+                        $t.appendTo('#artists');
+
+
+
+                        Napster.api.get(false, '/albums/' + artist.albumGroups.main[0] + '/images', function(data) {
+                            var images = data.images;
+                            $('[data-artist="' + artist.id + '"] .album-art')
+                                .append($('<img>', { src: images[0].url }));
+                        });
+                    });
+                });
             });
 
 
@@ -363,7 +402,7 @@
 </ul>
 
 <div class="header">
-    <div class="header-text" style="font-size: 80px; ">Search<span class="user"></span></div>
+    <div class="header-text" style="font-size: 80px; ">Today's Top Artists<span class="user"></span></div>
 </div>
 
 <input type="text" id="test"  value="" />

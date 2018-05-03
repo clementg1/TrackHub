@@ -151,19 +151,51 @@
             //alert(secure);
             //alert(path);
 
+                $.ajax({
+                    type: 'GET',
+                    dataType: this.dataType(),
+                    data: data,
+                    headers: this.headers(secure),
+                    url: this.endpoint(secure) + path,
+                    success: function (data, textStatus, jqXHR) {
+                        cb(data);
+                    },
+                    error: function (jqXHR) {
+                        cb({status: jqXHR.status, error: jqXHR.statusText, response: jqXHR.responseJSON});
+                    }
+                });
+
+        },
+
+        getPlaylist: function(secure, path, cb, searchterm) {
+
+
+            //var data = { apikey: this.consumerKey + searchterm}; //problem area
+
+            var data = "apikey=" + this.consumerKey + "&query=" + searchterm + "&limit=200"; //problem area
+
+            //data =  data + "=" + searchterm;
+
+            //alert(this.consumerKey + "=" + searchterm);
+            //alert(data); //should output text box input
+            //alert(searchterm);
+            //alert(secure);
+            //alert(path);
+
             $.ajax({
                 type: 'GET',
                 dataType: this.dataType(),
                 data: data,
                 headers: this.headers(secure),
                 url: this.endpoint(secure) + path,
-                success: function(data, textStatus, jqXHR) {
+                success: function (data, textStatus, jqXHR) {
                     cb(data);
                 },
-                error: function(jqXHR) {
-                    cb({ status: jqXHR.status, error: jqXHR.statusText, response: jqXHR.responseJSON });
+                error: function (jqXHR) {
+                    cb({status: jqXHR.status, error: jqXHR.statusText, response: jqXHR.responseJSON});
                 }
             });
+
         },
 
       post: function(secure, path, data, cb) {
