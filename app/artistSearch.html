@@ -57,33 +57,24 @@
 
 
             Napster.api.getSearch(false, '/search/verbose', function(data) {
-                var artists = data.meta;
+                var search = data.search.data.albums;
 
                 //alert(input); //should output text box input
 
                 console.log(data);
 
-                alert(artists); //should output text box input
-                artists.forEach(function(artist, i) {
 
-                    var blurb;
+                //alert(search); //should output text box input
+                search.forEach(function(search, i) {
 
-                    if(artist.blurbs[0] == null)
-                    {
-                        var blurb = "There is no bio available for this artist.";
-                    }
-                    else
-                    {
-                        blurb = artist.bios[0].bio;
-                    }
-
-                    var $t = $('<div class="artist" data-artist="' + artist.id + '">' +
+                    var $t = $('<div class="artist" data-artist="' + search.id + '">' +
                         '<div class="album-art"></div>' +
                         '<div class="artist-info">' +
-                        '<div class="name">' + artist.name + '</div>' +
-                        '<div class="artist">' + blurb + '</div>' +
+                        '<div class="name">' + search.name + '</div>' +
+                        '<div class="artist">' + search.originallyReleased + '</div>' +
                         '</div>' +
                         '</div>');
+
 
 
 
@@ -137,13 +128,13 @@
 
                     $t.appendTo('#artists');
 
-
-
+                /*
                     Napster.api.get(false, '/albums/' + artist.albumGroups.main[0] + '/images', function(data) {
                         var images = data.images;
                         $('[data-artist="' + artist.id + '"] .album-art')
                             .append($('<img>', { src: images[0].url }));
                     });
+                 */
                 });
             }, input);
 
@@ -181,8 +172,6 @@
                             '<div class="artist">' + blurb + '</div>' +
                             '</div>' +
                             '</div>');
-
-
 
 
 
