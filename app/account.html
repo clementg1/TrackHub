@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css" >
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+            align-content: center;
+            background-image:url(https://images.pexels.com/photos/802958/pexels-photo-802958.jpeg?cs=srgb&dl=earphones-earpods-justifyyourlove-802958.jpg&fm=jpg);
+            /*height: 100%;*/
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .user {
+            font-weight: 200;
+            font-size: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: rgb(80, 135, 160);
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: rgba(0, 0, 0, 0.40);
+        }
+
+        .active {
+            background-color: rgba(0, 0, 0, 0.40);
+        }
+
+        form {
+            margin: 0 auto;
+            width: 300px;
+        }
+
+
+    </style>
+    <title>My Account</title>
+</head>
+<body>
+    <ul>
+        <li><a href="home.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="active" style="float:right"><a href="account.html">My Account</a></li>
+    </ul>
+    <br><br>
+    <div class="subheader">
+    <br>
+    <div class="subhead-text" style="font-size: 28px; font-family:tahoma; color: antiquewhite; text-align: left;">My Profile</div><br><span class="user"></span></div>
+    <hr/>
+    </div>
+
+    <form class="form-horizontal" method="POST" >
+        <input type="hidden" name="_csrf"/>
+        <br>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="fname"; style="color: darkslategray; font-weight: bold;">First Name:</label> <textarea class="form-control" name="name" id="fname" rows="1" cols="25"></textarea>
+            <br><br>
+            <label class="col-sm-2 control-label" for="lname"; style="color: darkslategray; font-weight: bold;">Last Name:</label> <textarea class="form-control" name="name" id="lname" rows="1" cols="25"></textarea>
+
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="email"; style="color: darkslategray; font-weight: bold;">Email:</label> <textarea class="form-control" name="email" id="email" rows="1" cols="50"></textarea>
+
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" style="color: darkslategray; font-weight: bold;">Gender:</label>
+            <div class="col-sm-8">
+                <input type="radio" name="gender" value="male"> Male<br>
+                <input type="radio" name="gender" value="female"> Female<br>
+                <input type="radio" name="gender" value="other"> Other
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <button class="btn btn-primary" type="submit" style="color:darkslategray; height:30px; width:60px"><i class="far fa-envelope fa-sm"></i>Send</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
