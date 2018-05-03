@@ -65,7 +65,7 @@
             if(response.changed){
                 notify("warning", response.msg, 3000, undefined);
             }
-            return;
+            
             $.ajax({
               url: '/createNewUser',
               data: {
@@ -79,11 +79,15 @@
                 console.log("Response from createNewUser: " + response);
                 if (response === "error"){
                     notify("error", "Something went wrong. Please try again.", 2000, undefined);
-                    return;
+                    
                 }
                 else{
                     window.location = HOME_PAGE;
                 }
+              },
+              error: function(err){
+                console.log("Error in newAccount: " + err);
+                notify("error", "There was an error making your account. Try again", 2000, undefined);
               }
             });
         }
