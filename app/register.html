@@ -77,9 +77,9 @@
               },
               success: function(repsonse){
                 console.log("Response from createNewUser: " + response);
-                if (response === "error"){
-                    notify("error", "Something went wrong. Please try again.", 2000, undefined);
-                    
+                if(response.code === "ER_DUP_ENTRY"){
+                    console.log("Duplicate username: " + username);
+                    notify("error", response.msg, 3000, undefined);
                 }
                 else{
                     setLoggedIn(response);
