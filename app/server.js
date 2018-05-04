@@ -68,9 +68,11 @@ app.get('/createNewUser', function(request, response){
 
   db.query('insert into users (username, password, email, first_name, last_name) values ("' + username + '", "' + password + '", "' + email + '", "' + first_name + '", "' + last_name + '");', function(err, results){
     if (err){
+      err = err.toString();
       console.log("Error in createNewUser: " + err);
-      if (err.includes("ER_DUP_ENTRY")){
-        response.send({msg: "An account already exists with that email. Try logging in.", code: "ER_DUP_ENTRY"});
+      if (err.indexOf("ER_DUP_ENTRY")){
+        console.log("Here")
+        response.send("ER_DUP_ENTRY");
       }else{
         response.send(400);
       }

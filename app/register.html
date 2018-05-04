@@ -63,10 +63,10 @@
                 "Last Name": l_name
             }
             
-            var response = checkInputs(fields);
-            console.log(response.msg);
-            if(response.changed){
-                notify("warning", response.msg, 3000, undefined);
+            var results = checkInputs(fields);
+            console.log(results.msg);
+            if(results.changed){
+                notify("warning", results.msg, 3000, undefined);
                 return;
             }
             
@@ -79,10 +79,15 @@
                 last_name: l_name,
                 email: email
               },
-              success: function(repsonse){
-                console.log("Response from createNewUser: " + response);
-                setLoggedIn(response);
-                window.location = HOME_PAGE;
+              success: function(response){
+                console.log("Response from createNewUser: " + JSON.stringify(response));
+                if(response === "ER_DUP_ENTRY"){
+                    console.log("Duplicate username: " + username);
+                    notify("error", "An account already exists for that email. Try logging in", 3000, undefined);
+                }else{
+                    setLoggedIn(response);
+                    //window.location = HOME_PAGE;   
+                }
               },
               error: function(err){
                 console.log("Error in newAccount: " + err);
