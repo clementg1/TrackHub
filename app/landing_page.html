@@ -228,14 +228,14 @@
                 var $artist = $('<div class="artistName">' +  albuminfo.artistName + '</div>' );
                 $artist.appendTo("#artist");
                 var $image = $('<div class="albumArt" data-artist="'+ albuminfo.id +'">' +  albuminfo.links.images.href + '<div class="album-art-artist"></div>' );
-                try {
+                /*try {
                     Napster.api.get(false, '/albums/' + albuminfo.id + '/images', function (data) {
                         var images = data.images;
-                        var link = images[0].url;
+                        //var link = images[0].url;
                         //console.log(images);
                         //$('[data-artist="' + albuminfo.id + '"] .album-art-artist')
                             //.append($('<img>', {src: link}));
-                        console.log(link);
+                        //console.log(link);
                         var $art = $('<img id="artwork" class="art" src=link style="width:100%;">Artwork</img>;')
                         $art.appendTo("#image");
 
@@ -244,7 +244,7 @@
                     });
                 }catch (e) {
                     console.log("No image exists.");
-                }
+                }*/
             //console.log(artwork[0]);
             });
           });
