@@ -54,7 +54,7 @@
             l_name = document.getElementById("last_name").value;
             l_name = l_name.charAt(0).toUpperCase() + l_name.slice(1)
 
-            
+
             var fields = {
                 "Username": username,
                 "Password": password,
@@ -81,18 +81,17 @@
               },
               success: function(repsonse){
                 console.log("Response from createNewUser: " + response);
-                if(response.code === "ER_DUP_ENTRY"){
-                    console.log("Duplicate username: " + username);
-                    notify("error", response.msg, 3000, undefined);
-                }
-                else{
-                    setLoggedIn(response);
-                    window.location = HOME_PAGE;
-                }
+                setLoggedIn(response);
+                window.location = HOME_PAGE;
               },
               error: function(err){
                 console.log("Error in newAccount: " + err);
-                notify("error", "There was an error making your account. Try again", 2000, undefined);
+                if(response.code === "ER_DUP_ENTRY"){
+                    console.log("Duplicate username: " + username);
+                    notify("error", response.msg, 3000, undefined);
+                }else{
+                    notify("error", "There was an error making your account. Try again", 2000, undefined);
+                }
               }
             });
         }
