@@ -13,6 +13,7 @@
     <script src="sharedFunctions.js"></script>
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
     <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
     <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
@@ -51,12 +52,22 @@
             password: password
           },
           success: function(response){
-            console.log("Response from singIn: " + response);
-            if (response !== ""){
+            console.log("Response from singIn: ");
+            for (var i in response){
+              console.log(response[i]);
+            }
+
+            var count = response[0].count;
+            if (count !== 1){
               notify("error", "Account not found with that username/password combo. Try again", 3000, undefined);
             }else{
+              setLoggedIn(response[0].username);
               window.location = HOME_PAGE;
             }
+          },
+          error: function(err){
+            console.log("Error in login: " + JSON.stringify(err));
+            notify("error", "Account not found with that username/password combo. Try again", 3000, undefined);
           }
         })
       }
@@ -175,9 +186,9 @@
                     </div>
 
                     <div class="w-full text-center p-t-55">
-                            <span class="txt2">
-                                Not a member?
-                            </span>
+                        <span class="txt2">
+                            Not a member?
+                        </span>
                         <a href="register.html" class="txt2 bo1">
                             Sign up now
                         </a>
@@ -192,38 +203,14 @@
 
 <div id="dropDownSelect1"></div>
 
-
-
-<!--===============================================================================================-->
-
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-
-<!--===============================================================================================-->
-
 <script src="vendor/animsition/js/animsition.min.js"></script>
-
-<!--===============================================================================================-->
-
 <script src="vendor/bootstrap/js/popper.js"></script>
-
 <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
-<!--===============================================================================================-->
-
 <script src="vendor/select2/select2.min.js"></script>
-
-<!--===============================================================================================-->
-
 <script src="vendor/daterangepicker/moment.min.js"></script>
-
 <script src="vendor/daterangepicker/daterangepicker.js"></script>
-
-<!--===============================================================================================-->
-
 <script src="vendor/countdowntime/countdowntime.js"></script>
-
-<!--===============================================================================================-->
-
 <script src="js/main.js"></script>
 
   </body>

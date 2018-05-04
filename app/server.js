@@ -63,11 +63,20 @@ app.get('/getUsers', function(request, response){
 app.get('/createNewUser', function(request, response){
   var username = request.param('user', '');
   var password = request.param('pass', '');
+  var email = request.param('email', '');
+  var first_name = request.param('first_name', '');
+  var last_name = request.param('last_name', '');
 
-  db.query('insert into users (username, password, email, first_name, last_name, fav_track) values ("' + username + '", "' + password + '", "", "", "", "");', function(err, results){
+  db.query('insert into users (username, password, email, first_name, last_name) values ("' + username + '", "' + password + '", "' + email + '", "' + first_name + '", "' + last_name + '");', function(err, results){
     if (err){
+      err = err.toString();
       console.log("Error in createNewUser: " + err);
-      response.send(400);
+      if (err.indexOf("ER_DUP_ENTRY")){
+        console.log("Here")
+        response.send("ER_DUP_ENTRY");
+      }else{
+        response.send(400);
+      }
     }
     else{
       console.log("Success made new user!");
@@ -80,7 +89,7 @@ app.get('/signIn', function(request, response){
   var username = request.param('username', '');
   var password = request.param('password', '');
 
-  db.query('select * from users where username="' + username + '" and password = "' + password + '";', function(err, results){
+  db.query('select count(1) as count, username from users where username="' + username + '" and password = "' + password + '";', function(err, results){
     if (err){
       console.log("Error in signIn: " + err);
       response.send(400);
