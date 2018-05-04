@@ -99,7 +99,7 @@
     api: {
       host: 'api.napster.com',
       catalog: 'US',
-      version: 'v2.1',
+      version: 'v2.2',
       endpoint: function(secure) {
         return (secure ? 'https://' : 'http://') + [this.host, this.version].join('/');
       },
