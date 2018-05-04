@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TrackHub</title>
+    
+<style type="text/css">
+.header {
+  font-size: 50px;
+  text-align: center;
+  
+}
+.track-cover {
+  background-size: cover;
+  width: 300px;
+  height: 300px;
+  display: inline-block;
+}
+
+.cover {
+  background-size: cover;
+  width: 300px;
+  height: 300px;
+  display: inline-block;
+  margin: 10px;
+  float: left;
+  border: 3px solid black; 
+  position: relative;
+}
+
+.audio {
+    position: absolute;
+    bottom: 0;
+}
+.cover:hover {
+  cursor: pointer;
+}
+</style>
+</head>
+
+
+<body>
+<div class="container">
+  <div class="header">
+    Top Tracks
+  </div>
+ 
+  <div id="tracks-container"></div>
+</div>
+
+<script id="tracks-template" type="text/x-handlebars-template">
+  {{#each tracks}}
+  <div data-track-id="{{id}}" style="background-image:url(http://direct.rhapsody.com/imageserver/v2/albums/{{albumId}}/images/300x300.jpg)" class="cover">
+  <div class=content-name>{{name}}</div>
+  <audio controls class= "audio">
+    <source src="{{previewURL}}" type="audio/mpeg">
+  </audio>
+  </div>
+  {{/each}}
+</script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="handlebars.min.js"></script>
+<script>
+$(document). ready(function () {
+const tracksTemplateSource = document.getElementById('tracks-template').innerHTML;
+const tracksTemplate = Handlebars.compile(tracksTemplateSource);
+
+const $tracks = $('#tracks-container');
+const apikey = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk'
+const getTopTracks = $.get('https://api.napster.com/v2.1/tracks/top?apikey='+apikey);
+
+getTopTracks
+  .then((response) => {
+    $tracks.html(tracksTemplate(response));
+  });
+});
+
+</script>
+  </body>
+</html>
