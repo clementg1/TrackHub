@@ -52,12 +52,16 @@
             password: password
           },
           success: function(response){
-            console.log("Response from singIn: " + response);
+            console.log("Response from singIn: ");
+            for (var i in response){
+              console.log(response[i]);
+            }
+
             var count = response[0].count;
             if (count !== 1){
               notify("error", "Account not found with that username/password combo. Try again", 3000, undefined);
             }else{
-              setLoggedIn(response);
+              setLoggedIn(response[0].username);
               window.location = HOME_PAGE;
             }
           },

@@ -8,7 +8,6 @@ var PATHS = {
 	home_page: 'http://localhost:2000/home.html'
 }
 
-
 /************************************************************************************/
 /********************************** Window Session **********************************/
 // window object
@@ -31,29 +30,29 @@ else window.onunload = Save;
 /**
 *Set logged_in variable when a user is logged in
 **/
-function setLoggedIn(){
-	store["logged_in"] = true;
+function setLoggedIn(username){
+	store["current_user"] = username;
 }
 
 /**
 *Get logged_in variable
 **/
 function getLoggedIn(){
-	return store["logged_in"];
+	return store["current_user"];
 }
 
 /**
 *Reset Logged in variable when user logs out
 **/
 function resetLoggedIn(){
-	store["logged_in"] = false;
+	delete store["current_user"];
 }
 
 /**
 *Logging out function to reset logged_in and redirect to home
 **/
 function loggingOut(){
-	resetLoggedIn();
+	resetLoggedIn(store["current_user"]);
 	redirectToHome();
 }
 
@@ -61,12 +60,13 @@ function loggingOut(){
 *Check if logged_in to know where to redirect to home
 **/
 function redirectToHome(){
-	if (store["logged_in"]){
+	if (store["current_user"]){
 		window.location = PATHS.home_page;
 	} else{
 		window.location = PATHS.landing_page;
 	}
 }
+
 
 /**
 *Toastr fuction to use notifications

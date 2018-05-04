@@ -82,7 +82,7 @@ app.get('/signIn', function(request, response){
   var username = request.param('username', '');
   var password = request.param('password', '');
 
-  db.query('select count(1) as count from users where username="' + username + '" and password = "' + password + '";', function(err, results){
+  db.query('select count(1) as count, username from users where username="' + username + '" and password = "' + password + '";', function(err, results){
     if (err){
       console.log("Error in signIn: " + err);
       response.send(400);
