@@ -26,10 +26,11 @@ function getLoggedIn(){
 **/
 function redirectToHome(){
 	if (logged_in){
-		window.location = PATHS.home_page;
+		window.location.href = PATHS.home_page;
 	} else{
-		window.location = PATHS.landing_page;
+		window.location.href = PATHS.landing_page;
 	}
+	return false;
 }
 
 function notify(type, msg, time_out, functionCallback){     
