@@ -50,8 +50,11 @@
             password = document.getElementById("password").value;
             email = document.getElementById("email").value;
             f_name = document.getElementById("first_name").value;
+            f_name = f_name.charAt(0).toUpperCase() + f_name.slice(1)
             l_name = document.getElementById("last_name").value;
+            l_name = l_name.charAt(0).toUpperCase() + l_name.slice(1)
 
+            
             var fields = {
                 "Username": username,
                 "Password": password,
@@ -64,6 +67,7 @@
             console.log(response.msg);
             if(response.changed){
                 notify("warning", response.msg, 3000, undefined);
+                return;
             }
             
             $.ajax({
@@ -170,7 +174,7 @@
                         </span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "First name is required">
-                    <input class="input100" type="text" name="first_name" id="first_name" value=" " />
+                    <input class="input100" type="text" name="first_name" id="first_name" value="" />
                     <span class="focus-input100"></span>
                 </div>
 
@@ -180,7 +184,7 @@
                         </span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Last name is required">
-                    <input class="input100" type="text" name="last_name" id="last_name" value=" " />
+                    <input class="input100" type="text" name="last_name" id="last_name" value="" />
                     <span class="focus-input100"></span>
                 </div>
 
@@ -190,7 +194,7 @@
                         </span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Username is required">
-                    <input class="input100" type="text" name="username" id="username" value=" " />
+                    <input class="input100" type="text" name="username" id="username" value="" />
                     <span class="focus-input100"></span>
                 </div>
 
@@ -200,7 +204,7 @@
 						</span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Email is required">
-                    <input class="input100" type="text" name="email" id="email" value=" " />
+                    <input class="input100" type="text" name="email" id="email" value="" />
                     <span class="focus-input100"></span>
                 </div>
 
@@ -210,7 +214,7 @@
 						</span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                    <input class="input100" type="new_password" name="password" onkeyup="checkPassword()" id="password" value=" " />
+                    <input class="input100" type="new_password" name="password" onkeyup="checkPassword()" id="password" value="" />
                     <span class="focus-input100"></span>
                 </div>
 
