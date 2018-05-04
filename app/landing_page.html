@@ -23,7 +23,7 @@
       /**
       *1) Slideshow interval function to display the main and other pics under
       **/
-      /*function plusDivs(n) {
+      function plusDivs(n) {
         showDivs(slideIndex += n);
       }
 
@@ -126,6 +126,15 @@
         window.location = NAPSTER_REGISTER_PAGE
       }
 
+      function show_image(src, width, height, alt) {
+          var img = document.createElement("img");
+          img.src = src;
+          img.width = width;
+          img.height = height;
+          img.alt = alt;
+          document.body.appendChild(img);
+      }
+
 
 /***************************************** Main Function ****************************************/
 
@@ -221,26 +230,16 @@
 
           Napster.api.get(false, '/albums/top', function(data) {
             var albuminfo = data.albums;
-            var artwork = [];
             albuminfo.forEach(function(albuminfo, i){
                 var $album = $('<div class="albumName">' +  albuminfo.name + '</div>' );
                 $album.appendTo("#albus");
                 var $artist = $('<div class="artistName">' +  albuminfo.artistName + '</div>' );
                 $artist.appendTo("#artist");
-                var $image = $('<div class="albumArt" data-artist="'+ albuminfo.id +'">' +  albuminfo.links.images.href + '<div class="album-art-artist"></div>' );
+                //var $image = $('<div class="albumArt" data-artist="'+ albuminfo.id +'">' +  albuminfo.links.images.href + '<div class="album-art-artist"></div>' );
                 try {
                     Napster.api.get(false, '/albums/' + albuminfo.id + '/images', function (data) {
-                        var images = data.images;
-                        var link = images[0].url;
-                        //console.log(images);
-                        //$('[data-artist="' + albuminfo.id + '"] .album-art-artist')
-                            //.append($('<img>', {src: link}));
-                        console.log(link);
-                        var $art = $('<img id="artwork" class="art" src=link style="width:100%;">Artwork</img>;')
-                        $art.appendTo("#image");
-
-
-                       // });
+                        var artName = "http://direct.napster.com/imageserver/v2/albums/" + albuminfo.id + "/images/600x600.jpg";
+                        show_image(artName, 600, 600, "Album Art");
                     });
                 }catch (e) {
                     console.log("No image exists.");
@@ -249,12 +248,12 @@
             });
           });
       });
-    </script>
-    <style type="text/css">
-      body {
+      </script>
+      <style type="text/css">
+
+      body{
         font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
         background-image:url(https://images.pexels.com/photos/802958/pexels-photo-802958.jpeg?cs=srgb&dl=earphones-earpods-justifyyourlove-802958.jpg&fm=jpg);
-        /*height: 100%;*/
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -331,7 +330,7 @@
       }
     </style>
   </head>
-  <body >
+  <body>
 
     <div>
       <ul class="navbar">
@@ -350,7 +349,7 @@
 
     <div id="albus" class="albumName"></div>
     <div id="artist" class="artistName"></div>
-    <div id="image" class="albumArt"></div>
+    <img id="artwork" class="albumArt"/>
 
    <!-- <div class="w3-content" style="max-width:1200px">
       <img class="mySlides" src="../assets/welcome.jpg" style="width: 100%;">
@@ -370,6 +369,6 @@
 
 
 
-    
+
   </body>
 </html>
