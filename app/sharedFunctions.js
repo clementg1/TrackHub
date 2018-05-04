@@ -13,7 +13,7 @@ var PATHS = {
 // window object
 var win = window.top || window;
 
-// session store
+// session store 
 var store = (win.name ? JSON.parse(win.name) : {});
 
 // save store on page unload
