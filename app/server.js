@@ -69,7 +69,11 @@ app.get('/createNewUser', function(request, response){
   db.query('insert into users (username, password, email, first_name, last_name) values ("' + username + '", "' + password + '", "' + email + '", "' + first_name + '", "' + last_name + '");', function(err, results){
     if (err){
       console.log("Error in createNewUser: " + err);
-      response.send(400);
+      if (err.includes("ER_DUP_ENTRY")){
+        response.send("duplicate");
+      }else{
+        response.send(400);
+      }
     }
     else{
       console.log("Success made new user!");
