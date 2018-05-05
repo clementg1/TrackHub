@@ -204,7 +204,10 @@
 
               $t.click(function() {
                 var id = track.id;
-
+                if(Napster.player.currentTrack){
+                  Napster.player.currentTrack = Napster.player.currentTrack[0].toLowerCase() + Napster.player.currentTrack.slice(1);
+                }
+                console.log(Napster.player.currentTrack)
                 if (Napster.player.currentTrack === id) {
                   Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
                 }
