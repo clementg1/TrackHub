@@ -4,6 +4,28 @@
     <title>TrackHub</title>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="napster.js" type="text/javascript"></script>
+    <script type="text/javascript" src="sharedFunctions.js"></script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function(){
+
+            //Load appropriate account buttons on navbar
+            if (getLoggedIn()){
+                var $login_register = $(
+                    '<li style="float:right; cursor: pointer"><a onclick="loggingOut()">Sign Out</a></li>' +
+                    '<li style="float:right; cursor: pointer"><a href="myAccount.html">My Account</a></li>');
+            }else{
+                var $login_register = $(
+                    '<li style="float:right"><a href="register.html" >Register</a></li>' +
+                    '<li style="float:right"><a href="login.html">Login</a></li>');
+            }
+
+            $login_register.appendTo("#navbar");
+
+        });
+    </script>
+
     <script type="text/javascript">
         var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
 
@@ -66,9 +88,20 @@
             $('#albumselected').hide();
         }
 
-            function submitMe(input) {
+        var inputTest = localStorage.getItem('objectToPass');
+        var displayData = inputTest;
+        //alert('Inserted Data' + inputTest);
+
+
+        console.log(inputTest);
+        var hope = inputTest;
+        //localStorage.removeItem( 'objectToPass' ); // Clear the localStorage
+                                            //input
+            function submitMe() { //console.log(localStorage["key"]);
+                var input = hope;
                 query = "http://api.napster.com/v2.2/search/verbose?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&query=" + input;
                 //alert(query); //should output text box input
+                console.log(query);
                 Napster.init({consumerKey: API_KEY});
 
 
@@ -387,6 +420,8 @@
 
             }
 
+        window.onload = submitMe(inputTest);
+
         $(document).ready(function() {
             var currentartist;
             Napster.init({ consumerKey: API_KEY });
@@ -424,11 +459,16 @@
             Napster.player.on('error', console.log);
 
         });
+
     </script>
     <style type="text/css">
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-            background-color: #34495e;
+            font-family:century gothic;
+            background-image:url(https://images.pexels.com/photos/802958/pexels-photo-802958.jpeg?cs=srgb&dl=earphones-earpods-justifyyourlove-802958.jpg&fm=jpg);
+            /*height: 100%;*/
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
         .header {
@@ -535,6 +575,27 @@
             background-color: #333;
         }
 
+        .navbar {
+            list-style-type: none;
+            margin: 0;
+            margin-left: -10px;
+            padding: 0;
+            overflow: hidden;
+            background-color: rgb(80, 135, 160);
+            position: fixed;
+            top: 0;
+            width: 100%;
+
+        }
+        .navbar input[type=text] {
+            padding: 6px;
+            margin-right: 0px;
+            margin-top: 8px;
+            font-size: 17px;
+            border: gray;
+            width: 330px;
+        }
+
         li {
             float: left;
         }
@@ -546,6 +607,51 @@
             padding: 14px 16px;
             text-decoration: none;
         }
+
+        li a:hover {
+            background-color: rgba(0, 0, 0, 0.40);
+        }
+
+        .active {
+            background-color: rgba(0, 0, 0, 0.40);
+        }
+        .navbar .search-container {
+            display: flex;
+            justify-content: center;
+            float: left;
+        }
+
+        .navbar .search-container button {
+            padding: 6px;
+            margin-top: 8px;
+            margin-right: 55px;
+            background: #ddd;
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .navbar .search-container button:hover {
+            background: #ccc;
+        }
+
+        @media screen and (max-width: 600px) {
+            .navbar .search-container {
+                float: none;
+            }
+            .navbar a, .navbar input[type=text], .navbar .search-container button {
+                float: none;
+                display: block;
+                text-align: center;
+                width: 100%;
+                margin: 0;
+                padding: 14px;
+            }
+            .navbar input[type=text] {
+                border: 1px solid #ccc;
+            }
+        }
+
 
 
         /*#slideshow {
@@ -563,14 +669,14 @@
             left: 10px;
             right: 10px;
             bottom: 10px;
-        }*/
+        }
 
         .searchBar {
             margin: auto;
             width: 50%;
             padding: 10px;
             text-align: center;
-        }
+        }*/
 
          * {
              box-sizing: border-box;
@@ -618,22 +724,6 @@
             text-align: center;
         }
 
-        .button {
-            background-color: #18afa5;
-            border: none;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 20px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 12px;
-            width: 18%;
-            height: 60px;
-        }
-
         .buttonBackAlbum {
             background-color: #18afa5;
             border: none;
@@ -650,25 +740,6 @@
             height: 60px;
             margin-bottom: 50px;
         }
-
-        .textBox {
-            width: 100%;
-            background-color: white;
-            color: black;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 25px;
-        }
-
-
-
-
-
-
-
 
         /* The Modal (background) */
         .modal {
@@ -714,43 +785,36 @@
             text-align: center;
         }
         */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </style>
 </head>
 <body>
+<div>
+    <ul class="navbar" id="navbar">
+        <li><a class="active" href="landing_page.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <div class="search-container">
+            <form id="submit">
+                <input  class = "textBox" type="text" id="searchBar"  value="" placeholder="Search for anything! Artist, Album, Track..." />
+            </form>
 
-<ul>
-    <li><a class="active" href="#home" style="font-size: 20px;">TrackHub</a></li>
-    <li><a href="#news">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#about">Login</a></li>
-    <li><a href="#about" >Register</a></li>
-</ul>
+            <script>
+                function getTextVal() {
+                    var inputTest = document.getElementById('searchBar').value;
+                    localStorage.setItem('objectToPass', inputTest);
+                }
+            </script>
 
+
+            <button class = "button" onclick="window.location.href='Search.html'; getTextVal()" >Search</button>
+        </div>
+    </ul>
+</div>
+<br>
 <div class="header">
     <div class="header-text" style="font-size: 80px; ">Search<span class="user"></span></div>
 </div>
 
-<div class="searchBar">
-<input class = "textBox" type="text" id="test"  value="" placeholder="Search for anything! Artist, Album, Track..." />
-<br/>
-<button class = "button" onclick="submitMe(document.getElementById('test').value)" id="testButton" >Search</button>
-</div>
 
 <!--
 <div id="slideshow">
@@ -835,8 +899,10 @@
 
 </div>
 
+
 <script>
-    var input = document.getElementById("test");
+    /*
+    var input = document.getElementById("search");
 
     // Execute a function when the user releases a key on the keyboard
     input.addEventListener("keyup", function(event) {
@@ -845,10 +911,12 @@
         // Number 13 is the "Enter" key on the keyboard
         if (event.keyCode === 13) {
             // Trigger the button element with a click
-            document.getElementById("testButton").click();
+            document.getElementById("searchButton").click();
         }
     });
+    */
 </script>
+
 
 <script>
     // Get the modal
