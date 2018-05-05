@@ -119,11 +119,11 @@ function forgotPass(){
 		notify("warning", "Please enter username or email to retrieve your password", 2000, undefined);
 		return;
 	}
-	
+
 	if(username){
 		$.ajax({
 			url: '/forgotPass',
-			data: {"username": username},
+			data: {"value": username, "type": "username"},
 			success: function(response){
 				password = response.password;
 				notify("success", "Got your password!", 2000, undefined);
@@ -136,7 +136,7 @@ function forgotPass(){
 	} else {
 		$.ajax({
 			url: '/forgotPass',
-			data: {"email": email},
+			data: {"value": email, "type": "email"},
 			success: function(response){
 				password = response.password;
 				notify("success", "Got your password!", 2000, undefined);
