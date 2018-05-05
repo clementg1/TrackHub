@@ -43,6 +43,7 @@ function getLoggedIn(){
 	return store["current_user"];
 }
 
+
 /**
 *Reset Logged in variable when user logs out
 **/

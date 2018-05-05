@@ -60,6 +60,32 @@ app.get('/getUsers', function(request, response){
   });
 });
 
+app.get('/addNewSong', function (request, response) {
+  var user_id = request.param(user_id, '');
+  var song_name = request.param(song_name, '');
+  var song_artist = request.param(songartist, '');
+
+  db.query('insert into userSongs (user_id, song_name, song_artist) values ("' + user_id + '", "' + song_name + '", "' + song_artist + '");', function(err, results) {
+
+      if (err) {
+          err = err.toString();
+          console.log("Error in addNewSong: " + err);
+          if (err.indexOf("ER_DUP_ENTRY")) {
+              console.log("Here")
+              response.send("ER_DUP_ENTRY");
+          } else {
+              response.send(400);
+          }
+      }
+      else {
+          console.log("Success added a new song!");
+          response.send(results);
+      }
+
+
+    });
+});
+
 app.get('/createNewUser', function(request, response){
   var username = request.param('user', '');
   var password = request.param('pass', '');

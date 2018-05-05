@@ -152,7 +152,61 @@
       function filter(){
         console.log(document.getElementById("tracks"))
       }
+
+
+      function addtoUserSongs(songName, songArtist) {
+          user_id = "Hello";
+          song_name = songName;
+          song_artist = songArtist;
+
+
+          var fields = {
+              "User ID": user_id,
+              "Song Name": song_name,
+              "Song Artist": song_artist,
+          }
+
+          var results = checkInputs(fields);
+          console.log(results.msg);
+          if(results.changed){
+              notify("warning", results.msg, 3000, undefined);
+              return;
+          }
+
+
+          $.ajax({
+              url: '/addNewSong',
+              data: {
+                  user_id: user_id,
+                  song_name: song_name,
+                  song_artist: song_artist,
+              },
+              success: function(response){
+                  console.log("Response from createNewUser: " + JSON.stringify(response));
+                  if(response === "ER_DUP_ENTRY"){
+                      console.log("Duplicate song name: " + song_name);
+                      notify("error", "An account already exists for that email. Try logging in", 3000, undefined);
+                  }else{
+                      setLoggedIn(response);
+                      window.location = HOME_PAGE;
+                  }
+              },
+              error: function(err){
+                  console.log("Error in adding song: " + err);
+                  if(response.code === "ER_DUP_ENTRY"){
+                      console.log("Duplicate song: " + song_name);
+                      notify("error", response.msg, 3000, undefined);
+                  }else{
+                      notify("error", "There was an error adding the song.", 2000, undefined);
+                  }
+              }
+          });
+      }
+
+
+
 /***************************************** Main Function ****************************************/
+      var addsong = {};
 
       /**
       *When Document loads...
@@ -189,6 +243,11 @@
             Napster.member.set(params);
           }
 
+
+
+
+
+
           Napster.api.get(false, '/tracks/top', function(data) {
             var tracks = data.tracks;
             tracks.forEach(function(track, i) {
@@ -199,12 +258,17 @@
                              '<div class="name">' + track.name + '</div>' +
                              '<div class="artist">' + track.artistName + '</div>' +
                              '<div class="duration">' + Napster.util.secondsToTime(track.playbackSeconds) + '</div>' +
-                             '<div class="current-time">' + Napster.util.secondsToTime(track.playbackSeconds) + '</div>' +
+                             '<div class="current-time" >' + Napster.util.secondsToTime(track.playbackSeconds) + ' < /div>' +
                            '</div>' +
                           '</div>');
 
               $t.click(function() {
                 var id = track.id;
+
+                var trackName = track.name;
+                var trackArtist = track.artistName;
+
+                  addtoUserSongs(trackName, trackArtist);
 
                 if (Napster.player.currentTrack === id) {
                   Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
