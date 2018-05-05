@@ -121,8 +121,22 @@
       **/
       $(document).ready(function() {
         getUsers(function(result){
-          console.log(result);
-        });
+        console.log(result);
+
+          //Load appropriate account buttons on navbar
+        if (getLoggedIn()){
+            var $login_register = $(
+                '<li style="float:right; cursor: pointer"><a onclick="loggingOut()">Sign Out</a></li>' + 
+                '<li style="float:right; cursor: pointer"><a href="myAccount.html">My Account</a></li>');
+        }else{
+            var $login_register = $(
+                '<li style="float:right"><a href="register.html" >Register</a></li>' + 
+                '<li style="float:right"><a href="login.html">Login</a></li>');
+        }
+
+        $login_register.appendTo("#navbar");
+
+      });
 
         
 
@@ -378,12 +392,11 @@
   </head>
   <body>
 
-    <ul>
+
+    <ul id="navbar">
       <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <li style="float:right; cursor: pointer"><a onclick="loggingOut()">Sign Out</a></li>
-      <li style="float:right; cursor: pointer"><a href="myAccount.html">My Account</a></li>
     </ul>
 
     <div class="header">

@@ -102,6 +102,21 @@ app.get('/signIn', function(request, response){
 });
 
 
+app.get('/forgotPass', function(request, response){
+  var value = request.param('value', '');
+  var type = request.param('type', '');
+
+  db.query('select count(1) as count, password from users where ' + type + ' = "' + value + '";', function(err, results){
+    if (err){
+      console.log("Error in forgotPass: " + err.toString());
+      response.send("nothing");
+    }else{
+      console.log("Found password!");
+      response.send(results);
+    }
+  });
+});
+
 /********************************** Napster Functions ******************************/
 
 /**
