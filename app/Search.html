@@ -4,6 +4,11 @@
     <title>TrackHub</title>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="napster.js" type="text/javascript"></script>
+    <script>
+        $(function(){
+            $('.header').load("header.html");
+        });
+    </script>
     <script type="text/javascript">
         var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
 
@@ -66,9 +71,20 @@
             $('#albumselected').hide();
         }
 
-            function submitMe(input) {
+        var inputTest = localStorage.getItem('objectToPass');
+        var displayData = inputTest;
+        //alert('Inserted Data' + inputTest);
+
+
+        console.log(inputTest);
+        var hope = inputTest;
+        //localStorage.removeItem( 'objectToPass' ); // Clear the localStorage
+                                            //input
+            function submitMe() { //console.log(localStorage["key"]);
+                var input = hope;
                 query = "http://api.napster.com/v2.2/search/verbose?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&query=" + input;
                 //alert(query); //should output text box input
+                console.log(query);
                 Napster.init({consumerKey: API_KEY});
 
 
@@ -387,6 +403,8 @@
 
             }
 
+        window.onload = submitMe(inputTest);
+
         $(document).ready(function() {
             var currentartist;
             Napster.init({ consumerKey: API_KEY });
@@ -424,6 +442,7 @@
             Napster.player.on('error', console.log);
 
         });
+
     </script>
     <style type="text/css">
         body {
@@ -563,14 +582,14 @@
             left: 10px;
             right: 10px;
             bottom: 10px;
-        }*/
+        }
 
         .searchBar {
             margin: auto;
             width: 50%;
             padding: 10px;
             text-align: center;
-        }
+        }*/
 
          * {
              box-sizing: border-box;
@@ -618,22 +637,6 @@
             text-align: center;
         }
 
-        .button {
-            background-color: #18afa5;
-            border: none;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 20px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 12px;
-            width: 18%;
-            height: 60px;
-        }
-
         .buttonBackAlbum {
             background-color: #18afa5;
             border: none;
@@ -650,25 +653,6 @@
             height: 60px;
             margin-bottom: 50px;
         }
-
-        .textBox {
-            width: 100%;
-            background-color: white;
-            color: black;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 25px;
-        }
-
-
-
-
-
-
-
 
         /* The Modal (background) */
         .modal {
@@ -714,43 +698,14 @@
             text-align: center;
         }
         */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </style>
 </head>
 <body>
-
-<ul>
-    <li><a class="active" href="#home" style="font-size: 20px;">TrackHub</a></li>
-    <li><a href="#news">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#about">Login</a></li>
-    <li><a href="#about" >Register</a></li>
-</ul>
 
 <div class="header">
     <div class="header-text" style="font-size: 80px; ">Search<span class="user"></span></div>
 </div>
 
-<div class="searchBar">
-<input class = "textBox" type="text" id="test"  value="" placeholder="Search for anything! Artist, Album, Track..." />
-<br/>
-<button class = "button" onclick="submitMe(document.getElementById('test').value)" id="testButton" >Search</button>
-</div>
 
 <!--
 <div id="slideshow">
@@ -835,8 +790,10 @@
 
 </div>
 
+
 <script>
-    var input = document.getElementById("test");
+    /*
+    var input = document.getElementById("search");
 
     // Execute a function when the user releases a key on the keyboard
     input.addEventListener("keyup", function(event) {
@@ -845,10 +802,12 @@
         // Number 13 is the "Enter" key on the keyboard
         if (event.keyCode === 13) {
             // Trigger the button element with a click
-            document.getElementById("testButton").click();
+            document.getElementById("searchButton").click();
         }
     });
+    */
 </script>
+
 
 <script>
     // Get the modal
