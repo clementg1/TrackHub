@@ -45,15 +45,25 @@
             font-size: 20px;
         }
 
-        ul {
+        .navbar {
             list-style-type: none;
             margin: 0;
+            margin-left: -10px;
             padding: 0;
             overflow: hidden;
             background-color: rgb(80, 135, 160);
             position: fixed;
             top: 0;
             width: 100%;
+
+        }
+        .navbar input[type=text] {
+            padding: 6px;
+            margin-right: 0px;
+            margin-top: 8px;
+            font-size: 17px;
+            border: gray;
+            width: 330px;
         }
 
         li {
@@ -75,8 +85,45 @@
         .active {
             background-color: rgba(0, 0, 0, 0.40);
         }
+        .navbar .search-container {
+            display: flex;
+            justify-content: center;
+            float: left;
+        }
 
-        div.gallery {
+        .navbar .search-container button {
+            display: flex;
+            justify-content: center;
+            padding: 6px;
+            margin-top: 8px;
+            margin-right: 55px;
+            background: #ddd;
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .navbar .search-container button:hover {
+            background: #ccc;
+        }
+
+        @media screen and (max-width: 600px) {
+            .navbar .search-container {
+                float: none;
+            }
+            .navbar a, .navbar input[type=text], .navbar .search-container button {
+                float: none;
+                display: block;
+                text-align: center;
+                width: 100%;
+                margin: 0;
+                padding: 14px;
+            }
+            .navbar input[type=text] {
+                border: 1px solid #ccc;
+            }
+        }
+        .gallery {
             margin: 5px;
             border: 1px solid #ccc;
             background-color: rgba(105, 105, 105, 0.35);
@@ -84,12 +131,12 @@
             width: 180px;
         }
 
-        div.gallery img {
+        .gallery img {
             width: 100%;
             height: auto;
         }
 
-        div.desc {
+        .desc {
             padding: 15px;
             text-align: center;
         }
@@ -97,14 +144,32 @@
 </head>
 <body>
 </body>
-    <br>
-    <br>
-    <ul id="navbar">
-        <li><a onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
-        <li><a class="active" href="about.html">About</a></li>
+<div>
+    <ul class="navbar">
+        <li><a class="active" href="landing_page.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+        <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
-    </ul>
+        <div class="search-container">
+            <form id="submit">
+                <input  class = "textBox" type="text" id="searchBar"  value="" placeholder="Search for anything! Artist, Album, Track..." />
+            </form>
 
+            <script>
+                function getTextVal() {
+                    var inputTest = document.getElementById('searchBar').value;
+                    localStorage.setItem('objectToPass', inputTest);
+                }
+            </script>
+
+
+            <button class = "button" onclick="window.location.href='Search.html'; getTextVal()" >Search</button>
+        </div>
+        <li style="float:right; cursor: pointer"><a href="register.html">Register</a></li>
+        <li style="float:right; cursor: pointer"><a href="login.html">Login</a></li>
+    </ul>
+</div>
+<br>
+<br>
 <div class="subheader">
     <br>
     <div class="subhead-text" style="font-size: 28px; font-family:tahoma; color: antiquewhite; text-align: left; text-decoration: underline;">About Us</div><br><span class="user"></span></div>
