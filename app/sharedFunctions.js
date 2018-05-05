@@ -109,3 +109,41 @@ function checkInputs(inputs){
 function passwordRequirementsCheck(password){
   return password;
 }
+
+function forgotPass(){
+	var username = document.getElementById("forgot_username").value.trim();
+	var email = document.getElementById("forgot_email").value.trim();
+	var password;
+
+	if(!username || !email){
+		notify("warning", "Please enter username or email to retrieve your password", 2000, undefined);
+	}
+
+	if(username){
+		$.ajax({
+			url: '/forgotPass',
+			data: {"username": username},
+			success: function(response){
+				password = response.password;
+				notify("success", "Got your password!", 2000, undefined);
+			},
+			error: function(err){
+				console.log("Error in forgotPass-username: " + err);
+				notify("error", "Error in retrieving your password. Contact an admin");
+			}
+		});
+	} else {
+		$.ajax({
+			url: '/forgotPass',
+			data: {"email": email},
+			success: function(response){
+				password = response.password;
+				notify("success", "Got your password!", 2000, undefined);
+			},
+			error: function(err){
+				console.log("Error in forgotPass-username: " + err);
+				notify("error", "Error in retrieving your password. Contact an admin");
+			}
+		});
+	}
+}
