@@ -121,7 +121,9 @@
       **/
       $(document).ready(function() {
         getUsers(function(result){
-        console.log(result);
+          console.log(result);
+        });
+        console.log(getLoggedIn());
 
           //Load appropriate account buttons on navbar
         if (getLoggedIn()){
@@ -135,8 +137,6 @@
         }
 
         $login_register.appendTo("#navbar");
-
-      });
 
         
 
@@ -445,15 +445,19 @@
 
     <div class="tab">
       <button class="active" class="tablinks" style="width: 322px" onclick="openTab(event, 'Top10')">
-        Today's Top 10 Songs
+        Today's Top 20 Songs
       </button>
-      <button class="tablinks" onclick="openTab(event, 'mysongs')">
+      <button class="tablinks" onclick="openTab(event, 'MySongs')">
         My Songs
       </button>
-      <button class="tablinks" onclick="openTab(event, 'myplaylists')">
+      <button class="tablinks" onclick="openTab(event, 'MyPlaylists')">
         My Playlists
       </button>
       <!-- <div class="subhead-text" style="font-size: 28px; font-family:tahoma; color: antiquewhite; text-align: left; text-decoration: underline;">Today's Top Songs:</div><br><span class="user"></span> -->
+    </div>
+
+    <div id="Top10">
+      
     </div>
 
     <br/>
