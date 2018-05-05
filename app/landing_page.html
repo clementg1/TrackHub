@@ -8,6 +8,11 @@
     <script src="napster.js" type="text/javascript"></script>
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
+      <script>
+          $(function(){
+              $('.header').load("header.html");
+          });
+      </script>
 
     <script type="text/javascript">
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
@@ -410,16 +415,6 @@
     </style>
   </head>
   <body style="overflow-y: scroll;">
-
-    <div>
-      <ul class="navbar">
-        <li><a class="active" href="client.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li style="float:right; cursor: pointer"><a href="register.html">Register</a></li>
-        <li style="float:right; cursor: pointer"><a href="login.html">Login</a></li>
-      </ul>
-    </div>
 
     <div class="header">
       <div class="header-text" style="font-size: 80px; text-shadow: 10px 10px #037887; font-family:tahoma; color: antiquewhite; text-align: center; font-weight:bold;">Welcome To TrackHub<span class="user"></span></div>

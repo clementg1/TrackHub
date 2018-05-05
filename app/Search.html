@@ -4,6 +4,11 @@
     <title>TrackHub</title>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="napster.js" type="text/javascript"></script>
+    <script>
+        $(function(){
+            $('.header').load("header.html");
+        });
+    </script>
     <script type="text/javascript">
         var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
 
@@ -734,23 +739,10 @@
 </head>
 <body>
 
-<ul>
-    <li><a class="active" href="#home" style="font-size: 20px;">TrackHub</a></li>
-    <li><a href="#news">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#about">Login</a></li>
-    <li><a href="#about" >Register</a></li>
-</ul>
-
 <div class="header">
     <div class="header-text" style="font-size: 80px; ">Search<span class="user"></span></div>
 </div>
 
-<div class="searchBar">
-<input class = "textBox" type="text" id="test"  value="" placeholder="Search for anything! Artist, Album, Track..." />
-<br/>
-<button class = "button" onclick="submitMe(document.getElementById('test').value)" id="testButton" >Search</button>
-</div>
 
 <!--
 <div id="slideshow">
@@ -836,7 +828,7 @@
 </div>
 
 <script>
-    var input = document.getElementById("test");
+    var input = document.getElementById("search");
 
     // Execute a function when the user releases a key on the keyboard
     input.addEventListener("keyup", function(event) {
@@ -845,7 +837,7 @@
         // Number 13 is the "Enter" key on the keyboard
         if (event.keyCode === 13) {
             // Trigger the button element with a click
-            document.getElementById("testButton").click();
+            document.getElementById("searchButton").click();
         }
     });
 </script>
