@@ -12,7 +12,7 @@
 
 
         $(document).ready(function(){
-
+            setPage("Search");
             //Load appropriate account buttons on navbar
             if (getLoggedIn()){
                 var $login_register = $(
@@ -117,7 +117,7 @@
             return parameters;
         }
 
-        function redirectToAuthentication(){
+       /* function redirectToAuthentication(){
             try{
                 var path = 'https://api.napster.com/oauth/authorize?response_type=code&client_id=' + API_KEY + '&redirect_uri=' + redirectUri;
                 window.location = path;
@@ -127,7 +127,7 @@
                 notify("error", "There as a problem redirecting you to the login page. Please contact an admin.", 5000, undefined);
             }
         }
-
+*/
 
         function backAlbumInfo(){
             $('#results').show();
@@ -158,6 +158,10 @@
 
 
                 Napster.api.getSearch(false, '/search/verbose', function (data) {
+                    if (data.error === "Bad Request"){
+                        notify("warning", "What do you want to search for? Nothing was entered into the search bar", 4000, undefined);
+                        return;
+                    }
                     var searchAlbums = data.search.data.albums;
                     var searchArtists = data.search.data.artists;
                     var searchTracks = data.search.data.tracks;

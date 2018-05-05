@@ -63,6 +63,11 @@ function loggingOut(){
 	redirectToHome();
 }
 
+
+function setPage(page){
+	store["page"] = page
+}
+
 /**
 *Check if logged_in to know where to redirect to home
 **/
@@ -75,15 +80,21 @@ function redirectToHome(){
 }
 
 function redirectToAuthentication(){
-        try{
-          var path = 'https://api.napster.com/oauth/authorize?response_type=code&client_id=' + API_KEY + '&redirect_uri=' + redirectUri;
-          window.location = path;
-        }
-        catch (err){
-          console.log("Error in redirectToAuthentication: " + err);
-          notify("error", "There as a problem redirecting you to the login page. Please contact an admin.", 5000, undefined);
-        }
-      }
+	if (store["page"] === "Search"){
+		redirectUri = baseUrl + '/authorizeSearch';
+	}	
+	else if (store["page"] === "home") {
+		redirectUri = baseUrl + '/authorize';
+	}
+    try{
+      var path = 'https://api.napster.com/oauth/authorize?response_type=code&client_id=' + API_KEY + '&redirect_uri=' + redirectUri;
+      window.location = path;
+    }
+    catch (err){
+      console.log("Error in redirectToAuthentication: " + err);
+      notify("error", "There as a problem redirecting you to the login page. Please contact an admin.", 5000, undefined);
+    }
+  }
 
 /**
 *Toastr fuction to use notifications
@@ -100,6 +111,9 @@ function notify(type, msg, time_out, functionCallback){
     }
     else if (type === "warning"){
     	toastr.warning(msg)
+    }
+    else if (type === "info"){
+    	toastr.info(msg);
     }
     if (functionCallback){
       setTimeout(function(){ functionCallback(); }, time_out);
