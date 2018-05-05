@@ -9,9 +9,30 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
     <script src="sharedFunctions.js"></script>
+      <script type="text/javascript">
 
 
-    <script type="text/javascript">
+          $(document).ready(function(){
+
+              //Load appropriate account buttons on navbar
+              if (getLoggedIn()){
+                  var $login_register = $(
+                      '<li style="float:right; cursor: pointer"><a onclick="loggingOut()">Sign Out</a></li>' +
+                      '<li style="float:right; cursor: pointer"><a href="myAccount.html">My Account</a></li>');
+              }else{
+                  var $login_register = $(
+                      '<li style="float:right"><a href="register.html" >Register</a></li>' +
+                      '<li style="float:right"><a href="login.html">Login</a></li>');
+              }
+
+              $login_register.appendTo("#navbar");
+
+          });
+      </script>
+
+
+
+      <script type="text/javascript">
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
       var myIndex = 0;
       var slideIndex = 1;
@@ -383,7 +404,7 @@
 
 
   <div>
-      <ul class="navbar">
+      <ul class="navbar" id="navbar">
           <li><a class="active" href="landing_page.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
@@ -402,8 +423,6 @@
 
               <button class = "button" onclick="window.location.href='Search.html'; getTextVal()" >Search</button>
           </div>
-          <li style="float:right; cursor: pointer"><a href="register.html">Register</a></li>
-          <li style="float:right; cursor: pointer"><a href="login.html">Login</a></li>
       </ul>
   </div>
 
