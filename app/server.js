@@ -167,6 +167,8 @@ app.get('/makeAccount', function(clientRequest, clientResponse){
 });
 
 app.get('/authorize', function(clientRequest, clientResponse) {
+  console.log(clientRequest.query.code)
+  console.log(clientRequest.params.page);
   request.post({
     url: 'https://api.napster.com/oauth/access_token',
     form: {
@@ -180,6 +182,30 @@ app.get('/authorize', function(clientRequest, clientResponse) {
   }, function(error, response, body) {
     body = JSON.parse(body);
     clientResponse.redirect(baseUrl + '/home.html?' + querystring.stringify({
+      bod: body,
+      res: response,
+      accessToken: body.access_token,
+      refreshToken: body.refresh_token
+    }));
+  });
+});
+
+app.get('/authorizeSearch', function(clientRequest, clientResponse) {
+  console.log(clientRequest.query.code)
+  console.log(clientRequest.params.page);
+  request.post({
+    url: 'https://api.napster.com/oauth/access_token',
+    form: {
+      client_id: apiKey,
+      client_secret: apiSecret,
+      response_type: 'code',
+      code: clientRequest.query.code,
+      redirect_uri: redirectUri,
+      grant_type: 'authorization_code'
+    }
+  }, function(error, response, body) {
+    body = JSON.parse(body);
+    clientResponse.redirect(baseUrl + '/Search.html?' + querystring.stringify({
       bod: body,
       res: response,
       accessToken: body.access_token,

@@ -12,7 +12,7 @@
 
 
         $(document).ready(function(){
-
+            setPage("Search");
             //Load appropriate account buttons on navbar
             if (getLoggedIn()){
                 var $login_register = $(
@@ -117,7 +117,7 @@
             return parameters;
         }
 
-        function redirectToAuthentication(){
+       /* function redirectToAuthentication(){
             try{
                 var path = 'https://api.napster.com/oauth/authorize?response_type=code&client_id=' + API_KEY + '&redirect_uri=' + redirectUri;
                 window.location = path;
@@ -127,7 +127,7 @@
                 notify("error", "There as a problem redirecting you to the login page. Please contact an admin.", 5000, undefined);
             }
         }
-
+*/
 
         function backAlbumInfo(){
             $('#results').show();
@@ -158,6 +158,10 @@
 
 
                 Napster.api.getSearch(false, '/search/verbose', function (data) {
+                    if (data.error === "Bad Request"){
+                        notify("warning", "What do you want to search for? Nothing was entered into the search bar", 4000, undefined);
+                        return;
+                    }
                     var searchAlbums = data.search.data.albums;
                     var searchArtists = data.search.data.artists;
                     var searchTracks = data.search.data.tracks;
@@ -253,10 +257,8 @@
                             '<div class="name">' + searchTracks.name + '</div>' +
                             '<div class="artist2">' + searchTracks.artistName + '</div>' +
                             '<select>\n' +
-                            '  <option value="volvo">Volvo</option>\n' +
-                            '  <option value="saab">Saab</option>\n' +
-                            '  <option value="mercedes">Mercedes</option>\n' +
-                            '  <option value="audi">Audi</option>\n' +
+                            '  <option value="empty">Add...</option>\n' +
+                            '  <option value="add_to_my_songs">To My Songs</option>\n' +
                             '</select> </div>' +
                             '</div>');
 
@@ -264,7 +266,9 @@
                         //CHECK TO SEE IF PLAYING WORKS----------------------------------------------------------------
                         $trackResults.click(function() {
                             var id = searchTracks.id;
-
+                            if(Napster.player.currentTrack){
+                              Napster.player.currentTrack = Napster.player.currentTrack[0].toLowerCase() + Napster.player.currentTrack.slice(1);
+                            }
                             if (Napster.player.currentTrack === id) {
                                 Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
                             }
