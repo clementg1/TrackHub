@@ -101,11 +101,23 @@
 
 <script>
     function Search() {
-        submitMe(document.getElementById('search').value)
-        id="searchButton"
-    }
-    function timeFunction() {
-        setTimeout(Search(), 5000);
+        /*
+        localStorage["key"] = document.getElementById("searchBar").value;
+        //alert(localStorage["key"]);
+        //console.log(localStorage["key"]);
+
+        var searchTerm = document.getElementById("searchBar").value;
+        localStorage.setItem("srchTerm", searchTerm);
+
+        var sTerm = JSON.parse(localStorage.getItem("srchTerm"));
+
+        console.log(sTerm);
+        */
+
+        //Cache["srchTerm"]= document.getElementById("searchBar").value;
+
+        submitMe(document.getElementById('searchBar').value)
+        //id="searchButton"
     }
 </script>
 
@@ -115,8 +127,19 @@
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
         <div class="search-container">
-            <input  class = "textBox" type="text" id="search"  value="" placeholder="Search for anything! Artist, Album, Track..." />
-            <button class = "button" onclick="window.location.href='Search.html'; Search()" >Search</button>
+            <form id="submit">
+                <input  class = "textBox" type="text" id="searchBar"  value="" placeholder="Search for anything! Artist, Album, Track..." />
+            </form>
+
+            <script>
+                function getTextVal() {
+                    var inputTest = document.getElementById('searchBar').value;
+                    localStorage.setItem('objectToPass', inputTest);
+                }
+            </script>
+
+
+            <button class = "button" onclick="window.location.href='Search.html'; getTextVal()" >Search</button>
         </div>
         <li style="float:right; cursor: pointer"><a href="register.html">Register</a></li>
         <li style="float:right; cursor: pointer"><a href="login.html">Login</a></li>

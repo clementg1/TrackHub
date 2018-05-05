@@ -71,7 +71,17 @@
             $('#albumselected').hide();
         }
 
-            function submitMe(input) {
+        var inputTest = localStorage.getItem('objectToPass');
+        var displayData = inputTest;
+        //alert('Inserted Data' + inputTest);
+
+
+        console.log(inputTest);
+        window.onload = submitMe(displayData);
+
+        //localStorage.removeItem( 'objectToPass' ); // Clear the localStorage
+                                            //input
+            function submitMe(inputTest) { //console.log(localStorage["key"]);
                 query = "http://api.napster.com/v2.2/search/verbose?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&query=" + input;
                 //alert(query); //should output text box input
                 Napster.init({consumerKey: API_KEY});
@@ -392,6 +402,8 @@
 
             }
 
+        window.onload = submitMe(inputTest);
+
         $(document).ready(function() {
             var currentartist;
             Napster.init({ consumerKey: API_KEY });
@@ -429,6 +441,7 @@
             Napster.player.on('error', console.log);
 
         });
+
     </script>
     <style type="text/css">
         body {
@@ -776,7 +789,9 @@
 
 </div>
 
+
 <script>
+    /*
     var input = document.getElementById("search");
 
     // Execute a function when the user releases a key on the keyboard
@@ -789,7 +804,9 @@
             document.getElementById("searchButton").click();
         }
     });
+    */
 </script>
+
 
 <script>
     // Get the modal
