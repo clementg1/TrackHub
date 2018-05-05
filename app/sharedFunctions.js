@@ -15,7 +15,7 @@ var win = window.top || window;
 
 // session store 
 var store = (win.name ? JSON.parse(win.name) : {});
-store["current_user"] = undefined;
+
 // save store on page unload
 function Save() {
 	win.name = JSON.stringify(store);
@@ -31,7 +31,9 @@ else window.onunload = Save;
 *Set logged_in variable when a user is logged in
 **/
 function setLoggedIn(username){
+	
 	store["current_user"] = username;
+
 }
 
 /**
