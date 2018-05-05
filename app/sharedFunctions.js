@@ -125,8 +125,13 @@ function forgotPass(){
 			url: '/forgotPass',
 			data: {"value": username, "type": "username"},
 			success: function(response){
-				password = response.password;
-				notify("success", "Got your password!", 2000, undefined);
+				console.log("Response from forgotPass: " + response[0]);
+				if (response[0].count === 1){
+					password = response[0].password;
+					notify("success", "Got your password!", 2000, undefined);
+				} else{
+					notify("error", "Couldn't get your password. Try again.", 2000, undefined);
+				}
 			},
 			error: function(err){
 				console.log("Error in forgotPass-username: " + err);
@@ -138,8 +143,14 @@ function forgotPass(){
 			url: '/forgotPass',
 			data: {"value": email, "type": "email"},
 			success: function(response){
-				password = response.password;
-				notify("success", "Got your password!", 2000, undefined);
+				console.log("Response from forgotPass: " + response[0]);
+				}
+				if (response[0].count === 1){
+					password = response[0].password;
+					notify("success", "Got your password!", 2000, undefined);
+				} else{
+					notify("error", "Couldn't get your password. Try again.", 2000, undefined);
+				}
 			},
 			error: function(err){
 				console.log("Error in forgotPass-username: " + err);
