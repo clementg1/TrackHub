@@ -41,12 +41,22 @@
 <body>
 <div class="container">
   <div class="header">
-    Top Tracks
+    TrackHub Player
   </div>
  
+  <div id="genre-container"></div>
   <div id="tracks-container"></div>
 </div>
 
+<script id="genre-template" type="text/x-handlebars-template">
+ <select id="genres" name="genres"  onchange="getGenre.call(this.value)">
+<option value="topHits" selected="selected">Top Hits</option>
+ {{#each}}
+ <option value="{{id}}">{{name}}</option>
+ {{/each}}
+ </select>
+ </script>
+ 
 <script id="tracks-template" type="text/x-handlebars-template">
   {{#each tracks}}
   <div data-track-id="{{id}}" style="background-image:url(http://direct.rhapsody.com/imageserver/v2/albums/{{albumId}}/images/300x300.jpg)" class="cover">
@@ -59,20 +69,56 @@
 </script>
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="handlebars.min.js"></script>
-<script>
-$(document). ready(function () {
-const tracksTemplateSource = document.getElementById('tracks-template').innerHTML;
-const tracksTemplate = Handlebars.compile(tracksTemplateSource);
 
-const $tracks = $('#tracks-container');
+<script>
+var sgenre = "topHits";
 const apikey = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk'
-const getTopTracks = $.get('https://api.napster.com/v2.1/tracks/top?apikey='+apikey);
+function getGenre(event){
+sgenre = this;
+  //alert(sgenre);
+  loadContent();
+} 
+
+function loadGenres(){
+const genreSource = document.getElementById('genre-template').innerHTML;
+const genreTemplate = Handlebars.compile(genreSource);
+
+const $genre = $('#genre-container');
+
+const getGenre = $.get('http://api.napster.com/v1/genres?apikey='+apikey);
+
+getGenre
+  .then((response) => {
+    $genre.html(genreTemplate(response));
+  });
+}
+
+function loadContent(){  
+var tracksTemplateSource = document.getElementById('tracks-template').innerHTML;
+var tracksTemplate = Handlebars.compile(tracksTemplateSource);
+
+var $tracks = $('#tracks-container');
+
+var getTopTracks = "";
+if (sgenre == "topHits"){
+getTopTracks = $.get('https://api.napster.com/v2.1/tracks/top?apikey='+apikey);
+}else{
+getTopTracks = $.get('http://api.napster.com/v2.2/genres/'+sgenre+'/tracks/top?apikey='+apikey);
+}
+//alert(sgenre);
 
 getTopTracks
   .then((response) => {
-    $tracks.html(tracksTemplate(response));
-  });
-});
+    if(response){
+	$tracks.html(tracksTemplate(response));
+	}else{alert("failed to get api!!");}
+  }); 
+}
+loadGenres();
+loadContent();
+</script>
+</body>
+</html>
 
 </script>
   </body>
