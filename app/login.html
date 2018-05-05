@@ -65,8 +65,9 @@
               notify("error", "Account not found with that username/password combo. Try again", 3000, undefined);
             }else{
               setLoggedIn(response[0].username);
+
               getLoggedIn();
-              //window.location = HOME_PAGE;
+              window.location = HOME_PAGE;
             }
           },
           error: function(err){
