@@ -49,6 +49,20 @@ db.connect((err) => {
 });
 
 
+app.get('/getUser', function(request, response){
+  var user = request.param("username", "");
+
+  db.query('select * from users where username="' + user + '";', function(err, results){
+    if (err){
+      console.log("error in getting user: " + err.toString());
+      response.send(400);
+    }else{
+      console.log("got user");
+      response.send(results);
+    }
+  });
+});
+
 app.get('/getUsers', function(request, response){
   db.query('select * from users', function(err, results){
     if (err){

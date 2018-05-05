@@ -15,7 +15,6 @@ var win = window.top || window;
 
 // session store 
 var store = (win.name ? JSON.parse(win.name) : {});
-store["current_user"] = undefined;
 // save store on page unload
 function Save() {
 	win.name = JSON.stringify(store);
