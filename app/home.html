@@ -114,6 +114,24 @@
         }
         setTimeout(function(){ functionCallback(); }, time_out);
       }
+
+      function openTab(evt, tabName){
+        var i, tabcontent, tablinks;
+
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++){
+          tabcontent[i].style.display = "none";
+        }
+
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++){
+          console.log(tablinks[i])
+          tablinks[i].className = tablinks[i].className.replace("active", "");
+        }
+        
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
 /***************************************** Main Function ****************************************/
 
       /**
@@ -123,7 +141,7 @@
         getUsers(function(result){
           console.log(result);
         });
-        console.log(getLoggedIn());
+        
 
           //Load appropriate account buttons on navbar
         if (getLoggedIn()){
@@ -444,7 +462,7 @@
     </div>
 
     <div class="tab">
-      <button class="active" class="tablinks" style="width: 322px" onclick="openTab(event, 'Top10')">
+      <button class="tablinks active" style="width: 322px" onclick="openTab(event, 'tracks')">
         Today's Top 20 Songs
       </button>
       <button class="tablinks" onclick="openTab(event, 'MySongs')">
@@ -456,11 +474,15 @@
       <!-- <div class="subhead-text" style="font-size: 28px; font-family:tahoma; color: antiquewhite; text-align: left; text-decoration: underline;">Today's Top Songs:</div><br><span class="user"></span> -->
     </div>
 
-    <div id="Top10">
+    <br/>
+
+    <div id="tracks"></div>
+    <div id="MySongs">
       
     </div>
-
-    <br/>
+    <div id="MyPlaylists">
+      
+    </div>
 
     <!--<div id="slideshow">
        <div>
@@ -472,6 +494,6 @@
     </div>-->
 
     <!--Shows the tracks-->
-    <div id="tracks"></div>
+    <!-- <div id="tracks"></div> -->
   </body>
 </html>
