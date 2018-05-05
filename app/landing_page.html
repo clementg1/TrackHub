@@ -9,8 +9,30 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
     <script src="sharedFunctions.js"></script>
+      <script type="text/javascript">
 
-    <script type="text/javascript">
+
+          $(document).ready(function(){
+
+              //Load appropriate account buttons on navbar
+              if (getLoggedIn()){
+                  var $login_register = $(
+                      '<li style="float:right; cursor: pointer"><a onclick="loggingOut()">Sign Out</a></li>' +
+                      '<li style="float:right; cursor: pointer"><a href="myAccount.html">My Account</a></li>');
+              }else{
+                  var $login_register = $(
+                      '<li style="float:right"><a href="register.html" >Register</a></li>' +
+                      '<li style="float:right"><a href="login.html">Login</a></li>');
+              }
+
+              $login_register.appendTo("#navbar");
+
+          });
+      </script>
+
+
+
+      <script type="text/javascript">
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
       var myIndex = 0;
       var slideIndex = 1;
@@ -20,36 +42,6 @@
       var NAPSTER_REGISTER_PAGE = "https://order.napster.com/checkout/rdp?client_id=OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk&redirect_uri=http%3A%2F%2Flocalhost%3A2000%2Fauthorize&response_type=code&pcode=napi&ocode=napi"
 
 /*********************************************** Functions *********************************************/
-      /**
-      *1) Slideshow interval function to display the main and other pics under
-      **/
-      /*function plusDivs(n) {
-        showDivs(slideIndex += n);
-      }
-
-      function currentDiv(n) {
-        showDivs(slideIndex = n);
-      }
-
-      function showDivs(n) {
-        var i;
-        var x = document.getElementsByClassName("mySlides");
-        var dots = document.getElementsByClassName("demo");
-        if (n > x.length) {slideIndex = 1}
-        if (n < 1) {slideIndex = x.length}
-        for (i = 0; i < x.length; i++) {
-           x[i].style.display = "none";
-        }
-        for (i = 0; i < dots.length; i++) {
-           dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
-        }
-        x[slideIndex-1].style.display = "block";
-        dots[slideIndex-1].className += " w3-opacity-off";
-      }
-
-      /**
-      *2) Slideshow interval function to go to next slide
-      **/
 
       /**
       *On refresh to localhost:2000, reauthorize Napster authentication
@@ -126,6 +118,26 @@
         window.location = NAPSTER_REGISTER_PAGE
       }
 
+      function show_image(src, width, height, alt) {
+          var img = document.createElement("img");
+          img.class = "mySlides";
+          img.src = src;
+          img.width = width;
+          img.height = height;
+          img.alt = alt;
+          //document.body.appendChild(img);
+          return img;
+      }
+
+      function show_text(text) {
+          var item = document.createElement("p");
+          item.class = "desc";
+          var t = document.createTextNode(text);
+          item.appendChild(t);
+          //document.body.appendChild(img);
+          return item;
+      }
+
 
 /***************************************** Main Function ****************************************/
 
@@ -140,11 +152,7 @@
         getUsers(function(result){
           users = result;
           console.log(users);
-        });        
-
-        //Call Slideshow
-        //carousel();
-        //showDivs(slideIndex);
+        });
 
         var currentTrack;
         Napster.init({ consumerKey: API_KEY });
@@ -221,50 +229,53 @@
 
           Napster.api.get(false, '/albums/top', function(data) {
             var albuminfo = data.albums;
-            var artwork = [];
             albuminfo.forEach(function(albuminfo, i){
                 var $album = $('<div class="albumName">' +  albuminfo.name + '</div>' );
-                $album.appendTo("#albus");
+                //$album.appendTo("#albus");
                 var $artist = $('<div class="artistName">' +  albuminfo.artistName + '</div>' );
-                $artist.appendTo("#artist");
-                var $image = $('<div class="albumArt" data-artist="'+ albuminfo.id +'">' +  albuminfo.links.images.href + '<div class="album-art-artist"></div>' );
-                /*try {
+
+                //$artist.appendTo("#artist");
+                //var $image = $('<div class="albumArt" data-artist="'+ albuminfo.id +'">' +  albuminfo.links.images.href + '<div class="album-art-artist"></div>' );
+                try {
                     Napster.api.get(false, '/albums/' + albuminfo.id + '/images', function (data) {
-                        var images = data.images;
-                        //var link = images[0].url;
-                        //console.log(images);
-                        //$('[data-artist="' + albuminfo.id + '"] .album-art-artist')
-                            //.append($('<img>', {src: link}));
-                        //console.log(link);
-                        var $art = $('<img id="artwork" class="art" src=link style="width:100%;">Artwork</img>;')
-                        $art.appendTo("#image");
-
-
-                       // });
+                        var artName = "http://direct.napster.com/imageserver/v2/albums/" + albuminfo.id + "/images/600x600.jpg";
+                        var art = show_image(artName, 225, 225, "Album Art");
+                        var text = show_text(albuminfo.name + " by " + albuminfo.artistName);
+                        $('#gallery').before(art);
+                        //$('#desc').before(text);
                     });
                 }catch (e) {
                     console.log("No image exists.");
-                }*/
+                }
             //console.log(artwork[0]);
             });
           });
       });
-    </script>
-    <style type="text/css">
-      body {
-        font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+      </script>
+      <style type="text/css">
+
+      body{
+        font-family:century gothic;
         background-image:url(https://images.pexels.com/photos/802958/pexels-photo-802958.jpeg?cs=srgb&dl=earphones-earpods-justifyyourlove-802958.jpg&fm=jpg);
-        /*height: 100%;*/
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
       }
 
       /**
-      *SLideshow styling
+      *Gallery styling
       **/
-      .mySlides {display:none}
-      .demo {cursor:pointer}
+      div.gallery {
+          margin: 5px;
+          width: 180px;
+      }
+      div.gallery img {
+          width: 100%;
+          height: auto;
+      }
+      /**
+      *Gallery styling
+      **/
 
       .header {
         padding: 50px;
@@ -273,7 +284,7 @@
       .header-text {
         font-weight: 100;
         font-size: 50px;
-        color: #31404d;
+        color: #037887;
       }
 
       .user {
@@ -299,20 +310,29 @@
       }
 
       .navbar {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-          background-color: rgb(80, 135, 160);
-          position: fixed;
-          top: 0;
-          width: 100%;
+           list-style-type: none;
+           margin: 0;
+           padding: 0;
+           overflow: hidden;
+           background-color: rgb(80, 135, 160);
+           position: fixed;
+           top: 0;
+           width: 100%;
 
+       }
+      .navbar input[type=text] {
+          vertical-align:middle;
+          padding: 6px;
+          margin-right: 0px;
+          margin-top: 8px;
+          font-size: 17px;
+          border: gray;
+          width: 330px;
       }
 
       li {
-          float: left;
-      }
+            float: left;
+        }
 
       li a {
           display: block;
@@ -323,56 +343,92 @@
       }
 
       li a:hover {
-        background-color: rgba(0, 0, 0, 0.40);
+          background-color: rgba(0, 0, 0, 0.40);
       }
 
       .active {
-        background-color: rgba(0, 0, 0, 0.40);
+          background-color: rgba(0, 0, 0, 0.40);
+      }
+      .navbar .search-container {
+          display: flex;
+          justify-content: center;
+          float: left;
+      }
+
+      .navbar .search-container button {
+          display: flex;
+          justify-content: center;
+          padding: 6px;
+          margin-top: 8px;
+          margin-right: 55px;
+          background: #ddd;
+          font-size: 17px;
+          border: none;
+          cursor: pointer;
+      }
+
+      .navbar .search-container button:hover {
+          background: #ccc;
+      }
+
+      @media screen and (max-width: 600px) {
+          .navbar .search-container {
+              float: none;
+          }
+          .navbar a, .navbar input[type=text], .navbar .search-container button {
+              float: none;
+              display: block;
+              text-align: center;
+              width: 100%;
+              margin: 0;
+              padding: 14px;
+          }
+          .navbar input[type=text] {
+              border: 1px solid #ccc;
+          }
       }
     </style>
   </head>
-  <body >
+  <body>
 
-    <div>
-      <ul class="navbar">
-        <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li style="float:right; cursor: pointer"><a href="register.html">Register</a></li>
-        <li style="float:right; cursor: pointer"><a href="login.html">Login</a></li>
+
+  <div>
+      <ul class="navbar" id="navbar">
+          <li><a class="active" href="landing_page.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <div class="search-container">
+              <form id="submit">
+                  <input  class = "textBox" type="text" id="searchBar"  value="" placeholder="Search for anything! Artist, Album, Track..." />
+              </form>
+
+              <script>
+                  function getTextVal() {
+                      var inputTest = document.getElementById('searchBar').value;
+                      localStorage.setItem('objectToPass', inputTest);
+                  }
+              </script>
+
+
+              <button class = "button" onclick="window.location.href='Search.html'; getTextVal()" >Search</button>
+          </div>
       </ul>
+  </div>
+
+
+    <div class="header" style="margin-top:25px">
+      <div class="header-text" style="font-size: 80px; text-shadow: 3px 3px #5087a0; letter-spacing: 5px; font-family:century gothic; color: darkgray; text-align: center; font-weight:bold;">TrackHub<span class="user"></span></div>
     </div>
-
-    <div class="header">
-      <div class="header-text" style="font-size: 80px; text-shadow: 10px 10px #037887; font-family:tahoma; color: antiquewhite; text-align: center; font-weight:bold;">TrackHub<span class="user"></span></div>
-    </div>
-
-
     <div id="albus" class="albumName"></div>
     <div id="artist" class="artistName"></div>
-    <div id="image" class="albumArt"></div>
+    <div id="artwork" class="albumArt"></div>
 
-   <!-- <div class="w3-content" style="max-width:1200px">
-      <img class="mySlides" src="../assets/welcome.jpg" style="width: 100%;">
-      <img class="mySlides" src="../assets/listen_to_music.jpg" style="width: 100%;">
 
-      <div class="w3-row-padding w3-section" style="margin-right: 0; padding: 0;">
-        <div class="w3-col s4">
-          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/welcome.jpg" style="width:47%" onclick="currentDiv(1)">
-          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:50%; float: right; padding-left: 10px" onclick="currentDiv(2)">
-        </div>
-        <div class="w3-col s4" >
-          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:50%" onclick="currentDiv(2)">
-        </div>
-        <!-- <div class="w3-col s4" >
-          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:50%" onclick="currentDiv(2)">
-        </div> -->
-      </div>
-    </div>-->
+    <div id="image" style="margin:10px 75px 75px 100px;">
+        <div id="gallery" class="gallery"></div>
+    </div>
 
 
 
-
-    
   </body>
 </html>
