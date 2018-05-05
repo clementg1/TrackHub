@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <title>TrackHub - AboutUs</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="napster.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
+    <script src="sharedFunctions.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+    
+
+    $(document).ready(function(){
+        
+        //Load appropriate account buttons on navbar
+        if (getLoggedIn()){
+            var $login_register = $(
+                '<li style="float:right; cursor: pointer"><a onclick="loggingOut()">Sign Out</a></li>' + 
+                '<li style="float:right; cursor: pointer"><a href="myAccount.html">My Account</a></li>');
+        }else{
+            var $login_register = $(
+                '<li style="float:right"><a href="register.html" >Register</a></li>' + 
+                '<li style="float:right"><a href="login.html">Login</a></li>');
+        }
+
+        $login_register.appendTo("#navbar");
+
+    });
+    </script>
+
     <style type="text/css">
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
@@ -70,12 +99,10 @@
 </body>
     <br>
     <br>
-    <ul>
-        <li><a href="client.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+    <ul id="navbar">
+        <li><a onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
         <li><a class="active" href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li style="float:right"><a href="register.html" >Register</a></li>
-        <li style="float:right"><a href="login.html">Login</a></li>
     </ul>
 
 <div class="subheader">
