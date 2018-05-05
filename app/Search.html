@@ -77,13 +77,14 @@
 
 
         console.log(inputTest);
-        window.onload = submitMe(displayData);
-
+        var hope = inputTest;
         //localStorage.removeItem( 'objectToPass' ); // Clear the localStorage
                                             //input
-            function submitMe(inputTest) { //console.log(localStorage["key"]);
+            function submitMe() { //console.log(localStorage["key"]);
+                var input = hope;
                 query = "http://api.napster.com/v2.2/search/verbose?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&query=" + input;
                 //alert(query); //should output text box input
+                console.log(query);
                 Napster.init({consumerKey: API_KEY});
 
 
