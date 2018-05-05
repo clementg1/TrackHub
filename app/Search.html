@@ -268,7 +268,9 @@
                         //CHECK TO SEE IF PLAYING WORKS----------------------------------------------------------------
                         $trackResults.click(function() {
                             var id = searchTracks.id;
-
+                            if(Napster.player.currentTrack){
+                              Napster.player.currentTrack = Napster.player.currentTrack[0].toLowerCase() + Napster.player.currentTrack.slice(1);
+                            }
                             if (Napster.player.currentTrack === id) {
                                 Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
                             }
