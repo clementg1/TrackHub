@@ -29,6 +29,38 @@
     <script type="text/javascript">
         var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
 
+        function refresh(callback) {
+            $.ajax({
+                url: '/reauthorize',
+                method: 'GET',
+                data: { refreshToken: Napster.member.refreshToken },
+                success: function(data) {
+                    Napster.member.set({
+                        accessToken: data.access_token,
+                        refreshToken: data.refresh_token
+                    });
+
+                    if (callback) {
+                        callback(data);
+                    }
+                }
+            });
+        }
+
+        function getParameters() {
+            var query = window.location.search.substring(1);
+            var parameters = {};
+
+            if (query) {
+                query.split('&').forEach(function(item) {
+                    var param = item.split('=');
+                    parameters[param[0]] = param[1];
+                });
+            }
+
+            return parameters;
+        }
+
 
         $("#slideshow > div:gt(0)").hide();
 
@@ -201,12 +233,17 @@
                     searchTracks.forEach(function (searchTracks, i) {
 
 
-                        var $trackResults = $('<div class="artist" data-artist="' + searchTracks.id + '">' +
-                            '<div class="album-art"></div>' +
+                        var $trackResults = $('<div class="artist2" data-artist2="' + searchTracks.albumId + '">' +
+                            '<div class="album-art2"></div>' +
                             '<div class="artist-info">' +
                             '<div class="name">' + searchTracks.name + '</div>' +
-                            '<div class="artist">' + searchTracks.artistName + '</div>' +
-                            '</div>' +
+                            '<div class="artist2">' + searchTracks.artistName + '</div>' +
+                            '<select>\n' +
+                            '  <option value="volvo">Volvo</option>\n' +
+                            '  <option value="saab">Saab</option>\n' +
+                            '  <option value="mercedes">Mercedes</option>\n' +
+                            '  <option value="audi">Audi</option>\n' +
+                            '</select> </div>' +
                             '</div>');
 
 
@@ -229,13 +266,14 @@
 
                         $trackResults.appendTo('#tracks');
 
-                        /*
-                    Napster.api.get(false, '/albums/' + searchTracks.artistId + '/images', function(data) {
+
+                    Napster.api.get(false, '/albums/' + searchTracks.albumId + '/images', function(data) {
                         var images = data.images;
-                        $('[data-artist="' + searchTracks.artistId + '"] .album-art')
+                        console.log(images);
+                        $('[data-artist2="' + searchTracks.albumId + '"] .album-art2')
                             .append($('<img>', { src: images[0].url }));
                     });
-                    */
+
 
                     });
 
@@ -423,7 +461,8 @@
         window.onload = submitMe(inputTest);
 
         $(document).ready(function() {
-            var currentartist;
+            //var currentartist;
+            var currentTrack;
             Napster.init({ consumerKey: API_KEY });
 
             Napster.player.on('ready', function(e) {
@@ -447,6 +486,7 @@
 
             Napster.player.on('playtimer', function(e) {
                 var id = currentTrack;
+
                 var current = e.data.currentTime;
                 var total = e.data.totalTime;
                 var width = $("[data-artist='" + id + "'] .artist-info").width();
@@ -501,6 +541,13 @@
             width: 100%;
         }
 
+        .artist2 {
+            overflow: hidden;
+            display: table-row;
+            height: 130px;
+            width: 100%;
+        }
+
         .artist img {
             display: block;
             height: 300px;
@@ -508,18 +555,34 @@
             border-radius: 15px;
             background: white;
             padding: 1px;
-
         }
 
+        .artist2 imgTrack {
+            display: block;
+            height: 100px;
+            width: 100px;
+            border-radius: 15px;
+            background: white;
+            padding: 1px;
+        }
+
+
         .album-art {
-            width: 130px;
-            height: 130px;
+            width: 300px;
+            height: 300px;
         }
 
         .album-art-artist {
             width: 300px;
             height: 300px;
         }
+
+
+        .album-art2{
+            weight: 130px;
+            height: 130px;
+        }
+
 
         .artist-info {
             position: relative;
@@ -529,7 +592,7 @@
             width: 100%;
         }
 
-        .album-art, .artist-info {
+        .album-art, .artist-info, album-art2 {
             display: table-cell;
             border-bottom: 1px solid white;
             padding-bottom: 10px;

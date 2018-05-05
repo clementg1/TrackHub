@@ -149,6 +149,7 @@
                         $t.click(function() {
                             var id = track.id;
 
+
                             if (Napster.player.currentTrack === id) {
                                 Napster.player.playing ? Napster.player.pause() : Napster.player.play(id);
                             }
@@ -174,6 +175,10 @@
             Napster.player.on('playevent', function(e) {
                 var playing = e.data.playing;
                 var paused = e.data.paused;
+
+
+                console.log(e.data.id);
+
                 var currentTrack = e.data.id;
 
                 $('[data-track]').removeClass('playing paused');
