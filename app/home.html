@@ -270,19 +270,19 @@
       .track {
         overflow: hidden;
         display: table-row;
-        height: 130px;
+        height: 50px;
         width: 100%;
       }
 
       .track img {
         display: block;
-        height: 150px;
-        width: 150px;
+        height: 50px;
+        width: 50px;
       }
 
       .album-art {
-        width: 150px;
-        height: 150px;
+        width: 50px;
+        height: 50px;
       }
 
       .track-info {
@@ -336,8 +336,15 @@
         color: antiquewhite;
       }
 
+      .artist {
+        padding: 13px;
+      }
+      .duration {
+        padding: 13px;
+      }
       .name, .artist, .duration, .current-time {
-        position: absolute;
+        /*position: absolute;*/
+        float: left;
         left: 25px;
         z-index: 2;
       }
