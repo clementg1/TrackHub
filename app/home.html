@@ -128,7 +128,7 @@
           console.log(tablinks[i])
           tablinks[i].className = tablinks[i].className.replace("active", "");
         }
-        
+
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
       }
@@ -142,6 +142,8 @@
           console.log(result);
         });
         
+        //Display tracks on load
+        document.getElementById("tracks").style.display = "block";
 
           //Load appropriate account buttons on navbar
         if (getLoggedIn()){
@@ -474,13 +476,12 @@
       <!-- <div class="subhead-text" style="font-size: 28px; font-family:tahoma; color: antiquewhite; text-align: left; text-decoration: underline;">Today's Top Songs:</div><br><span class="user"></span> -->
     </div>
 
-    <br/>
 
-    <div id="tracks"></div>
-    <div id="MySongs">
+    <div id="tracks" class="tabcontent"></div>
+    <div id="MySongs" class="tabcontent">
       
     </div>
-    <div id="MyPlaylists">
+    <div id="MyPlaylists" class="tabcontent">
       
     </div>
 
