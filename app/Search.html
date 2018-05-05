@@ -66,9 +66,20 @@
             $('#albumselected').hide();
         }
 
-            function submitMe(input) {
+        var inputTest = localStorage.getItem('objectToPass');
+        var displayData = inputTest;
+        //alert('Inserted Data' + inputTest);
+
+
+        console.log(inputTest);
+        var hope = inputTest;
+        //localStorage.removeItem( 'objectToPass' ); // Clear the localStorage
+                                            //input
+            function submitMe() { //console.log(localStorage["key"]);
+                var input = hope;
                 query = "http://api.napster.com/v2.2/search/verbose?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&query=" + input;
                 //alert(query); //should output text box input
+                console.log(query);
                 Napster.init({consumerKey: API_KEY});
 
 
@@ -387,6 +398,9 @@
 
             }
 
+
+        window.onload = submitMe(inputTest);
+
         $(document).ready(function() {
             var currentartist;
             Napster.init({ consumerKey: API_KEY });
@@ -424,6 +438,7 @@
             Napster.player.on('error', console.log);
 
         });
+
     </script>
     <style type="text/css">
         body {
@@ -563,14 +578,14 @@
             left: 10px;
             right: 10px;
             bottom: 10px;
-        }*/
+        }
 
         .searchBar {
             margin: auto;
             width: 50%;
             padding: 10px;
             text-align: center;
-        }
+        }*/
 
          * {
              box-sizing: border-box;
@@ -714,22 +729,6 @@
             text-align: center;
         }
         */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </style>
 </head>
 <body>
@@ -836,7 +835,8 @@
 </div>
 
 <script>
-    var input = document.getElementById("test");
+    /*
+    var input = document.getElementById("search");
 
     // Execute a function when the user releases a key on the keyboard
     input.addEventListener("keyup", function(event) {
@@ -845,9 +845,11 @@
         // Number 13 is the "Enter" key on the keyboard
         if (event.keyCode === 13) {
             // Trigger the button element with a click
-            document.getElementById("testButton").click();
+
+            document.getElementById("searchButton").click();
         }
     });
+    */
 </script>
 
 <script>

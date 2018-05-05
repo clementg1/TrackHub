@@ -10,6 +10,7 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
     <script src="sharedFunctions.js"></script>
 
+
     <script type="text/javascript">
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
       var myIndex = 0;
@@ -211,6 +212,7 @@
                 var $album = $('<div class="albumName">' +  albuminfo.name + '</div>' );
                 //$album.appendTo("#albus");
                 var $artist = $('<div class="artistName">' +  albuminfo.artistName + '</div>' );
+
                 //$artist.appendTo("#artist");
                 //var $image = $('<div class="albumArt" data-artist="'+ albuminfo.id +'">' +  albuminfo.links.images.href + '<div class="album-art-artist"></div>' );
                 try {
@@ -220,11 +222,10 @@
                         var text = show_text(albuminfo.name + " by " + albuminfo.artistName);
                         $('#gallery').before(art);
                         //$('#desc').before(text);
-
                     });
                 }catch (e) {
                     console.log("No image exists.");
-                }
+                }*/
             //console.log(artwork[0]);
             });
           });
@@ -322,6 +323,7 @@
   </head>
   <body>
 
+
     <div>
       <ul class="navbar">
         <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
@@ -332,12 +334,14 @@
       </ul>
     </div>
 
+
     <div class="header" style="margin-top:25px">
       <div class="header-text" style="font-size: 80px; text-shadow: 3px 3px #5087a0; letter-spacing: 5px; font-family:century gothic; color: darkgray; text-align: center; font-weight:bold;">TrackHub<span class="user"></span></div>
     </div>
     <div id="albus" class="albumName"></div>
     <div id="artist" class="artistName"></div>
     <div id="artwork" class="albumArt"></div>
+
 
     <div id="image" style="margin:10px 75px 75px 100px;">
         <div id="gallery" class="gallery"></div>
