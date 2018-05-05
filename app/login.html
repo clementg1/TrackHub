@@ -29,14 +29,6 @@
       var HOME_PAGE = "http://localhost:2000/home.html"
 
       /**
-      *Forgot password stuff
-      **/
-      $('#forgotPass').click(function(){
-        alert("test")
-      })
-
-
-      /**
       *Ajax request to check sign in creds on database
       **/
       function signIn(){
@@ -84,7 +76,62 @@
         })
       }
 
-      
+
+      function localForgotPass(){
+        var username = document.getElementById("forgot_username").value;
+        var email = document.getElementById("forgot_email").value;
+
+        if(!username[0] && !email[0]){
+          notify("warning", "Please enter username or email to retrieve your password", 2000, undefined);
+          return;
+        }
+
+        if(username){
+          $.ajax({
+            url: '/forgotPass',
+            data: {"value": username, "type": "username"},
+            success: function(response){
+              console.log("Response from forgotPass: " + response[0].count + response[0].password);
+              if (response[0].count === 1){
+                password = response[0].password;
+                notify("success", "Got your password!", 2000, undefined);
+                document.getElementById("showPass").innerHTML= password;
+              } else{
+                notify("error", "Couldn't get your password. Try again.", 2000, undefined);
+              }
+            },
+            error: function(err){
+              console.log("Error in forgotPass-username: " + err);
+              notify("error", "Error in retrieving your password. Contact an admin");
+            }
+          });
+        } else {
+          $.ajax({
+            url: '/forgotPass',
+            data: {"value": email, "type": "email"},
+            success: function(response){
+              console.log("Response from forgotPass: " + response[0].count + response[0].password);
+              if (response[0].count === 1){
+                password = response[0].password;
+                document.getElementById("showPass").innerHTML = password;
+                notify("success", "Got your password!", 2000, undefined);
+              } else{
+                notify("error", "Couldn't get your password. Try again.", 2000, undefined);
+              }
+            },
+            error: function(err){
+              console.log("Error in forgotPass-username: " + err);
+              notify("error", "Error in retrieving your password. Contact an admin");
+            }
+          });
+        }
+        
+        var x = document.getElementById("getPassword");
+        
+        x.href = "#forgotPassShow";
+
+      }
+
 
       $(document).ready(function(){
         
@@ -299,10 +346,20 @@
                         </div>
 
                         <div class="container-login100-form-btn m-t-17">
-                          <input type="button" class="login100-form-btn" onclick="forgotPass()" value="Get Password" style="text-align: center; cursor: pointer" />
+                          <a type="button" class="login100-form-btn" onclick="localForgotPass()" value="Get Password" id="getPassword" style="text-align: center; cursor: pointer">Get Password</a>
                         </div>
 
                       </div>
+                    </div>
+
+                    <div id="forgotPassShow" class="modalDialog">
+                      <div class="modal-content">
+                        <a href="#" title="Close" class="close">X</a>
+                        <h2 style="color: Black; text-align: center">Your password is:</h2>
+                        <br/>
+
+                        <label id="showPass" style="font-size: 30px; text-align: center; color: black;"></label>
+                      </div>                      
                     </div>
 
                 </form>
