@@ -8,11 +8,8 @@
     <script src="napster.js" type="text/javascript"></script>
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
-      <script>
-          $(function(){
-              $('.header').load("header.html");
-          });
-      </script>
+    <script src="sharedFunctions.js"></script>
+
 
     <script type="text/javascript">
       var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
@@ -21,12 +18,13 @@
       var port = 2000;
       var baseUrl = 'http://localhost:' + port;
       var redirectUri = baseUrl + '/authorize';
+      var NAPSTER_REGISTER_PAGE = "https://order.napster.com/checkout/rdp?client_id=OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk&redirect_uri=http%3A%2F%2Flocalhost%3A2000%2Fauthorize&response_type=code&pcode=napi&ocode=napi"
 
 /*********************************************** Functions *********************************************/
       /**
       *1) Slideshow interval function to display the main and other pics under
       **/
-      function plusDivs(n) {
+      /*function plusDivs(n) {
         showDivs(slideIndex += n);
       }
 
@@ -126,37 +124,10 @@
       }
 
       function redirectToRegister(){
-        window.location = "https://order.napster.com/checkout/rdp?client_id=OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk&redirect_uri=http%3A%2F%2Flocalhost%3A2000%2Fauthorize&response_type=code&pcode=napi&ocode=napi"
-        /*$.ajax({
-          url: '/makeAccount',
-          success: function(response){
-            console.log("makeAccount Response: " + response);
-          },
-          error: function(response){
-            console.log("Error in makeAccount: " + JSON.stringify(response));
-            notify("error", "There was a problem redirecting you to the register page. Please contact an admin.", 5000, undefined);
-          }
-        });*/
+        window.location = NAPSTER_REGISTER_PAGE
       }
 
-      function notify(type, msg, time_out, functionCallback){
-        
-        if (type === "success"){
-          toastr.options = {
-              "timeout": time_out
-            }
-            toastr.success(msg);
-        }
-        else if (type === "error"){
-          toastr.options = {
-            "timeout": time_out
-          }
-          toastr.error(msg);
-        }
-        if (functionCallback){
-          setTimeout(function(){ functionCallback(); }, time_out);
-        }
-      }
+
 /***************************************** Main Function ****************************************/
 
       /**
@@ -174,7 +145,7 @@
 
         //Call Slideshow
         //carousel();
-        showDivs(slideIndex);
+        //showDivs(slideIndex);
 
         var currentTrack;
         Napster.init({ consumerKey: API_KEY });
@@ -248,6 +219,36 @@
         Napster.player.on('error', function(err){
           notify("error","Authentication has timed out. Redirecting to login...",2000, pageReload);
         });
+
+          Napster.api.get(false, '/albums/top', function(data) {
+            var albuminfo = data.albums;
+            var artwork = [];
+            albuminfo.forEach(function(albuminfo, i){
+                var $album = $('<div class="albumName">' +  albuminfo.name + '</div>' );
+                $album.appendTo("#albus");
+                var $artist = $('<div class="artistName">' +  albuminfo.artistName + '</div>' );
+                $artist.appendTo("#artist");
+                var $image = $('<div class="albumArt" data-artist="'+ albuminfo.id +'">' +  albuminfo.links.images.href + '<div class="album-art-artist"></div>' );
+                /*try {
+                    Napster.api.get(false, '/albums/' + albuminfo.id + '/images', function (data) {
+                        var images = data.images;
+                        //var link = images[0].url;
+                        //console.log(images);
+                        //$('[data-artist="' + albuminfo.id + '"] .album-art-artist')
+                            //.append($('<img>', {src: link}));
+                        //console.log(link);
+                        var $art = $('<img id="artwork" class="art" src=link style="width:100%;">Artwork</img>;')
+                        $art.appendTo("#image");
+
+
+                       // });
+                    });
+                }catch (e) {
+                    console.log("No image exists.");
+                }*/
+            //console.log(artwork[0]);
+            });
+          });
       });
     </script>
     <style type="text/css">
@@ -281,106 +282,23 @@
         font-size: 20px;
       }
 
-      .tracks {
-        width: 100%;
-        max-width: 700px;
-        display: table;
-        border-collapse: collapse;
-      }
-
-      .track {
-        overflow: hidden;
-        display: table-row;
-        height: 130px;
-        width: 100%;
-      }
-
-      .track img {
+      .artist img {
         display: block;
-        height: 150px;
-        width: 150px;
+        height: 300px;
+        width: 300px;
+        border-radius: 15px;
+        background: white;
+        padding: 1px;
       }
-
       .album-art {
-        width: 150px;
-        height: 150px;
-      }
-
-      .track-info {
-        position: relative;
-        vertical-align: top;
-        font-weight: 200;
-        height: 100%;
-        width: 100%;
-      }
-
-      .album-art, .track-info {
-        display: table-cell;
-        border: 3px solid transparent;
-      }
-
-      .track:hover {
-        background-color: rgba(230, 230, 237, 0.6);
-      }
-
-      .progress-bar {
-        background-color: white;
-        z-index: 1;
-        position: absolute;
-        display: none;
+        width: 130px;
         height: 130px;
-        top: 0;
-        left: 0;
-        width: 0;
+      }
+      .album-art-artist {
+        width: 300px;
+        height: 300px;
       }
 
-      .playing .progress-bar, .paused .progress-bar {
-        display: block;
-      }
-
-      .artist, .name {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .name {
-        font-size: 22px;
-        font-weight: bold;
-        margin-top: 10px;
-        color: white;
-      }
-
-      .artist { top: 42px; }
-
-      .artist, .duration, .current-time {
-        font-size: 19px;
-        color: antiquewhite;
-      }
-
-      .name, .artist, .duration, .current-time {
-        position: absolute;
-        left: 25px;
-        z-index: 2;
-      }
-
-      .duration, .current-time {
-        bottom: 10px;
-        font-weight: 300;
-      }
-
-      .current-time {
-        display: none;
-      }
-
-      .playing .duration,
-      .paused .duration {
-        display: none;
-      }
-
-      .playing .current-time,
-      .paused .current-time {
-        display: block;
-      }
       .navbar {
           list-style-type: none;
           margin: 0;
@@ -414,26 +332,46 @@
       }
     </style>
   </head>
-  <body style="overflow-y: scroll;">
+  <body >
 
-    <div class="header">
-      <div class="header-text" style="font-size: 80px; text-shadow: 10px 10px #037887; font-family:tahoma; color: antiquewhite; text-align: center; font-weight:bold;">Welcome To TrackHub<span class="user"></span></div>
+
+    <div>
+      <ul class="navbar">
+        <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li style="float:right; cursor: pointer"><a href="register.html">Register</a></li>
+        <li style="float:right; cursor: pointer"><a href="login.html">Login</a></li>
+      </ul>
     </div>
 
 
-    <div class="w3-content" style="max-width:1200px">
+    <div class="header">
+      <div class="header-text" style="font-size: 80px; text-shadow: 10px 10px #037887; font-family:tahoma; color: antiquewhite; text-align: center; font-weight:bold;">TrackHub<span class="user"></span></div>
+    </div>
+
+
+    <div id="albus" class="albumName"></div>
+    <div id="artist" class="artistName"></div>
+    <div id="image" class="albumArt"></div>
+
+   <!-- <div class="w3-content" style="max-width:1200px">
       <img class="mySlides" src="../assets/welcome.jpg" style="width: 100%;">
       <img class="mySlides" src="../assets/listen_to_music.jpg" style="width: 100%;">
 
-      <div class="w3-row-padding w3-section">
+      <div class="w3-row-padding w3-section" style="margin-right: 0; padding: 0;">
         <div class="w3-col s4">
-          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/welcome.jpg" style="width:100%" onclick="currentDiv(1)">
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/welcome.jpg" style="width:47%" onclick="currentDiv(1)">
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:50%; float: right; padding-left: 10px" onclick="currentDiv(2)">
         </div>
-        <div class="w3-col s4">
-          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:100%" onclick="currentDiv(2)">
+        <div class="w3-col s4" >
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:50%" onclick="currentDiv(2)">
         </div>
+        <!-- <div class="w3-col s4" >
+          <img class="demo w3-opacity w3-hover-opacity-off" src="../assets/listen_to_music.jpg" style="width:50%" onclick="currentDiv(2)">
+        </div> -->
       </div>
-    </div>
+    </div>-->
 
 
 
