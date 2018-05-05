@@ -37,23 +37,45 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
+
         .user {
             font-weight: 200;
             font-size: 20px;
         }
+
         ul {
             list-style-type: none;
             margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .navbar {
+            list-style-type: none;
+            margin: 0;
+            margin-left: -10px;
             padding: 0;
             overflow: hidden;
             background-color: rgb(80, 135, 160);
             position: fixed;
             top: 0;
             width: 100%;
+
         }
+        .navbar input[type=text] {
+            padding: 6px;
+            margin-right: 0px;
+            margin-top: 8px;
+            font-size: 17px;
+            border: gray;
+            width: 330px;
+        }
+
         li {
             float: left;
         }
+
         li a {
             display: block;
             color: white;
@@ -61,6 +83,7 @@
             padding: 14px 16px;
             text-decoration: none;
         }
+
         li a:hover {
             background-color: rgba(0, 0, 0, 0.40);
         }
@@ -68,17 +91,70 @@
         .active {
             background-color: rgba(0, 0, 0, 0.40);
         }
+        .navbar .search-container {
+            display: flex;
+            justify-content: center;
+            float: left;
+        }
+
+        .navbar .search-container button {
+            padding: 6px;
+            margin-top: 8px;
+            margin-right: 55px;
+            background: #ddd;
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .navbar .search-container button:hover {
+            background: #ccc;
+        }
+
+        @media screen and (max-width: 600px) {
+            .navbar .search-container {
+                float: none;
+            }
+            .navbar a, .navbar input[type=text], .navbar .search-container button {
+                float: none;
+                display: block;
+                text-align: center;
+                width: 100%;
+                margin: 0;
+                padding: 14px;
+            }
+            .navbar input[type=text] {
+                border: 1px solid #ccc;
+            }
+        }
 
     </style>
 </head>
 <body>
-    <br>
-    <br>
-    <ul id="navbar">
-        <li><a onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
+<div>
+    <ul class="navbar" id="navbar">
+        <li><a class="active" href="landing_page.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a class="active" href="contact.html">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <div class="search-container">
+            <form id="submit">
+                <input  class = "textBox" type="text" id="searchBar"  value="" placeholder="Search for anything! Artist, Album, Track..." />
+            </form>
+
+            <script>
+                function getTextVal() {
+                    var inputTest = document.getElementById('searchBar').value;
+                    localStorage.setItem('objectToPass', inputTest);
+                }
+            </script>
+
+
+            <button class = "button" onclick="window.location.href='Search.html'; getTextVal()" >Search</button>
+        </div>
     </ul>
+</div>
+<br>
+<br>
 
     <div class="subheader">
         <br>
