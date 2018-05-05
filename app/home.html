@@ -423,7 +423,11 @@
           border: 1px solid #ccc;
           background-color: #f1f1f1;
       }
-      
+
+      .tablinks{
+        width: 300px
+      }
+
     </style>
   </head>
   <body>
@@ -440,13 +444,19 @@
     </div>
 
     <div class="tab">
-      <button active class="tablinks" onclick="openTab(event, 'Top10')">
+      <button class="active" class="tablinks" style="width: 322px" onclick="openTab(event, 'Top10')">
         Today's Top 10 Songs
+      </button>
+      <button class="tablinks" onclick="openTab(event, 'mysongs')">
+        My Songs
+      </button>
+      <button class="tablinks" onclick="openTab(event, 'myplaylists')">
+        My Playlists
       </button>
       <!-- <div class="subhead-text" style="font-size: 28px; font-family:tahoma; color: antiquewhite; text-align: left; text-decoration: underline;">Today's Top Songs:</div><br><span class="user"></span> -->
     </div>
 
-
+    <br/>
 
     <!--<div id="slideshow">
        <div>
