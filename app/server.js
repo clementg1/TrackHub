@@ -80,7 +80,7 @@ app.get('/createNewUser', function(request, response){
   var email = request.param('email', '');
   var first_name = request.param('first_name', '');
   var last_name = request.param('last_name', '');
-
+  console.log(username, password, email, first_name, last_name)
   db.query('insert into users (username, password, email, first_name, last_name) values ("' + username + '", "' + password + '", "' + email + '", "' + first_name + '", "' + last_name + '");', function(err, results){
     if (err){
       err = err.toString();
