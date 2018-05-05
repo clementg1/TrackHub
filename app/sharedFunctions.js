@@ -111,14 +111,15 @@ function passwordRequirementsCheck(password){
 }
 
 function forgotPass(){
-	var username = document.getElementById("forgot_username").value.trim();
-	var email = document.getElementById("forgot_email").value.trim();
+	var username = document.getElementById("forgot_username").value;
+	var email = document.getElementById("forgot_email").value;
 	var password;
 
-	if(!username || !email){
+	if(!username[0] && !email[0]){
 		notify("warning", "Please enter username or email to retrieve your password", 2000, undefined);
+		return;
 	}
-
+	
 	if(username){
 		$.ajax({
 			url: '/forgotPass',
