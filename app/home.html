@@ -6,7 +6,22 @@
     <script src="napster.js" type="text/javascript"></script>
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
-    <script src="sharedFunctions.js" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript"></script>
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    <script src="sharedFunctions.js"></script>
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 
 
     <script type="text/javascript">
@@ -15,6 +30,7 @@
       var port = 2000;
       var baseUrl = 'http://localhost:' + port;
       var redirectUri = baseUrl + '/authorize';
+      var $t;
 
 /*********************************************** Functions *********************************************/
       /**
@@ -132,6 +148,10 @@
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
       }
+
+      function filter(){
+        console.log(document.getElementById("tracks"))
+      }
 /***************************************** Main Function ****************************************/
 
       /**
@@ -139,7 +159,6 @@
       **/
       $(document).ready(function() {
         getUsers(function(result){
-          console.log(result);
         });
         
         //Display tracks on load
@@ -173,7 +192,7 @@
           Napster.api.get(false, '/tracks/top', function(data) {
             var tracks = data.tracks;
             tracks.forEach(function(track, i) {
-              var $t = $('<div class="track" data-track="' + track.id + '">' +
+              $t = $('<div class="track" data-track="' + track.id + '">' +
                            '<div class="album-art"></div>' +
                            '<div class="track-info">' +
                              '<div class="progress-bar"></div>' +
@@ -247,6 +266,7 @@
 
       .header {
         padding: 50px;
+        padding-bottom: 5px;
       }
 
       .header-text {
@@ -468,6 +488,16 @@
 
     <div class="header">
       <div class="header-text" style="font-size: 60px; font-family:tahoma; color: antiquewhite; text-align: center; font-weight:bold;">Welcome To TrackHub<span class="user"></span></div>
+    </div>
+
+    <div class="p-t-31 p-b-9">
+            <span class="txt1" style="color: white; font-size: 20px;">
+                Filter:
+            </span>
+    </div>
+    <div class="wrap-input100" data-validate = "First name is required">
+        <input class="input100" type="text" name="filter" id="filter" value="" onkeyup="filter()" />
+        <span class="focus-input100"></span>
     </div>
 
     <div class="tab">
