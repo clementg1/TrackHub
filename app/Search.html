@@ -117,6 +117,17 @@
             return parameters;
         }
 
+        function redirectToAuthentication(){
+            try{
+                var path = 'https://api.napster.com/oauth/authorize?response_type=code&client_id=' + API_KEY + '&redirect_uri=' + redirectUri;
+                window.location = path;
+            }
+            catch (err){
+                console.log("Error in redirectToAuthentication: " + err);
+                notify("error", "There as a problem redirecting you to the login page. Please contact an admin.", 5000, undefined);
+            }
+        }
+
 
         function backAlbumInfo(){
             $('#results').show();
@@ -502,6 +513,7 @@
             Napster.player.on('error', function(err){
               notify("error","Authentication has timed out. Redirecting to login...",2000, redirectToAuthentication);
             });
+
         });
 
     </script>
@@ -859,7 +871,7 @@
 <body>
 <div>
     <ul class="navbar" id="navbar">
-        <li><a class="active" href="landing_page.html" style="font-weight: bold; text-align:right;">TrackHub</a></li>
+        <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
         <div class="search-container">
@@ -880,9 +892,8 @@
     </ul>
 </div>
 <br>
-<div class="header">
-    <div class="header-text" style="font-size: 80px; ">Search<span class="user"></span></div>
-</div>
+<br>
+<br>
 
 
 <!--
@@ -901,7 +912,7 @@
 
 <div id="results">
 
-    <h1 class="subTitle">Artists</h1>
+    <h1 class="subTitle">Artist</h1>
 
     <div class="columnx">
 
