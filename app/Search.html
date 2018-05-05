@@ -5,6 +5,9 @@
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="napster.js" type="text/javascript"></script>
     <script type="text/javascript" src="sharedFunctions.js"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
+    <meta charset="UTF-8">
     <script type="text/javascript">
 
 
@@ -496,8 +499,9 @@
                 $("[data-artist='" + id + "'] .current-time").html(Napster.util.secondsToTime(total - current));
             });
 
-            Napster.player.on('error', console.log);
-
+            Napster.player.on('error', function(err){
+              notify("error","Authentication has timed out. Redirecting to login...",2000, redirectToAuthentication);
+            });
         });
 
     </script>
