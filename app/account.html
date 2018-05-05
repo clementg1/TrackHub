@@ -1,9 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>My Account</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="napster.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
+    <script src="sharedFunctions.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
+        var API_KEY_SEARCH = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk=';
+        var port = 2000;
+        var baseUrl = 'http://localhost:' + port;
+        var redirectUri = baseUrl + '/authorize';
+
+
+        var name = getLoggedIn();
+
+        //var dfirst = document.getElementById("fname").disabled;
+        //var dlast = document.getElementById("lname").disabled;
+        //var duser = document.getElementById("username").disabled;
+        //var demail = document.getElementById("email").disabled;
+
+        function getUsers(callback){
+            $.ajax({
+                url: '/getUsers',
+                success: function(data){
+                    data.map(function (obj) {
+                        /*for (prop in obj){
+                          console.log(obj[prop])
+                        }*/
+                        callback(obj)
+                    });
+                }
+            });
+        }
+
+        function editProfile() {
+            //dfirst = "enabled";
+            //dlast = "enabled";
+            //duser = "enabled";
+            //demail = "enabled";
+            //var dfirst = document.getElementById("fname").enabled;
+            //var dlast = document.getElementById("lname").enabled;
+            //var duser = document.getElementById("username").enabled;
+            //var demail = document.getElementById("email").enabled;
+            $.ajax({
+                url: '/editProfile',
+                data: {
+                    user: document.getElementById("username").value,
+                    first_name: document.getElementById("fname").value,
+                    last_name: document.getElementById("lname").value,
+                    email: document.getElementById("email").value
+                },
+                success: function (response) {
+                    document.getElementById("fname").innerHTML = response[0].first_name;
+                    document.getElementById("lname").innerHTML = response[0].last_name;
+                    document.getElementById("username").innerHTML = response[0].username;
+                    document.getElementById("email").innerHTML = response[0].email;
+                }
+            });
+        };
+
+        $(document).ready(function() {
+            getUsers(function(result){
+                console.log(result);
+                $.ajax({
+                   url: '/getUser',
+                   data: {"username": name},
+                    success: function(response){
+                       document.getElementById("fname").innerHTML = response[0].first_name;
+                       document.getElementById("lname").innerHTML = response[0].last_name;
+                       document.getElementById("username").innerHTML = response[0].username;
+                       document.getElementById("email").innerHTML = response[0].email;
+                    }
+                });
+
+            });
+        });
+
+
+
+
+    </script>
     <style type="text/css" >
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+            font-family: century gothic;
             align-content: center;
             background-image:url(https://images.pexels.com/photos/802958/pexels-photo-802958.jpeg?cs=srgb&dl=earphones-earpods-justifyyourlove-802958.jpg&fm=jpg);
             /*height: 100%;*/
@@ -69,35 +152,27 @@
     <br>
     <div class="subhead-text" style="font-size: 28px; font-family:tahoma; color: antiquewhite; text-align: left;">My Profile</div><br><span class="user"></span></div>
     <hr/>
-    </div>
 
     <form class="form-horizontal" method="POST" >
         <input type="hidden" name="_csrf"/>
         <br>
-        <div class="form-group">
-            <label class="col-sm-2 control-label" for="fname"; style="color: darkslategray; font-weight: bold;">First Name:</label> <textarea class="form-control" name="name" id="fname" rows="1" cols="25"></textarea>
+        <div class="form-group1">
+            <label class="col-sm-2 control-label"  style="color: darkslategray; font-weight: bold;">First Name:</label> <textarea disabled="disabled" class="form-control" name="name" id="fname" rows="1" cols="25"></textarea>
             <br><br>
-            <label class="col-sm-2 control-label" for="lname"; style="color: darkslategray; font-weight: bold;">Last Name:</label> <textarea class="form-control" name="name" id="lname" rows="1" cols="25"></textarea>
-
+            <label class="col-sm-2 control-label" for="lname"; style="color: darkslategray; font-weight: bold;">Last Name:</label> <textarea disabled="disabled" class="form-control" name="name" id="lname" rows="1" cols="25"></textarea>
         </div>
         <br>
         <div class="form-group">
-            <label class="col-sm-2 control-label" for="email"; style="color: darkslategray; font-weight: bold;">Email:</label> <textarea class="form-control" name="email" id="email" rows="1" cols="50"></textarea>
-
+            <label class="col-sm-2 control-label" for="email"; style="color: darkslategray; font-weight: bold;">Username:</label> <textarea disabled="disabled" class="form-control" name="username" id="username" rows="1" cols="50"></textarea>
         </div>
         <br>
         <div class="form-group">
-            <label class="col-sm-2 control-label" style="color: darkslategray; font-weight: bold;">Gender:</label>
-            <div class="col-sm-8">
-                <input type="radio" name="gender" value="male"> Male<br>
-                <input type="radio" name="gender" value="female"> Female<br>
-                <input type="radio" name="gender" value="other"> Other
-            </div>
+            <label class="col-sm-2 control-label" for="email"; style="color: darkslategray; font-weight: bold;">Email:</label> <textarea disabled="disabled" class="form-control" name="email" id="email" rows="1" cols="50"></textarea>
         </div>
         <br>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-8">
-                <button class="btn btn-primary" type="submit" style="color:darkslategray; height:30px; width:60px"><i class="far fa-envelope fa-sm"></i>Send</button>
+                <button onclick="editProfile()"class="btn btn-primary" type="button" style="color:darkslategray; height:50px; width:80px"><i class="far fa-envelope fa-sm"></i>Edit Profile</button>
             </div>
         </div>
     </form>
