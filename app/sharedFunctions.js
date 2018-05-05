@@ -7,6 +7,11 @@ var PATHS = {
 	landing_page: 'http://localhost:2000/landing_page.html',
 	home_page: 'http://localhost:2000/home.html'
 }
+var API_KEY = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk';
+      var API_KEY_SEARCH = 'OGQwYjdjNzAtNDZkMC00ZTE5LTk2YWYtMzRlN2I2ZjEwN2Fk=';
+      var port = 2000;
+      var baseUrl = 'http://localhost:' + port;
+      var redirectUri = baseUrl + '/authorize';
 
 /************************************************************************************/
 /********************************** Window Session **********************************/
@@ -69,6 +74,16 @@ function redirectToHome(){
 	}
 }
 
+function redirectToAuthentication(){
+        try{
+          var path = 'https://api.napster.com/oauth/authorize?response_type=code&client_id=' + API_KEY + '&redirect_uri=' + redirectUri;
+          window.location = path;
+        }
+        catch (err){
+          console.log("Error in redirectToAuthentication: " + err);
+          notify("error", "There as a problem redirecting you to the login page. Please contact an admin.", 5000, undefined);
+        }
+      }
 
 /**
 *Toastr fuction to use notifications

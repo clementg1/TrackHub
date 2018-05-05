@@ -11,7 +11,6 @@
     <script type="text/javascript"></script>
     <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
     <script src="sharedFunctions.js"></script>
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     
     <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
@@ -401,9 +400,30 @@
 
       }
 
-      li {
-          float: left;
+      .navbar {
+           list-style-type: none;
+           margin: 0;
+           padding: 0;
+           overflow: hidden;
+           background-color: rgb(80, 135, 160);
+           position: fixed;
+           top: 0;
+           width: 100%;
+
+       }
+      .navbar input[type=text] {
+          vertical-align:middle;
+          padding: 6px;
+          margin-right: 0px;
+          margin-top: 8px;
+          font-size: 17px;
+          border: gray;
+          width: 330px;
       }
+
+      li {
+            float: left;
+        }
 
       li a {
           display: block;
@@ -414,11 +434,47 @@
       }
 
       li a:hover {
-        background-color: rgba(0, 0, 0, 0.40);
+          background-color: rgba(0, 0, 0, 0.40);
       }
 
       .active {
-        background-color: rgba(0, 0, 0, 0.40);
+          background-color: rgba(0, 0, 0, 0.40);
+      }
+      .navbar .search-container {
+          justify-content: center;
+          float: left;
+      }
+
+      .navbar .search-container button {
+          justify-content: center;
+          padding: 6px;
+          margin-top: 8px;
+          margin-right: 55px;
+          background: #ddd;
+          font-size: 17px;
+          border: none;
+          cursor: pointer;
+      }
+
+      .navbar .search-container button:hover {
+          background: #ccc;
+      }
+
+      @media screen and (max-width: 600px) {
+          .navbar .search-container {
+              float: none;
+          }
+          .navbar a, .navbar input[type=text], .navbar .search-container button {
+              float: none;
+              display: block;
+              text-align: center;
+              width: 100%;
+              margin: 0;
+              padding: 14px;
+          }
+          .navbar input[type=text] {
+              border: 1px solid #ccc;
+          }
       }
       /*#slideshow {
           margin: 5px auto; 
@@ -476,15 +532,69 @@
         width: 300px
       }
 
+      .navbar .search-container {
+          display: flex;
+          justify-content: center;
+          float: left;
+      }
+
+      .navbar .search-container button {
+          display: flex;
+          justify-content: center;
+          padding: 6px;
+          margin-top: 8px;
+          margin-right: 55px;
+          background: #ddd;
+          font-size: 17px;
+          border: none;
+          cursor: pointer;
+      }
+
+      .navbar .search-container button:hover {
+          background: #ccc;
+      }
+
+      @media screen and (max-width: 600px) {
+          .navbar .search-container {
+              float: none;
+          }
+          .navbar a, .navbar input[type=text], .navbar .search-container button {
+              float: none;
+              display: block;
+              text-align: center;
+              width: 100%;
+              margin: 0;
+              padding: 14px;
+          }
+          .navbar input[type=text] {
+              border: 1px solid #ccc;
+          }
+      }
+
     </style>
   </head>
   <body>
 
 
-    <ul id="navbar">
+    <ul class="navbar" id="navbar">
       <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
+      <div class="search-container">
+          <form id="submit">
+              <input  class = "textBox" type="text" id="searchBar"  value="" placeholder="Search for anything! Artist, Album, Track..." />
+          </form>
+
+          <script>
+              function getTextVal() {
+                  var inputTest = document.getElementById('searchBar').value;
+                  localStorage.setItem('objectToPass', inputTest);
+              }
+          </script>
+
+
+          <button class = "button" onclick="window.location='Search.html'; getTextVal()" >Search</button>
+      </div>
     </ul>
 
     <div class="header">
