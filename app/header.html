@@ -54,16 +54,18 @@
         }
 
         .navbar input[type=text] {
-            padding: 6px;
-            margin-top: 8px;
-            font-size: 17px;
-            border: gray;
-        }
+             padding: 6px;
+            margin-right: 100px;
+             margin-top: 8px;
+             font-size: 17px;
+             border: gray;
+             width: 330px;
+         }
 
         .navbar .search-container button {
             padding: 6px;
             margin-top: 8px;
-            margin-right: 16px;
+            margin-right: 55px;
             background: #ddd;
             font-size: 17px;
             border: none;
@@ -81,7 +83,7 @@
             .navbar a, .navbar input[type=text], .navbar .search-container button {
                 float: none;
                 display: block;
-                text-align: left;
+                text-align: center;
                 width: 100%;
                 margin: 0;
                 padding: 14px;
@@ -90,9 +92,22 @@
                 border: 1px solid #ccc;
             }
         }
+
+
+
     </style>
 </head>
 <body style="overflow-y: scroll;">
+
+<script>
+    function Search() {
+        submitMe(document.getElementById('search').value)
+        id="searchButton"
+    }
+    function timeFunction() {
+        setTimeout(Search(), 5000);
+    }
+</script>
 
 <div>
     <ul class="navbar">
@@ -100,8 +115,8 @@
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
         <div class="search-container">
-            <input class = "textBox" type="text" id="search"  value="" placeholder="Search for anything! Artist, Album, Track..." />
-            <button class = "button" onclick="submitMe(document.getElementById('search').value)" id="searchButton" >Search</button>
+            <input  class = "textBox" type="text" id="search"  value="" placeholder="Search for anything! Artist, Album, Track..." />
+            <button class = "button" onclick="window.location.href='Search.html'; Search()" >Search</button>
         </div>
         <li style="float:right; cursor: pointer"><a href="register.html">Register</a></li>
         <li style="float:right; cursor: pointer"><a href="login.html">Login</a></li>
