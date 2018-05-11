@@ -118,14 +118,12 @@
         window.location = NAPSTER_REGISTER_PAGE
       }
 
-      function show_image(src, width, height, alt) {
+      //Creates the image to display in DIV
+      function show_image(src, alt) {
           var img = document.createElement("img");
           img.class = "mySlides";
           img.src = src;
-          img.width = width;
-          img.height = height;
           img.alt = alt;
-          //document.body.appendChild(img);
           return img;
       }
 
@@ -134,7 +132,6 @@
           item.class = "desc";
           var t = document.createTextNode(text);
           item.appendChild(t);
-          //document.body.appendChild(img);
           return item;
       }
 
@@ -239,7 +236,7 @@
                 try {
                     Napster.api.get(false, '/albums/' + albuminfo.id + '/images', function (data) {
                         var artName = "http://direct.napster.com/imageserver/v2/albums/" + albuminfo.id + "/images/600x600.jpg";
-                        var art = show_image(artName, 225, 225, "Album Art");
+                        var art = show_image(artName, "Album Art");
                         var text = show_text(albuminfo.name + " by " + albuminfo.artistName);
                         $('#gallery').before(art);
                         //$('#desc').before(text);
@@ -343,13 +340,11 @@
       .active {
           background-color: rgba(0, 0, 0, 0.40);
       }
-      .navbar .search-container {
-          display: flex;
-          justify-content: center;
+      .navbar {
           float: left;
       }
 
-      .navbar .search-container button {
+      .navbar button {
           display: flex;
           justify-content: center;
           padding: 6px;
@@ -361,15 +356,15 @@
           cursor: pointer;
       }
 
-      .navbar .search-container button:hover {
+      .navbar button:hover {
           background: #ccc;
       }
 
       @media screen and (max-width: 600px) {
-          .navbar .search-container {
+          .navbar {
               float: none;
           }
-          .navbar a, .navbar input[type=text], .navbar .search-container button {
+          .navbar a, .navbar input[type=text], .navbar button {
               float: none;
               display: block;
               text-align: center;
@@ -391,21 +386,7 @@
           <li><a class="active" onclick="redirectToHome()" style="font-weight: bold; cursor: pointer; text-align:right;">TrackHub</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
-          <div class="search-container">
-              <form id="submit">
-                  <input  class = "textBox" type="text" id="searchBar"  value="" placeholder="Search for anything! Artist, Album, Track..." />
-              </form>
-
-              <script>
-                  function getTextVal() {
-                      var inputTest = document.getElementById('searchBar').value;
-                      localStorage.setItem('objectToPass', inputTest);
-                  }
-              </script>
-
-
-              <button class = "button" onclick="window.location.href='Search.html'; getTextVal()" >Search</button>
-          </div>
+          
       </ul>
   </div>
 
